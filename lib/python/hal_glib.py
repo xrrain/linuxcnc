@@ -8,9 +8,12 @@ import os
 # constants
 JOGJOINT  = 1
 JOGTELEOP = 0
-inifile = linuxcnc.ini(os.environ['INI_FILE_NAME'])
-trajcoordinates = inifile.find("TRAJ", "COORDINATES").lower().replace(" ","")
-jointcount = int(inifile.find("KINS","JOINTS"))
+try:
+    inifile = linuxcnc.ini(os.environ['INI_FILE_NAME'])
+    trajcoordinates = inifile.find("TRAJ", "COORDINATES").lower().replace(" ","")
+    jointcount = int(inifile.find("KINS","JOINTS"))
+except:
+    pass
 
 class GPin(gobject.GObject, hal.Pin):
     __gtype_name__ = 'GPin'
