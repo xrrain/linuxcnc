@@ -94,6 +94,14 @@ class modded_gremlin(gremlin.Gremlin):
     def _load(self, filename):
         return self.load(filename)
 
+    # Override gremlin's / glcannon.py function so we can emit a GObject signal
+    def update_highlight_variable(self,line):
+        self.highlight_line = line
+        if line == None:
+            line = -1
+        print line
+        #self.emit('line-clicked', line)
+
     # This overrides glcannon.py method so we can change the DRO 
     def dro_format(self,s,spd,dtg,limit,homed,positions,axisdtg,g5x_offset,g92_offset,tlo_offset):
             if not self.enable_dro:
@@ -196,7 +204,6 @@ class modded_gremlin(gremlin.Gremlin):
 class PyApp(gtk.Plug):
     def __init__(self,):
         super(PyApp, self).__init__(0l)
-
         #self.set_size_request(300, 300)
         self.connect("destroy", self.on_destroy)
 
