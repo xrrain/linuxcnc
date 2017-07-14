@@ -44,7 +44,7 @@ class HandlerClass:
         self.cmnd = linuxcnc.command()
         self.error = linuxcnc.error_channel()
         self.jog_velocity = 10.0
-
+        print paths.CONFIGPATH
         # connect to GStat to catch linuxcnc events
         GSTAT.connect('state-estop', self.say_estop)
         GSTAT.connect('state-on', self.on_state_on)
@@ -73,6 +73,11 @@ class HandlerClass:
         self.w.feed_slider.setValue(100)
         self.w.rapid_slider.setValue(100)
         GSTAT.forced_update()
+
+        # add a backgrund image
+        self.w.setObjectName("MainWindow")
+        bgpath='/home/chris/Desktop/background.png'
+        self.w.setStyleSheet("#MainWindow { border-image: url(%s) 0 0 0 0 stretch stretch; }"%bgpath)
 
     def processed_key_event__(self,receiver,event,is_pressed,key,code,shift,cntrl):
         # when typing in MDI, we don't want keybinding to call functions
@@ -208,12 +213,13 @@ class HandlerClass:
         fname = QtGui.QFileDialog.getOpenFileName(self.w, 'Open file', 
                 os.path.join(os.path.expanduser('~'), 'linuxcnc/nc_files'))
         print fname
-        f = open(fname, 'r')
+        if fname:
+            NOTE.notify('Error',str(fname),QtGui.QMessageBox.Information,10)
+            f = open(fname, 'r')
 
-        self.cmnd.mode(linuxcnc.MODE_AUTO)
-        print fname
-        self.cmnd.program_open(str(fname))
-        GSTAT.emit('file-loaded', fname)
+            self.cmnd.mode(linuxcnc.MODE_AUTO)
+            self.cmnd.program_open(str(fname))
+            GSTAT.emit('file-loaded', fname)
 
     def runfile_clicked(self):
         print 'run file'
