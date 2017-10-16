@@ -111,6 +111,7 @@ class _GStat(gobject.GObject):
         'line-changed': (gobject.SIGNAL_RUN_FIRST, gobject.TYPE_NONE, (gobject.TYPE_INT,)),
 
         'tool-in-spindle-changed': (gobject.SIGNAL_RUN_FIRST, gobject.TYPE_NONE, (gobject.TYPE_INT,)),
+        'motion-mode-changed': (gobject.SIGNAL_RUN_FIRST, gobject.TYPE_NONE, (gobject.TYPE_INT,)),
         'spindle-control_changed': (gobject.SIGNAL_RUN_FIRST, gobject.TYPE_NONE, (gobject.TYPE_BOOLEAN,gobject.TYPE_INT)),
         'current-feed-rate': (gobject.SIGNAL_RUN_FIRST, gobject.TYPE_NONE, (gobject.TYPE_FLOAT,)),
         'current-x-rel-position': (gobject.SIGNAL_RUN_FIRST, gobject.TYPE_NONE, (gobject.TYPE_FLOAT,)),
@@ -175,11 +176,16 @@ class _GStat(gobject.GObject):
         self.old['state'] = self.stat.task_state
         self.old['mode']  = self.stat.task_mode
         self.old['interp']= self.stat.interp_state
+        # Only update file if call level is 0, which
+        # means we are not executing a subroutine/remap
+        # This avoids emiting signals for bogus file names below 
+        if self.stat.call_level == 0:
+            self.old['file']  = self.stat.file
         self.old['paused']= self.stat.paused
-        self.old['file']  = self.stat.file
         self.old['line']  = self.stat.motion_line
         self.old['homed'] = self.stat.homed
         self.old['tool-in-spindle'] = self.stat.tool_in_spindle
+        self.old['motion-mode'] = self.stat.motion_mode
         self.old['spindle-or'] = self.stat.spindlerate
         self.old['feed-or'] = self.stat.feedrate
         self.old['rapid-or'] = self.stat.rapidrate
@@ -315,6 +321,11 @@ class _GStat(gobject.GObject):
         tool_new = self.old['tool-in-spindle']
         if tool_new != tool_old:
             self.emit('tool-in-spindle-changed', tool_new)
+
+        motion_mode_old = old.get('motion-mode', None)
+        motion_mode_new = self.old['motion-mode']
+        if motion_mode_new != motion_mode_old:
+            self.emit('motion-mode-changed', motion_mode_new)
 
         # if the homed status has changed
         # check number of homed joints against number of available joints
