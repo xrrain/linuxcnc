@@ -2,8 +2,9 @@
 
 from PyQt4.QtCore import *
 from PyQt4.QtGui import *
+from qtvcp_widgets.simple_widgets import _HalWidgetBase, hal, hal_pin_changed_signal
 
-class Lcnc_Led(QWidget):
+class Lcnc_Led(QWidget, _HalWidgetBase):
 
     def __init__(self, parent=None):
 
@@ -15,6 +16,7 @@ class Lcnc_Led(QWidget):
         self._color = QColor("red")
         self._alignment = Qt.AlignCenter
         self._state = True
+        self._state_flashing = False
         self._flashing = False
         self._flashRate = 200
 
@@ -22,6 +24,26 @@ class Lcnc_Led(QWidget):
         self._timer.timeout.connect(self.toggleState)
 
         self.setDiameter(self._diameter)
+
+        self.has_hal_pins = True
+
+    def _hal_init(self):
+        if (self.has_hal_pins):
+            _HalWidgetBase._hal_init(self)
+            self.hal_pin = self.hal.newpin(self.hal_name, hal.HAL_BIT, hal.HAL_IN)
+            def _f(data):
+                if data and self._state_flashing:
+                    self.setFlashing(True)
+                elif data and not self._state_flashing:
+                    self.setState(True)
+                else:
+                    self.setFlashing(False)
+                    self.setState(False)
+
+            self.hal_pin.value_changed.connect( lambda s: _f(s))
+            # not sure we need a flash pin
+            #self.hal_pin_flash = self.hal.newpin(self.hal_name+'-flash', hal.HAL_BIT, hal.HAL_IN)
+            #self.hal_pin_flash.value_changed.connect( lambda s: self.setFlashing(s))
 
     def paintEvent(self, event):
         painter = QPainter()
@@ -115,6 +137,7 @@ class Lcnc_Led(QWidget):
     @pyqtSlot(bool)
     def setFlashing(self, value):
         self._flashing = value
+        print "value",value
         self.update()
 
     def getFlashRate(self):
