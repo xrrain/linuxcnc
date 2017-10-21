@@ -21,6 +21,10 @@
 # QScintilla sample with PyQt
 # Eli Bendersky (eliben@gmail.com)
 # Which is code in the public domain
+#
+# See also:
+# http://pyqt.sourceforge.net/Docs/QScintilla2/index.html
+# https://qscintilla.com/
 
 import sys
 from PyQt4.QtCore import SIGNAL
@@ -46,14 +50,20 @@ class GcodeLexer(QsciLexerCustom):
             }
         for key,value in self._styles.iteritems():
             setattr(self, value, key)
-        #self.setPaper(QColor('#ffe4e4'),3)
-        #self.setPaper(QColor(3,234,255),2)
         font = QFont()
         font.setFamily('Courier')
         font.setFixedPitch(True)
         font.setPointSize(12)
         font.setBold(True)
         self.setFont(font,2)
+
+    # Paper sets the background color of each style of text
+    def setPaperBackground(self,color,style=None):
+        if style is None:
+            for i in range(0,5):
+                self.setPaper(color,i)
+        else:
+            self.setPaper(color,style)
 
     def description(self, style):
         return self._styles.get(style, '')
@@ -62,7 +72,7 @@ class GcodeLexer(QsciLexerCustom):
         if style == self.Default:
             return QColor('#000000') # black
         elif style == self.Comment:
-            return QColor('#C0C0C0') # gray
+            return QColor('#000000') # black
         elif style == self.Key:
             return QColor('#0000CC') # blue
         elif style == self.Assignment:
@@ -189,9 +199,9 @@ class GcodeEditor(QsciScintilla, _HalWidgetBase):
         self.setCaretLineBackgroundColor(QColor("#ffe4e4"))
 
         # Set custom gcode lexer
-        lexer = GcodeLexer(self)
-        lexer.setDefaultFont(font)
-        self.setLexer(lexer)
+        self.lexer = GcodeLexer(self)
+        self.lexer.setDefaultFont(font)
+        self.setLexer(self.lexer)
         # Set style for Python comments (style number 1) to a fixed-width
         # courier.
         #self.SendScintilla(QsciScintilla.SCI_STYLESETFONT, 1, 'Courier')
@@ -201,8 +211,16 @@ class GcodeEditor(QsciScintilla, _HalWidgetBase):
         # here: http://www.scintilla.org/ScintillaDoc.html)
         #self.SendScintilla(QsciScintilla.SCI_SETHSCROLLBAR, 0)
 
+        # default gray background
+        self.set_background_color('#C0C0C0')
+
         # not too small
-        self.setMinimumSize(200, 200)
+        self.setMinimumSize(200, 100)
+
+    # must set lexer paper background color _and_ editor background color it seems
+    def set_background_color(self,color):
+        self.SendScintilla(QsciScintilla.SCI_STYLESETBACK, QsciScintilla.STYLE_DEFAULT, QColor(color))
+        self.lexer.setPaperBackground(QColor(color))
 
     def on_margin_clicked(self, nmargin, nline, modifiers):
         # Toggle marker for the line the margin was clicked on
