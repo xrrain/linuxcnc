@@ -13,5 +13,5 @@ class Icon:
             if os.path.isfile(path):
                 return path
             elif i == 'error':
-                print 'QTVCP WARNING: Missing icon for ',widgetname,' widget'
+                #print 'QTVCP WARNING: Missing icon for ',widgetname,' widget'
                 return self.LCNC_ICON 
