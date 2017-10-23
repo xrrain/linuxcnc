@@ -12,11 +12,12 @@ class Lcnc_Led(QWidget, _HalWidgetBase):
 
         self._diamX = 0
         self._diamY = 0
-        self._diameter = 30
+        self._diameter = 15
         self._color = QColor("red")
         self._alignment = Qt.AlignCenter
-        self._state = True
-        self._state_flashing = False
+        self.state = False
+        self.flash = False
+        self._state = False
         self._flashing = False
         self._flashRate = 200
 
@@ -31,19 +32,20 @@ class Lcnc_Led(QWidget, _HalWidgetBase):
         if (self.has_hal_pins):
             _HalWidgetBase._hal_init(self)
             self.hal_pin = self.hal.newpin(self.hal_name, hal.HAL_BIT, hal.HAL_IN)
-            def _f(data):
-                if data and self._state_flashing:
-                    self.setFlashing(True)
-                elif data and not self._state_flashing:
-                    self.setState(True)
-                else:
-                    self.setFlashing(False)
-                    self.setState(False)
-
-            self.hal_pin.value_changed.connect( lambda s: _f(s))
+            self.hal_pin.value_changed.connect( lambda s: self.change_state(s))
             # not sure we need a flash pin
             #self.hal_pin_flash = self.hal.newpin(self.hal_name+'-flash', hal.HAL_BIT, hal.HAL_IN)
             #self.hal_pin_flash.value_changed.connect( lambda s: self.setFlashing(s))
+
+    def change_state(self,data):
+        self.state = data
+        if data and self.flash:
+            self.setFlashing(True)
+        elif data and not self.flash:
+            self.setState(True)
+        else:
+            self.setFlashing(False)
+            self.setState(False)
 
     def paintEvent(self, event):
         painter = QPainter()
@@ -118,13 +120,19 @@ class Lcnc_Led(QWidget, _HalWidgetBase):
         self._alignment = value
         self.update()
 
-    def getState(self):
+    def getAlignment(self):
         return self._alignment
 
     @pyqtSlot(bool)
     def setState(self, value):
         self._state = value
         self.update()
+
+    def getState(self):
+        return self._state
+
+    def resetState(self):
+        self._state = False
 
     @pyqtSlot()
     def toggleState(self):
@@ -137,8 +145,14 @@ class Lcnc_Led(QWidget, _HalWidgetBase):
     @pyqtSlot(bool)
     def setFlashing(self, value):
         self._flashing = value
-        print "value",value
         self.update()
+
+    def setFlashState(self, value):
+        self.flash = self._flashing = value
+        self.update()
+
+    def getFlashState(self):
+        return self.flash
 
     def getFlashRate(self):
         return self._flashRate
@@ -148,19 +162,12 @@ class Lcnc_Led(QWidget, _HalWidgetBase):
         self._flashRate = value
         self.update()
 
-    @pyqtSlot()
-    def startFlashing(self):
-        self.setFlashing(True)
-
-    @pyqtSlot()
-    def stopFlashing(self):
-        self.setFlashing(False)
 
     diameter = pyqtProperty(int, getDiameter, setDiameter)
     color = pyqtProperty(QColor, getColor, setColor)
     alignment = pyqtProperty(Qt.Alignment, getAlignment, setAlignment)
-    state = pyqtProperty(bool, getState, setState)
-    flashing = pyqtProperty(bool, isFlashing, setFlashing)
+    state = pyqtProperty(bool, getState, setState, resetState)
+    flashing = pyqtProperty(bool, getFlashState, setFlashState)
     flashRate = pyqtProperty(int, getFlashRate, setFlashRate)
 
 if __name__ == "__main__":
