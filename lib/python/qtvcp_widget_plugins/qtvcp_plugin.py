@@ -26,3 +26,4 @@ from qtvcp_widget_plugins.ledplugin import LedPlugin
 from qtvcp_widget_plugins.container_plug import StateEnableGridLayoutPlugin
 from qtvcp_widget_plugins.graphicsplugin import *
 from qtvcp_widget_plugins.lcnc_widgetplugin import *
+from qtvcp_widget_plugins.ledstateplugin import LedStatePlugin
