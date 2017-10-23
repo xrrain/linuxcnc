@@ -254,8 +254,9 @@ class _GStat(gobject.GObject):
 
         state_old = old.get('state', 0)
         state_new = self.old['state']
-        if not state_old:
+        if state_new != state_old:
             if state_new > linuxcnc.STATE_ESTOP:
+                print 'estop-reset'
                 self.emit('state-estop-reset')
             else:
                 self.emit('state-estop')
