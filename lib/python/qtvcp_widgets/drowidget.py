@@ -77,12 +77,15 @@ class Lcnc_DROLabel(QtGui.QLabel):
             scale = 2.0
         else:
             scale = 1
-        if self.reference_type == 0:
-            self.setText(tmpl(absolute[self.joint_number]*scale))
-        elif self.reference_type == 1:
-            self.setText(tmpl(relative[self.joint_number]*scale))
-        elif self.reference_type == 2:
-            self.setText(tmpl(dtg[self.joint_number]*scale))
+        try:
+            if self.reference_type == 0:
+                self.setText(tmpl(absolute[self.joint_number]*scale))
+            elif self.reference_type == 1:
+                self.setText(tmpl(relative[self.joint_number]*scale))
+            elif self.reference_type == 2:
+                self.setText(tmpl(dtg[self.joint_number]*scale))
+        except:
+            pass
         return True
 
     def set_machine_units(self,u,c):
