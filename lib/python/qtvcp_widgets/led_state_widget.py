@@ -114,7 +114,7 @@ if __name__ == "__main__":
     import sys
 
     app = QApplication(sys.argv)
-    led = Lcnc_Led()
+    led = Lcnc_State_Led()
     led.show()
     led.startFlashing()
     sys.exit(app.exec_())
