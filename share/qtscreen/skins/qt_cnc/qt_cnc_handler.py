@@ -44,7 +44,9 @@ class HandlerClass:
         self.cmnd = linuxcnc.command()
         self.error = linuxcnc.error_channel()
         self.jog_velocity = 10.0
-        print paths.CONFIGPATH
+        self.PATH = paths.CONFIGPATH
+        self.IMAGE_PATH = paths.IMAGEDIR
+        #print paths.CONFIGPATH
         # connect to GStat to catch linuxcnc events
         GSTAT.connect('state-estop', self.say_estop)
         GSTAT.connect('state-on', self.on_state_on)
@@ -76,8 +78,12 @@ class HandlerClass:
 
         # add a backgrund image
         self.w.setObjectName("MainWindow")
-        bgpath='/home/chris/Desktop/background.png'
-        self.w.setStyleSheet("#MainWindow { border-image: url(%s) 0 0 0 0 stretch stretch; }"%bgpath)
+        bgpath = self.IMAGE_PATH+'/hazzy_bg_black.png'
+        self.w.setStyleSheet("#MainWindow { background-image: url(%s) 0 0 0 0 stretch stretch; }"%bgpath)
+        bgpath = self.IMAGE_PATH+'/frame_bg_blue.png'
+        self.w.frame.setStyleSheet("#frame { border-image: url(%s) 0 0 0 0 stretch stretch; }"%bgpath)
+        bgpath = self.IMAGE_PATH+'/frame_bg_grey.png'
+        self.w.frame_2.setStyleSheet("QFrame { border-image: url(%s) 0 0 0 0 stretch stretch; }"%bgpath)
 
     def processed_key_event__(self,receiver,event,is_pressed,key,code,shift,cntrl):
         # when typing in MDI, we don't want keybinding to call functions
@@ -211,7 +217,7 @@ class HandlerClass:
     def loadfile_clicked(self):
         print 'load'
         fname = QtGui.QFileDialog.getOpenFileName(self.w, 'Open file', 
-                os.path.join(os.path.expanduser('~'), 'linuxcnc/nc_files'))
+                os.path.join(os.path.expanduser('~'), 'linuxcnc/nc_files/examples'))
         print fname
         if fname:
             NOTE.notify('Error',str(fname),QtGui.QMessageBox.Information,10)
@@ -230,6 +236,15 @@ class HandlerClass:
         print 'stop file'
         self.cmnd.mode(linuxcnc.MODE_AUTO)
         self.cmnd.abort()
+
+    def pausefile_clicked(self):
+        print 'pause file',GSTAT.stat.paused
+        if not GSTAT.stat.paused:
+            self.cmnd.mode(linuxcnc.MODE_AUTO)
+            self.cmnd.auto(linuxcnc.AUTO_PAUSE)
+        else:
+            print 'resume'
+            self.cmnd.auto(linuxcnc.AUTO_RESUME)
 
     #####################
     # general functions #
