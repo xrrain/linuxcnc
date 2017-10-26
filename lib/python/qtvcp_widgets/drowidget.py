@@ -62,6 +62,7 @@ class Lcnc_DROLabel(QtGui.QLabel):
         self.set_machine_units(self.machine_units_mm,conversion)
         # get position update from gstat every 100 ms
         self.gstat.connect('current-position',self.update)
+        self.gstat.connect('metric-mode-changed',self._switch_units)
 
     def update(self,widget,absolute,relative,dtg):
         if self.display_units_mm != self.machine_units_mm:
@@ -95,6 +96,12 @@ class Lcnc_DROLabel(QtGui.QLabel):
     def convert_units(self,v):
         c = self.unit_convert
         return map(lambda x,y: x*y, v, c)
+
+    def _switch_units(self, widget, data):
+        if data:
+            self.set_to_mm()
+        else:
+            self.set_to_inch()
 
     def set_to_inch(self):
         self.display_units_mm = 0
