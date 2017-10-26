@@ -137,7 +137,7 @@ class _GStat(gobject.GObject):
         'g-code-changed': (gobject.SIGNAL_RUN_FIRST, gobject.TYPE_NONE, (gobject.TYPE_STRING,)),
 
         'metric-mode-changed': (gobject.SIGNAL_RUN_FIRST, gobject.TYPE_NONE, (gobject.TYPE_BOOLEAN,)),
-        'user_system-changed': (gobject.SIGNAL_RUN_FIRST, gobject.TYPE_NONE, (gobject.TYPE_STRING,)),
+        'user-system-changed': (gobject.SIGNAL_RUN_FIRST, gobject.TYPE_NONE, (gobject.TYPE_STRING,)),
         }
 
     STATES = { linuxcnc.STATE_ESTOP:       'state-estop'
@@ -529,6 +529,9 @@ class _GStat(gobject.GObject):
         # tool in spindle
         tool_new = self.old['tool-in-spindle']
         self.emit('tool-in-spindle-changed', tool_new)
+        # Spindle requested speed
+        spindle_spd_new = self.old['spindle-speed']
+        self.emit('requested-spindle-speed-changed', spindle_spd_new)
 
     # ********** Helper function ********************
     def get_position(self):
