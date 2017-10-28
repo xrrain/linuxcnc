@@ -1,19 +1,18 @@
 #!/usr/bin/python2.7
 
 from PyQt4 import QtCore, QtGui
-import os
-import linuxcnc
+
 from qtvcp_widgets.simple_widgets import _HalWidgetBase
 from qtvcp.qt_glib import GStat
 from qtvcp.qt_istat import IStat
 GSTAT = GStat()
 INI = IStat()
 
-class Lcnc_State_Label(QtGui.QLabel, _HalWidgetBase):
+class Lcnc_Gstat_Label(QtGui.QLabel, _HalWidgetBase):
 
     def __init__(self, parent=None):
 
-        super(Lcnc_State_Label, self).__init__(parent)
+        super(Lcnc_Gstat_Label, self).__init__(parent)
         self.display_units_mm = False
         self._textTemplate = '%s'
         self._alt_textTemplate = 'None'

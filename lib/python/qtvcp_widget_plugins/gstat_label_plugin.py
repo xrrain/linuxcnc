@@ -3,14 +3,14 @@
 from PyQt4.QtGui import QIcon, QPixmap, QAction, QDialog, QLabel,QTextFormat
 from PyQt4.QtCore import SIGNAL,pyqtProperty,QVariant
 from PyQt4.QtDesigner import QPyDesignerCustomWidgetPlugin, QExtensionFactory, QPyDesignerTaskMenuExtension, QPyDesignerPropertySheetExtension,QDesignerFormWindowInterface
-from qtvcp_widgets.state_label import Lcnc_State_Label
+from qtvcp_widgets.gstat_label import Lcnc_Gstat_Label
 from qtvcp_widgets.qtvcp_icons import Icon
 ICON = Icon()
 
-class StateLabelPlugin(QPyDesignerCustomWidgetPlugin):
+class GstatLabelPlugin(QPyDesignerCustomWidgetPlugin):
 
     def __init__(self, parent=None):
-        super(StateLabelPlugin, self).__init__(parent)
+        super(GstatLabelPlugin, self).__init__(parent)
 
         self.initialized = False
 
@@ -20,7 +20,7 @@ class StateLabelPlugin(QPyDesignerCustomWidgetPlugin):
         # add a custom property editor
 #        manager = formEditor.extensionManager()
 #        if manager:
-#          self.factory = StateLabelPropertySheetExtension(manager)
+#          self.factory = GstatLabelPropertySheetExtension(manager)
 #          manager.registerExtensions(self.factory,"com.trolltech.Qt.Designer.PropertySheet")
 
         self.initialized = True
@@ -29,16 +29,16 @@ class StateLabelPlugin(QPyDesignerCustomWidgetPlugin):
         return self.initialized
 
     def createWidget(self, parent):
-        return Lcnc_State_Label(parent)
+        return Lcnc_Gstat_Label(parent)
 
     def name(self):
-        return "Lcnc_State_Label"
+        return "Lcnc_Gstat_Label"
 
     def group(self):
         return "Linuxcnc - Controller"
 
     def icon(self):
-        return QIcon(QPixmap(ICON.get_path('lcnc_state_label')))
+        return QIcon(QPixmap(ICON.get_path('lcnc_gstat_label')))
 
     def toolTip(self):
         return ""
@@ -53,13 +53,13 @@ class StateLabelPlugin(QPyDesignerCustomWidgetPlugin):
     # default values for its properties. Each custom widget created by this
     # plugin will be configured using this description.
     def domXml(self):
-        return '<widget class="Lcnc_State_Label" name="lcnc_state_label" />\n'
+        return '<widget class="Lcnc_Gstat_Label" name="lcnc_gstat_label" />\n'
 
     def includeFile(self):
-        return "qtvcp_widgets.state_label"
+        return "qtvcp_widgets.gstat_label"
 
 #*************************************************************************
-class StateLabelPropertySheetExtension(QExtensionFactory):
+class GstatLabelPropertySheetExtension(QExtensionFactory):
   def __init__(self, parent = None):
 
       QExtensionFactory.__init__(self, parent)
@@ -70,12 +70,12 @@ class StateLabelPropertySheetExtension(QExtensionFactory):
       if iid != "com.trolltech.Qt.Designer.PropertySheet":
           return None
 
-      if isinstance(obj, Lcnc_State_Label):
-          return StateLabelPropertySheet(obj, parent)
+      if isinstance(obj, Lcnc_Gstat_Label):
+          return GstatLabelPropertySheet(obj, parent)
 
       return None
 
-class StateLabelPropertySheet(QPyDesignerPropertySheetExtension):
+class GstatLabelPropertySheet(QPyDesignerPropertySheetExtension):
     
     def __init__(self, widget, parent):
         QPyDesignerPropertySheetExtension.__init__(self, parent)
@@ -86,9 +86,9 @@ class StateLabelPropertySheet(QPyDesignerPropertySheetExtension):
         self.temp_flag = True
         #print dir(self.widget.pyqtConfigure.__sizeof__)
         #print self.widget.pyqtConfigure.__sizeof__()
-        for i in Lcnc_State_Label.__dict__:
+        for i in Lcnc_Gstat_Label.__dict__:
             #print i
-            if 'PyQt4.QtCore.pyqtProperty'  in str(Lcnc_State_Label.__dict__[i]):
+            if 'PyQt4.QtCore.pyqtProperty'  in str(Lcnc_Gstat_Label.__dict__[i]):
                 self.propertylist.append(i)
                 print i
         #print dir(self.widget)
