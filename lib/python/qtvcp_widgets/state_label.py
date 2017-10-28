@@ -5,42 +5,18 @@ import os
 import linuxcnc
 from qtvcp_widgets.simple_widgets import _HalWidgetBase
 from qtvcp.qt_glib import GStat
+from qtvcp.qt_istat import IStat
 GSTAT = GStat()
+INI = IStat()
 
 class Lcnc_State_Label(QtGui.QLabel, _HalWidgetBase):
 
     def __init__(self, parent=None):
 
         super(Lcnc_State_Label, self).__init__(parent)
-
-        # if 'NO_FORCE_HOMING' is true, MDI  commands are allowed before homing.
-        self.inifile = os.environ.get('INI_FILE_NAME', '/dev/null')
-        self.ini = linuxcnc.ini(self.inifile)
-        self.no_home_required = int(self.ini.find("TRAJ", "NO_FORCE_HOMING") or 0)
-
-        self.display_units_mm=0
-        self.machine_units_mm=0
-        self.unit_convert=1
-        try:
-            self.inifile = self.emc.ini(INIPATH)
-            # check the ini file if UNITS are set to mm"
-            # first check the global settings
-            units=self.inifile.find("TRAJ","LINEAR_UNITS")
-            if units==None:
-                # else then the X axis units
-                units=self.inifile.find("AXIS_0","UNITS")
-        except:
-            units = "inch"
-        # set up the conversion arrays based on what units we discovered
-        if units=="mm" or units=="metric" or units == "1.0":
-            self.machine_units_mm=1
-            conversion=1.0/25.4
-        else:
-            self.machine_units_mm=0
-            conversion=25.4
-        self._set_machine_units(self.machine_units_mm,conversion)
-
+        self.display_units_mm = False
         self._textTemplate = '%s'
+        self._alt_textTemplate = 'None'
         self.feed_override = True
         self.rapid_override = False
         self.spindle_override = False
@@ -76,8 +52,8 @@ class Lcnc_State_Label(QtGui.QLabel, _HalWidgetBase):
             self.setText(tmpl(data))
 
     def _set_feedrate_text(self, widget, data):
-        if self.display_units_mm != self.machine_units_mm:
-            data = data * self.unit_convert
+        if self.display_units_mm != INI.MACHINE_IS_METRIC:
+            data = INI.convert_units(data)
         self._set_text(data)
 
     def _set_user_system_text(self, widgets, data):
@@ -88,10 +64,7 @@ class Lcnc_State_Label(QtGui.QLabel, _HalWidgetBase):
         self.unit_convert = c
 
     def _switch_units(self, widget, data):
-        if data:
-            self.display_units_mm = 1
-        else:
-            self.display_units_mm = 0
+        self.display_units_mm = data
 
 # property getter/setters
 
@@ -99,13 +72,26 @@ class Lcnc_State_Label(QtGui.QLabel, _HalWidgetBase):
         self._textTemplate = data
         try:
             self._set_text(100.0)
-        except:
+        except Exception, e:
+            print e,self._textTemplate,'data:',data
             self.setText('Error')
     def get_textTemplate(self):
         return self._textTemplate
     def reset_textTemplate(self):
         self._textTemplate = '%s'
     textTemplate = QtCore.pyqtProperty(str, get_textTemplate, set_textTemplate, reset_textTemplate)
+
+    def set_alt_textTemplate(self, data):
+        self._alt_textTemplate = data
+        try:
+            self._set_text(200.0)
+        except:
+            self.setText('Error 2')
+    def get_alt_textTemplate(self):
+        return self._alt_textTemplate
+    def reset_alt_textTemplate(self):
+        self._alt_textTemplate = '%s'
+    alt_textTemplate = QtCore.pyqtProperty(str, get_alt_textTemplate, set_alt_textTemplate, reset_alt_textTemplate)
 
     # feed override status 
     def set_feed_override(self, data):
@@ -178,6 +164,11 @@ class Lcnc_State_Label(QtGui.QLabel, _HalWidgetBase):
     def reset_user_system(self):
         self.user_system = False
     user_system_status = QtCore.pyqtProperty(bool, get_user_system, set_user_system, reset_user_system)
+
+    def __getitem__(self, item):
+        return getattr(self, item)
+    def __setitem__(self, item, value):
+        return setattr(self, item, value)
 
 if __name__ == "__main__":
 
