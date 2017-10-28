@@ -28,3 +28,4 @@ from qtvcp_widget_plugins.graphicsplugin import *
 from qtvcp_widget_plugins.lcnc_widgetplugin import *
 from qtvcp_widget_plugins.ledstateplugin import LedStatePlugin
 from qtvcp_widget_plugins.state_label_plugin import StateLabelPlugin
+from qtvcp_widget_plugins.gstat_bool_label_plugin import GstatBoolLabelPlugin
