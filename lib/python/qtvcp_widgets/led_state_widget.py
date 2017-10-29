@@ -1,10 +1,7 @@
 #!/usr/bin/python2.7
 
-from PyQt4.QtCore import *
-from PyQt4.QtGui import *
+from PyQt4.QtCore import pyqtProperty
 from qtvcp_widgets.ledwidget import Lcnc_Led
-import os
-import linuxcnc
 from qtvcp.qt_glib import GStat
 GSTAT = GStat()
 
@@ -16,10 +13,6 @@ class Lcnc_State_Led(Lcnc_Led,):
         self.has_hal_pins = False
         self.setState(False)
 
-        # if 'NO_FORCE_HOMING' is true, MDI  commands are allowed before homing.
-        self.inifile = os.environ.get('INI_FILE_NAME', '/dev/null')
-        self.ini = linuxcnc.ini(self.inifile)
-        self.no_home_required = int(self.ini.find("TRAJ", "NO_FORCE_HOMING") or 0)
         self.is_estopped = False
         self.is_on = False
         self.is_homed = False
@@ -112,9 +105,9 @@ class Lcnc_State_Led(Lcnc_Led,):
 if __name__ == "__main__":
 
     import sys
-
+    from PyQt4.QtGui import QApplication
     app = QApplication(sys.argv)
     led = Lcnc_State_Led()
     led.show()
-    led.startFlashing()
+    #led.startFlashing()
     sys.exit(app.exec_())

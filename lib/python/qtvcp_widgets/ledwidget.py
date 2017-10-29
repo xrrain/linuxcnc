@@ -1,7 +1,7 @@
 #!/usr/bin/python2.7
 
-from PyQt4.QtCore import *
-from PyQt4.QtGui import *
+from PyQt4.QtCore import pyqtProperty, pyqtSlot, Qt, QTimer, QSize
+from PyQt4.QtGui import QWidget, QColor, QPainter, QBrush, QRadialGradient
 from qtvcp_widgets.simple_widgets import _HalWidgetBase, hal, hal_pin_changed_signal
 
 class Lcnc_Led(QWidget, _HalWidgetBase):
@@ -173,9 +173,9 @@ class Lcnc_Led(QWidget, _HalWidgetBase):
 if __name__ == "__main__":
 
     import sys
-
+    from PyQt4.QtGui import QApplication
     app = QApplication(sys.argv)
     led = Lcnc_Led()
     led.show()
-    led.startFlashing()
+    led.setFlashing(True)
     sys.exit(app.exec_())
