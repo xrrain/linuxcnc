@@ -10,7 +10,7 @@ class OverlayWidget(QWidget):
         self.parent = parent
         self.setAttribute(Qt.WA_NoSystemBackground)
         self.setAttribute(Qt.WA_TransparentForMouseEvents)
-        self.setWindowFlags( Qt.FramelessWindowHint | Qt.Dialog | Qt.WindowStaysOnTopHint )
+        self.setWindowFlags( self.windowFlags() |Qt.Tool | Qt.FramelessWindowHint | Qt.Dialog | Qt.WindowStaysOnTopHint |Qt.WindowSystemMenuHint)
 
         self.newParent()
 
@@ -21,7 +21,7 @@ class OverlayWidget(QWidget):
         self.raise_()
 
     def eventFilter(self, obj, event):
-        print event,'parent',self.parent
+        #print event,'parent',self.parent
         if obj == self.parent:
             #Catches resize and child events from the parent widget
             if event.type() == QEvent.Resize:
@@ -42,7 +42,7 @@ class OverlayWidget(QWidget):
 
     # Tracks parent widget changes
     def event(self, event):
-        print 'overlay:',event
+        #print 'overlay:',event
         if event.type() == QEvent.ParentAboutToChange:
             print 'REMOVE FILTER'
             self.parent.removeEventFilter()
@@ -74,7 +74,7 @@ class LoadingOverlay(OverlayWidget):
         cancelButton = QPushButton("Cancel")
         self.mb=QLabel('<html><head/><body><p><span style=" font-size:30pt; font-weight:600;">%s</span></p></body></html>'%self.text,self)
         self.mb.setStyleSheet("background-color: black; color: white")
-
+        self.mb.setAlignment(Qt.AlignVCenter | Qt.AlignCenter)
         hbox = QHBoxLayout()
         hbox.addStretch(1)
         hbox.addWidget(okButton)
