@@ -467,7 +467,13 @@ class _GStat(gobject.GObject):
             # Reschedule
             return True
         self.merge()
-
+        state_new = self.old['state']
+        if state_new > linuxcnc.STATE_ESTOP:
+            self.emit('state-estop-reset')
+        else:
+            self.emit('state-estop')
+        self.emit('state-off')
+        self.emit('interp-idle')
         # override limts
         or_limits_new = self.old['override-limits']
         self.emit('override-limits-changed',or_limits_new)
@@ -568,6 +574,20 @@ class _GStat(gobject.GObject):
 
         relp = [x, y, z, a, b, c, u, v, w]
         return p,relp,dtg
+
+    # check for requied modes
+    # fail if mode is 0
+    # fail if machine is busy
+    # true if all ready in mode
+    # None if possible to change
+    def check_for_modes(self, *modes):
+        def running(s):
+            return s.task_mode == linuxcnc.MODE_AUTO and s.interp_state != linuxcnc.INTERP_IDLE
+        self.stat.poll()
+        if not modes: return None
+        if  self.stat.task_mode in modes: return True
+        if running( self.stat): return None
+        return False
 
     def set_jog_rate(self,upm):
         self.current_jog_rate = upm
