@@ -70,7 +70,6 @@ class HandlerClass:
         NOTE.statusbar = self.w.statusBar
         if self.desktop_notify:
             NOTE.notify('Welcome','This is a test screen for Qtscreen',None,4)
-        self.w.button_frame.setEnabled(False)
         self.w.jog_slider.setValue(self.jog_velocity)
         self.w.feed_slider.setValue(100)
         self.w.rapid_slider.setValue(100)
@@ -98,7 +97,7 @@ class HandlerClass:
             KEYBIND.call(self,event,is_pressed,shift,cntrl)
             return True
         except AttributeError:
-            print 'no function %s in handler file for-%s'%(KEYBIND.convert(event),key)
+            print 'Error in, or no function for: %s in handler file for-%s'%(KEYBIND.convert(event),key)
             #print 'from %s'% receiver
             return False
 
@@ -110,13 +109,10 @@ class HandlerClass:
 
     def on_state_on(self,w):
         print 'on'
-        if not self.w.button_machineon.isChecked():
-            self.w.button_machineon.click()
 
     def on_state_off(self,w):
         print 'off'
-        if self.w.button_machineon.isChecked():
-            self.w.button_machineon.click()
+
 
     def on_jograte_changed(self, w, rate):
         self.jog_velocity = rate
@@ -170,22 +166,6 @@ class HandlerClass:
     def change_rapidrate(self, rate):
         self.cmnd.rapidrate(rate/100.0)
 
-    def estop_toggled(self,pressed):
-        print 'estop click',pressed
-        if pressed:
-            self.cmnd.state(linuxcnc.STATE_ESTOP_RESET)
-        else:
-            self.cmnd.state(linuxcnc.STATE_ESTOP)
-
-    def machineon_toggled(self,pressed):
-        print 'machine on click',pressed
-        if pressed:
-            self.cmnd.state(linuxcnc.STATE_ON)
-            self.w.button_frame.setEnabled(True)
-        else:
-            self.cmnd.state(linuxcnc.STATE_OFF)
-            self.w.button_frame.setEnabled(False)
-
     def jog_pressed(self):
         d = 1
         source = self.w.sender()
@@ -209,11 +189,6 @@ class HandlerClass:
         elif 'Z' in source.text():
             self.continous_jog(2, 0)
 
-    def home_clicked(self):
-        print 'home click'
-        self.cmnd.mode(linuxcnc.MODE_MANUAL)
-        self.cmnd.home(-1)
-
     def loadfile_clicked(self):
         print 'load'
         fname = QtGui.QFileDialog.getOpenFileName(self.w, 'Open file', 
@@ -226,6 +201,7 @@ class HandlerClass:
             self.cmnd.mode(linuxcnc.MODE_AUTO)
             self.cmnd.program_open(str(fname))
             GSTAT.emit('file-loaded', fname)
+        self.w.gcodeeditor.setFocus() 
 
     def runfile_clicked(self):
         print 'run file'
@@ -240,7 +216,6 @@ class HandlerClass:
     def pausefile_clicked(self):
         print 'pause file',GSTAT.stat.paused
         if not GSTAT.stat.paused:
-            self.cmnd.mode(linuxcnc.MODE_AUTO)
             self.cmnd.auto(linuxcnc.AUTO_PAUSE)
         else:
             print 'resume'
@@ -256,6 +231,16 @@ class HandlerClass:
     #####################
     # KEY BINDING CALLS #
     #####################
+    def on_keycall_ABORT(self,event,state,shift,cntrl):
+        if state:
+            print 'abort'
+            if GSTAT.stat.interp_state == linuxcnc.INTERP_IDLE:
+                print 'close'
+                self.w.close()
+            else:
+                print 'abort'
+                self.cmnd.abort()
+
     def on_keycall_ESTOP(self,event,state,shift,cntrl):
         if state:
             self.w.button_estop.click()
