@@ -88,3 +88,45 @@ class GStat(_GStat):
             cls._instance = _GStat.__new__(cls, *args, **kwargs)
         return cls._instance
 
+class Lcnc_Action():
+    def __init__(self):
+        self.cmd = linuxcnc.command()
+        self.gstat = GStat()
+    def SET_ESTOP_STATE(self, state):
+        if state:
+            self.cmd.state(linuxcnc.STATE_ESTOP)
+        else:
+            self.cmd.state(linuxcnc.STATE_ESTOP_RESET)
+    def SET_MACHINE_STATE(self, state):
+        if state:
+            self.cmd.state(linuxcnc.STATE_ON)
+        else:
+            self.cmd.state(linuxcnc.STATE_OFF)
+
+    # TODO send an are you sure message  
+    def SET_MACHINE_HOMING(self, joint):
+        print 'Homing Joint:',joint
+        self.ensure_mode(linuxcnc.MODE_MANUAL)
+        self.cmd.teleop_enable(False)
+        self.cmd.home(joint)
+    def SET_MACHINE_UNHOMED(self, joint):
+        self.ensure_mode(linuxcnc.MODE_MANUAL)
+        self.cmd.teleop_enable(False)
+        #self.cmd.traj_mode(linuxcnc.TRAJ_MODE_FREE)
+        self.cmd.unhome(joint)
+
+    ###############################################################################
+    # Helper functions
+    ###############################################################################
+
+
+    def ensure_mode(self, modes):
+        truth = self.gstat.check_for_modes(modes)
+        if truth is None:
+            cmd.mode(modes[0])
+            cmd.wait_complete()
+            return True
+        else:
+            return truth
+
+
