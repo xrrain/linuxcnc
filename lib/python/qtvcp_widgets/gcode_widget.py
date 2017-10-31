@@ -292,13 +292,14 @@ class GcodeEditor(EditorBase, _HalWidgetBase):
 
     def highlight_line(self, w, line):
         print 'hilight'
-        self.markerAdd(line, self.ARROW_MARKER_NUM)
-        if self.last_line:
-            self.markerDelete(self.last_line, self.ARROW_MARKER_NUM)
-        self.setCursorPosition(line,0)
-        self.ensureCursorVisible()
-        self.SendScintilla(QsciScintilla.SCI_VERTICALCENTRECARET)
-        self.last_line = line
+        if GSTAT.is_auto_mode():
+            self.markerAdd(line, self.ARROW_MARKER_NUM)
+            if self.last_line:
+                self.markerDelete(self.last_line, self.ARROW_MARKER_NUM)
+            self.setCursorPosition(line,0)
+            self.ensureCursorVisible()
+            self.SendScintilla(QsciScintilla.SCI_VERTICALCENTRECARET)
+            self.last_line = line
 
     def set_line_number(self, w, line):
         pass
