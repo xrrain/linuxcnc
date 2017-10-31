@@ -26,7 +26,7 @@
 # http://pyqt.sourceforge.net/Docs/QScintilla2/index.html
 # https://qscintilla.com/
 
-import sys
+import sys, os
 from PyQt4.QtCore import SIGNAL
 from PyQt4.QtGui import QFont, QFontMetrics, QColor
 try:
@@ -36,7 +36,9 @@ except:
     sys.exit(1)
 from qtvcp_widgets.simple_widgets import _HalWidgetBase
 from qtvcp.qt_glib import GStat
+from qtvcp.qt_istat import IStat
 GSTAT = GStat()
+INI = IStat()
 
 class GcodeLexer(QsciLexerCustom):
     def __init__(self, parent=None):
@@ -155,11 +157,11 @@ class GcodeLexer(QsciLexerCustom):
             # folding implementation goes here
             index += 1
 
-class GcodeEditor(QsciScintilla, _HalWidgetBase):
+class EditorBase(QsciScintilla):
     ARROW_MARKER_NUM = 8
 
     def __init__(self, parent=None):
-        super(GcodeEditor, self).__init__(parent)
+        super(EditorBase, self).__init__(parent)
         # linuxcnc defaults
         self.idle_line_reset = False
         # don't allow editing by default
@@ -229,14 +231,42 @@ class GcodeEditor(QsciScintilla, _HalWidgetBase):
         else:
             self.markerAdd(nline, self.ARROW_MARKER_NUM)
 
+class GcodeEditor(EditorBase, _HalWidgetBase):
+    ARROW_MARKER_NUM = 8
+
+    def __init__(self, parent=None):
+        super(GcodeEditor, self).__init__(parent)
+        self.haistrory_path = INI.MDI_HISTORY_PATH
+        self._last_filename = None
+
     def _hal_init(self):
-        GSTAT.connect('file-loaded', self.load_file)
+        self.cursorPositionChanged.connect(self.cursor_changed)
+        GSTAT.connect('mode-mdi', self.load_mdi)
+        GSTAT.connect('mode-auto', self.reload_last)
+        GSTAT.connect('file-loaded', self.load_program)
         GSTAT.connect('line-changed', self.highlight_line)
         if self.idle_line_reset:
             GSTAT.connect('interp_idle', lambda w: self.set_line_number(None, 0))
 
-    def load_file(self, w, filename):
-        self.setText(open(filename).read())
+    def load_program(self, w, filename):
+        self._last_filename = filename
+        self.load_text(filename)
+
+    def reload_last(self,w):
+        self.load_text(self._last_filename)
+
+    def load_mdi(self,w):
+        self.load_text(INI.MDI_HISTORY_PATH)
+
+    def load_text(self, filename):
+        try:
+            fp = os.path.expanduser(filename)
+        except:
+            print 'error:',filename
+            self.setText('')
+            return
+
+        self.setText(open(fp).read())
         self.last_line = None
         self.setCursorPosition(0,0)
         self.ensureCursorVisible()
@@ -252,6 +282,13 @@ class GcodeEditor(QsciScintilla, _HalWidgetBase):
 
     def set_line_number(self, w, line):
         pass
+
+    def cursor_changed(self,line,index):
+        #print 'cursor',GSTAT.is_auto_mode()
+        self.line_text = self.text(line)
+        self.line = line
+        if GSTAT.is_auto_mode() == False:
+            GSTAT.emit('mdi-line-selected',self.line_text)
 
 if __name__ == "__main__":
     from PyQt4.QtGui import QApplication
