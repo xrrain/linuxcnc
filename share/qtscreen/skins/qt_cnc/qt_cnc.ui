@@ -44,14 +44,14 @@ background-image: url(/home/chris/Desktop/background.png) 0 0 0 0 stretch stretc
      </rect>
     </property>
     <property name="styleSheet">
-     <string notr="true">color: rgb(0, 85, 255);
+     <string notr="true">color: rgb(0, 255, 255);
 font: 75 18pt &quot;Courier 10 Pitch&quot;;</string>
     </property>
     <property name="Qjoint_number" stdset="0">
      <number>1</number>
     </property>
     <property name="Qreference_type" stdset="0">
-     <number>1</number>
+     <number>0</number>
     </property>
    </widget>
    <widget class="State_Enable_GridLayout" name="state_enable_gridLayout_3">
@@ -109,7 +109,7 @@ font: 75 18pt &quot;Courier 10 Pitch&quot;;</string>
      </rect>
     </property>
     <property name="styleSheet">
-     <string notr="true">color: rgb(0, 85, 255);
+     <string notr="true">color: rgb(0, 255, 255);
 font: 18pt &quot;Courier 10 Pitch&quot;;</string>
     </property>
     <property name="text">
@@ -125,7 +125,7 @@ font: 18pt &quot;Courier 10 Pitch&quot;;</string>
      <number>2</number>
     </property>
     <property name="Qreference_type" stdset="0">
-     <number>1</number>
+     <number>0</number>
     </property>
    </widget>
    <widget class="Lcnc_DROLabel" name="lcnc_drolabel_x">
@@ -138,14 +138,14 @@ font: 18pt &quot;Courier 10 Pitch&quot;;</string>
      </rect>
     </property>
     <property name="styleSheet">
-     <string notr="true">color: rgb(0, 85, 255);
+     <string notr="true">color: rgb(0, 255, 255);
 font: 75 18pt &quot;Courier 10 Pitch&quot;;</string>
     </property>
     <property name="text">
      <string>  -1.6994</string>
     </property>
     <property name="Qreference_type" stdset="0">
-     <number>1</number>
+     <number>0</number>
     </property>
    </widget>
    <widget class="QFrame" name="frame">
@@ -189,6 +189,9 @@ font: 75 48pt &quot;Noto Sans&quot;;</string>
      <property name="textFormat">
       <enum>Qt::AutoText</enum>
      </property>
+     <property name="Qreference_type" stdset="0">
+      <number>1</number>
+     </property>
     </widget>
     <widget class="Lcnc_DROLabel" name="lcnc_drolabel_2">
      <property name="geometry">
@@ -204,6 +207,9 @@ font: 75 48pt &quot;Noto Sans&quot;;</string>
 color: rgb(255, 255, 255);</string>
      </property>
      <property name="Qjoint_number" stdset="0">
+      <number>1</number>
+     </property>
+     <property name="Qreference_type" stdset="0">
       <number>1</number>
      </property>
     </widget>
@@ -222,6 +228,9 @@ color: rgb(255, 255, 255);</string>
      </property>
      <property name="Qjoint_number" stdset="0">
       <number>2</number>
+     </property>
+     <property name="Qreference_type" stdset="0">
+      <number>1</number>
      </property>
     </widget>
     <widget class="Graphics" name="graphics">

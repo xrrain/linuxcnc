@@ -10,7 +10,7 @@ from qtscreen.notify import Notify
 from qtscreen.message import Message
 from qtscreen.preferences import Access
 
-from qtvcp.qt_glib import GStat
+from qtvcp.qt_glib import GStat, Lcnc_Action
 import linuxcnc
 import sys
 import os
@@ -21,6 +21,7 @@ import os
 
 KEYBIND = Keylookup()
 GSTAT = GStat()
+ACTION = Lcnc_Action()
 AUX_PRGM = Aux_program_loader()
 NOTE = Notify()
 MSG = Message()
@@ -170,6 +171,7 @@ class HandlerClass:
         d = 1
         source = self.w.sender()
         #print source.objectName(), 'pressed'
+        ACTION.ensure_mode(linuxcnc.MODE_MANUAL)
         if '-' in source.text():
             d = -1
         if 'X' in source.text():
@@ -182,6 +184,7 @@ class HandlerClass:
     def jog_released(self):
         source = self.w.sender()
         #print source.objectName(), 'released'
+        ACTION.ensure_mode(linuxcnc.MODE_MANUAL)
         if 'X' in source.text():
             self.continous_jog(0, 0)
         elif 'Y' in source.text():
