@@ -8,6 +8,7 @@ class IStat():
 
         INIPATH = os.environ.get('INI_FILE_NAME', '/dev/null')
         self.inifile = linuxcnc.ini(INIPATH)
+        self.MDI_HISTORY_PATH = '~/.axis_mdi_history'
         self.MACHINE_IS_LATHE = False
         self.MACHINE_IS_METRIC = False
         self.MACHINE_UNIT_CONVERSION = 1
@@ -18,6 +19,7 @@ class IStat():
         self.update()
 
     def update(self):
+        self.MDI_HISTORY_PATH = self.inifile.find('DISPLAY', 'MDI_HISTORY_FILE') or '~/.axis_mdi_history'
         self.MACHINE_IS_LATHE = bool(self.inifile.find("DISPLAY", "LATHE"))
 
         try:
