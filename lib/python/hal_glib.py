@@ -138,6 +138,8 @@ class _GStat(gobject.GObject):
 
         'metric-mode-changed': (gobject.SIGNAL_RUN_FIRST, gobject.TYPE_NONE, (gobject.TYPE_BOOLEAN,)),
         'user-system-changed': (gobject.SIGNAL_RUN_FIRST, gobject.TYPE_NONE, (gobject.TYPE_STRING,)),
+
+        'mdi-line-selected': (gobject.SIGNAL_RUN_FIRST, gobject.TYPE_NONE, (gobject.TYPE_STRING,)),
         }
 
     STATES = { linuxcnc.STATE_ESTOP:       'state-estop'
@@ -605,8 +607,8 @@ class _GStat(gobject.GObject):
 
     def is_auto_mode(self):
         self.stat.poll()
-        print self.old['mode']  , linuxcnc.MODE_AUTO
-        return self.old['state']  == linuxcnc.MODE_AUTO
+        #print 'is auto mode?',self.old['mode']  == linuxcnc.MODE_AUTO
+        return self.old['mode']  == linuxcnc.MODE_AUTO
 
     def set_tool_touchoff(self,tool,axis,value):
         premode = None
