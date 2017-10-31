@@ -27,7 +27,7 @@
 # https://qscintilla.com/
 
 import sys, os
-from PyQt4.QtCore import SIGNAL
+from PyQt4.QtCore import SIGNAL, pyqtProperty
 from PyQt4.QtGui import QFont, QFontMetrics, QColor
 try:
     from PyQt4.Qsci import QsciScintilla, QsciLexerCustom
@@ -40,6 +40,9 @@ from qtvcp.qt_istat import IStat
 GSTAT = GStat()
 INI = IStat()
 
+##############################################################
+# Simple custom lexer for Gcode
+##############################################################
 class GcodeLexer(QsciLexerCustom):
     def __init__(self, parent=None):
         super(GcodeLexer, self).__init__(parent)
@@ -157,6 +160,9 @@ class GcodeLexer(QsciLexerCustom):
             # folding implementation goes here
             index += 1
 
+##########################################################
+# Base editor class
+##########################################################
 class EditorBase(QsciScintilla):
     ARROW_MARKER_NUM = 8
 
@@ -231,18 +237,24 @@ class EditorBase(QsciScintilla):
         else:
             self.markerAdd(nline, self.ARROW_MARKER_NUM)
 
+##########################################################
+# Gcode widget
+##########################################################
 class GcodeEditor(EditorBase, _HalWidgetBase):
     ARROW_MARKER_NUM = 8
 
     def __init__(self, parent=None):
         super(GcodeEditor, self).__init__(parent)
-        self.haistrory_path = INI.MDI_HISTORY_PATH
         self._last_filename = None
+        self.auto_show_mdi = True
+        #self.setEolVisibility(True)
 
     def _hal_init(self):
-        self.cursorPositionChanged.connect(self.cursor_changed)
-        GSTAT.connect('mode-mdi', self.load_mdi)
-        GSTAT.connect('mode-auto', self.reload_last)
+        self.cursorPositionChanged.connect(self.line_changed)
+        if self.auto_show_mdi:
+            GSTAT.connect('mode-mdi', self.load_mdi)
+            GSTAT.connect('reload-mdi-history', self.load_mdi)
+            GSTAT.connect('mode-auto', self.reload_last)
         GSTAT.connect('file-loaded', self.load_program)
         GSTAT.connect('line-changed', self.highlight_line)
         if self.idle_line_reset:
@@ -251,12 +263,20 @@ class GcodeEditor(EditorBase, _HalWidgetBase):
     def load_program(self, w, filename):
         self._last_filename = filename
         self.load_text(filename)
+        self.setCursorPosition(0,0)
 
+    # when switching from MDI to AUTO we need to reload the
+    # last (linuxcnc loaded) program.
     def reload_last(self,w):
         self.load_text(self._last_filename)
+        self.setCursorPosition(0,0)
 
+    # With the auto_show__mdi option, MDI history is shown
     def load_mdi(self,w):
         self.load_text(INI.MDI_HISTORY_PATH)
+        self.zoomIn()
+        print 'total length',self.lines()
+        self.setCursorPosition(self.lines(),0)
 
     def load_text(self, filename):
         try:
@@ -268,10 +288,10 @@ class GcodeEditor(EditorBase, _HalWidgetBase):
 
         self.setText(open(fp).read())
         self.last_line = None
-        self.setCursorPosition(0,0)
         self.ensureCursorVisible()
 
     def highlight_line(self, w, line):
+        print 'hilight'
         self.markerAdd(line, self.ARROW_MARKER_NUM)
         if self.last_line:
             self.markerDelete(self.last_line, self.ARROW_MARKER_NUM)
@@ -283,13 +303,26 @@ class GcodeEditor(EditorBase, _HalWidgetBase):
     def set_line_number(self, w, line):
         pass
 
-    def cursor_changed(self,line,index):
-        #print 'cursor',GSTAT.is_auto_mode()
-        self.line_text = self.text(line)
+    def line_changed(self, line, index):
+        print 'line changed',GSTAT.is_auto_mode()
+        self.line_text = str(self.text(line)).strip()
         self.line = line
         if GSTAT.is_auto_mode() == False:
             GSTAT.emit('mdi-line-selected',self.line_text)
 
+    # designer recognized getter/setters
+    # auto_show_mdi status 
+    def set_auto_show_mdi(self, data):
+        self.auto_show_mdi = data
+    def get_auto_show_mdi(self):
+        return self.auto_show_mdi
+    def reset_auto_show_mdi(self):
+        self.auto_show_mdi = True
+    auto_show_mdi_status = pyqtProperty(bool, get_auto_show_mdi, set_auto_show_mdi, reset_auto_show_mdi)
+
+#############################################
+# For testing
+#############################################
 if __name__ == "__main__":
     from PyQt4.QtGui import QApplication
     app = QApplication(sys.argv)
