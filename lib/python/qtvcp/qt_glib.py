@@ -115,16 +115,24 @@ class Lcnc_Action():
         #self.cmd.traj_mode(linuxcnc.TRAJ_MODE_FREE)
         self.cmd.unhome(joint)
 
+    def CALL_MDI(self, code):
+        m=self.ensure_mode(linuxcnc.MODE_MDI)
+        print m
+        self.cmd.mdi('%s'%code)
+
     ###############################################################################
     # Helper functions
     ###############################################################################
 
 
-    def ensure_mode(self, modes):
+    def ensure_mode(self, *modes):
         truth = self.gstat.check_for_modes(modes)
-        if truth is None:
-            cmd.mode(modes[0])
-            cmd.wait_complete()
+        print '1',truth
+        if truth is False:
+            print 'none'
+            self.cmd.mode(modes[0])
+            self.cmd.wait_complete()
+            print 'now'
             return True
         else:
             return truth
