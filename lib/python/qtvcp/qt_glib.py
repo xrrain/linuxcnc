@@ -103,7 +103,7 @@ class Lcnc_Action():
         else:
             self.cmd.state(linuxcnc.STATE_OFF)
 
-    # TODO send an are you sure message  
+    # TODO send an are you sure message
     def SET_MACHINE_HOMING(self, joint):
         print 'Homing Joint:',joint
         self.ensure_mode(linuxcnc.MODE_MANUAL)
@@ -119,6 +119,10 @@ class Lcnc_Action():
         m=self.ensure_mode(linuxcnc.MODE_MDI)
         print m
         self.cmd.mdi('%s'%code)
+
+    def OPEN_PROGRAM(self, fname):
+        self.ensure_mode(linuxcnc.MODE_AUTO)
+        self.cmd.program_open(str(fname))
 
     ###############################################################################
     # Helper functions
