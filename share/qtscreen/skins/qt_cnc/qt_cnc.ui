@@ -873,45 +873,6 @@ border-image: url(/home/chris/emc-dev/configs/sim/qtscreen/backgound_grey.png) 0
      <string>Machine On</string>
     </property>
    </widget>
-   <widget class="Lcnc_Led" name="lcnc_led">
-    <property name="geometry">
-     <rect>
-      <x>590</x>
-      <y>490</y>
-      <width>21</width>
-      <height>21</height>
-     </rect>
-    </property>
-    <property name="diameter">
-     <number>10</number>
-    </property>
-   </widget>
-   <widget class="Lcnc_Led" name="lcnc_led_4">
-    <property name="geometry">
-     <rect>
-      <x>590</x>
-      <y>520</y>
-      <width>21</width>
-      <height>21</height>
-     </rect>
-    </property>
-    <property name="diameter">
-     <number>10</number>
-    </property>
-   </widget>
-   <widget class="Lcnc_Led" name="lcnc_led_5">
-    <property name="geometry">
-     <rect>
-      <x>590</x>
-      <y>550</y>
-      <width>21</width>
-      <height>21</height>
-     </rect>
-    </property>
-    <property name="diameter">
-     <number>10</number>
-    </property>
-   </widget>
    <widget class="QLabel" name="label_6">
     <property name="geometry">
      <rect>
@@ -1009,37 +970,11 @@ border-image: url(/home/chris/emc-dev/configs/sim/qtscreen/backgound_grey.png) 0
      <string>Homing Requied</string>
     </property>
    </widget>
-   <widget class="Lcnc_Led" name="lcnc_led_6">
-    <property name="geometry">
-     <rect>
-      <x>290</x>
-      <y>490</y>
-      <width>21</width>
-      <height>21</height>
-     </rect>
-    </property>
-    <property name="diameter">
-     <number>10</number>
-    </property>
-   </widget>
    <widget class="Lcnc_Led" name="lcnc_led_7">
     <property name="geometry">
      <rect>
       <x>290</x>
       <y>520</y>
-      <width>21</width>
-      <height>21</height>
-     </rect>
-    </property>
-    <property name="diameter">
-     <number>10</number>
-    </property>
-   </widget>
-   <widget class="Lcnc_Led" name="lcnc_led_8">
-    <property name="geometry">
-     <rect>
-      <x>290</x>
-      <y>550</y>
       <width>21</width>
       <height>21</height>
      </rect>
@@ -1111,32 +1046,6 @@ border-image: url(/home/chris/emc-dev/configs/sim/qtscreen/backgound_grey.png) 0
     </property>
     <property name="text">
      <string>TextLabel</string>
-    </property>
-   </widget>
-   <widget class="Lcnc_Led" name="lcnc_led_11">
-    <property name="geometry">
-     <rect>
-      <x>120</x>
-      <y>570</y>
-      <width>21</width>
-      <height>21</height>
-     </rect>
-    </property>
-    <property name="diameter">
-     <number>10</number>
-    </property>
-   </widget>
-   <widget class="Lcnc_Led" name="lcnc_led_12">
-    <property name="geometry">
-     <rect>
-      <x>120</x>
-      <y>600</y>
-      <width>21</width>
-      <height>21</height>
-     </rect>
-    </property>
-    <property name="diameter">
-     <number>10</number>
     </property>
    </widget>
    <widget class="Line" name="line">
@@ -1476,6 +1385,202 @@ border-image: url(/home/chris/emc-dev/configs/sim/qtscreen/backgound_grey.png) 0
       <green>0</green>
       <blue>255</blue>
      </color>
+    </property>
+   </widget>
+   <widget class="Lcnc_State_Led" name="lcnc_state_led_5">
+    <property name="geometry">
+     <rect>
+      <x>120</x>
+      <y>570</y>
+      <width>31</width>
+      <height>20</height>
+     </rect>
+    </property>
+    <property name="diameter">
+     <number>10</number>
+    </property>
+    <property name="flashing" stdset="0">
+     <bool>false</bool>
+    </property>
+    <property name="is_paused_status" stdset="0">
+     <bool>false</bool>
+    </property>
+    <property name="is_flood_status" stdset="0">
+     <bool>true</bool>
+    </property>
+   </widget>
+   <widget class="Lcnc_State_Led" name="lcnc_state_led_6">
+    <property name="geometry">
+     <rect>
+      <x>120</x>
+      <y>600</y>
+      <width>31</width>
+      <height>20</height>
+     </rect>
+    </property>
+    <property name="diameter">
+     <number>10</number>
+    </property>
+    <property name="flashing" stdset="0">
+     <bool>false</bool>
+    </property>
+    <property name="is_paused_status" stdset="0">
+     <bool>false</bool>
+    </property>
+    <property name="is_mist_status" stdset="0">
+     <bool>true</bool>
+    </property>
+   </widget>
+   <widget class="Lcnc_State_Led" name="lcnc_state_led_7">
+    <property name="geometry">
+     <rect>
+      <x>290</x>
+      <y>550</y>
+      <width>21</width>
+      <height>20</height>
+     </rect>
+    </property>
+    <property name="diameter">
+     <number>10</number>
+    </property>
+    <property name="flashing" stdset="0">
+     <bool>false</bool>
+    </property>
+    <property name="is_paused_status" stdset="0">
+     <bool>false</bool>
+    </property>
+    <property name="is_flood_status" stdset="0">
+     <bool>false</bool>
+    </property>
+    <property name="is_optional_stop_status" stdset="0">
+     <bool>true</bool>
+    </property>
+   </widget>
+   <widget class="Lcnc_State_Led" name="lcnc_state_led_8">
+    <property name="geometry">
+     <rect>
+      <x>290</x>
+      <y>490</y>
+      <width>21</width>
+      <height>21</height>
+     </rect>
+    </property>
+    <property name="diameter">
+     <number>10</number>
+    </property>
+    <property name="flashing" stdset="0">
+     <bool>false</bool>
+    </property>
+    <property name="is_paused_status" stdset="0">
+     <bool>false</bool>
+    </property>
+    <property name="is_flood_status" stdset="0">
+     <bool>false</bool>
+    </property>
+    <property name="is_block_delete_status" stdset="0">
+     <bool>true</bool>
+    </property>
+   </widget>
+   <widget class="Lcnc_State_Led" name="lcnc_state_led_9">
+    <property name="geometry">
+     <rect>
+      <x>590</x>
+      <y>490</y>
+      <width>21</width>
+      <height>21</height>
+     </rect>
+    </property>
+    <property name="diameter">
+     <number>10</number>
+    </property>
+    <property name="color">
+     <color>
+      <red>255</red>
+      <green>255</green>
+      <blue>0</blue>
+     </color>
+    </property>
+    <property name="flashing" stdset="0">
+     <bool>true</bool>
+    </property>
+    <property name="flashRate">
+     <number>600</number>
+    </property>
+    <property name="invert_state_status" stdset="0">
+     <bool>true</bool>
+    </property>
+    <property name="is_joint_homed_status" stdset="0">
+     <bool>true</bool>
+    </property>
+   </widget>
+   <widget class="Lcnc_State_Led" name="lcnc_state_led_10">
+    <property name="geometry">
+     <rect>
+      <x>590</x>
+      <y>520</y>
+      <width>21</width>
+      <height>21</height>
+     </rect>
+    </property>
+    <property name="diameter">
+     <number>10</number>
+    </property>
+    <property name="color">
+     <color>
+      <red>255</red>
+      <green>255</green>
+      <blue>0</blue>
+     </color>
+    </property>
+    <property name="flashing" stdset="0">
+     <bool>true</bool>
+    </property>
+    <property name="flashRate">
+     <number>600</number>
+    </property>
+    <property name="invert_state_status" stdset="0">
+     <bool>true</bool>
+    </property>
+    <property name="is_joint_homed_status" stdset="0">
+     <bool>true</bool>
+    </property>
+    <property name="joint_number_status" stdset="0">
+     <number>1</number>
+    </property>
+   </widget>
+   <widget class="Lcnc_State_Led" name="lcnc_state_led_11">
+    <property name="geometry">
+     <rect>
+      <x>590</x>
+      <y>550</y>
+      <width>21</width>
+      <height>21</height>
+     </rect>
+    </property>
+    <property name="diameter">
+     <number>10</number>
+    </property>
+    <property name="color">
+     <color>
+      <red>255</red>
+      <green>255</green>
+      <blue>0</blue>
+     </color>
+    </property>
+    <property name="flashing" stdset="0">
+     <bool>true</bool>
+    </property>
+    <property name="flashRate">
+     <number>600</number>
+    </property>
+    <property name="invert_state_status" stdset="0">
+     <bool>true</bool>
+    </property>
+    <property name="is_joint_homed_status" stdset="0">
+     <bool>true</bool>
+    </property>
+    <property name="joint_number_status" stdset="0">
+     <number>2</number>
     </property>
    </widget>
   </widget>

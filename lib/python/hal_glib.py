@@ -132,6 +132,8 @@ class _GStat(gobject.GObject):
         'rpm-mode': (gobject.SIGNAL_RUN_FIRST, gobject.TYPE_NONE, (gobject.TYPE_BOOLEAN,)),
         'radius-mode': (gobject.SIGNAL_RUN_FIRST, gobject.TYPE_NONE, (gobject.TYPE_BOOLEAN,)),
         'diameter-mode': (gobject.SIGNAL_RUN_FIRST, gobject.TYPE_NONE, (gobject.TYPE_BOOLEAN,)),
+        'flood-changed': (gobject.SIGNAL_RUN_FIRST, gobject.TYPE_NONE, (gobject.TYPE_BOOLEAN,)),
+        'mist-changed': (gobject.SIGNAL_RUN_FIRST, gobject.TYPE_NONE, (gobject.TYPE_BOOLEAN,)),
 
         'm-code-changed': (gobject.SIGNAL_RUN_FIRST, gobject.TYPE_NONE, (gobject.TYPE_STRING,)),
         'g-code-changed': (gobject.SIGNAL_RUN_FIRST, gobject.TYPE_NONE, (gobject.TYPE_STRING,)),
@@ -242,12 +244,21 @@ class _GStat(gobject.GObject):
         self.old['diameter'] = diameter
 
         # active M codes
-        active_mcodes = ''
+        active_mcodes = []
+        mcodes = ''
         for i in sorted(self.stat.mcodes[1:]):
             if i == -1: continue
-            active_mcodes = active_mcodes + ("M%s "%i)
+            active_mcodes.append("M%d"%i )
+        for i in active_mcodes:
+            mcodes = mcodes + ("%s "%i)
             #active_mcodes.append("M%s "%i)
-        self.old['m-code'] = active_mcodes
+        self.old['m-code'] = mcodes
+        flood = mist = False
+        for num,i in enumerate(active_mcodes):
+            if i == 'M8': flood = True
+            elif i == 'M7': mist = True
+        self.old['flood'] = flood
+        self.old['mist'] = mist
 
     def update(self):
         try:
@@ -300,7 +311,7 @@ class _GStat(gobject.GObject):
         if block_delete_new != block_delete_old:
             self.emit('block-delete-changed',block_delete_new)
         # optional_stop
-        optional_stop_old = old.get('optionaL-stop', None)
+        optional_stop_old = old.get('optional-stop', None)
         optional_stop_new = self.old['optional-stop']
         if optional_stop_new != optional_stop_old:
             self.emit('optional-stop-changed',optional_stop_new)
@@ -406,6 +417,19 @@ class _GStat(gobject.GObject):
         feed_hold_new = self.old['feed-hold']
         if feed_hold_new != feed_hold_old:
             self.emit('feed-hold-enabled-changed',feed_hold_new)
+        #############################
+        # Gcodes
+        #############################
+        # G codes
+        g_code_old = old.get('g-code', None)
+        g_code_new = self.old['g-code']
+        if g_code_new != g_code_old:
+            self.emit('g-code-changed',g_code_new)
+        # metric mode g21
+        metric_old = old.get('metric', None)
+        metric_new = self.old['metric']
+        if metric_new != metric_old:
+            self.emit('metric-mode-changed',metric_new)
         # G5x (active user system)
         g5x_index_old = old.get('g5x-index', None)
         g5x_index_new = self.old['g5x-index']
@@ -436,7 +460,7 @@ class _GStat(gobject.GObject):
         rpm_new = self.old['rpm']
         if rpm_new != rpm_old:
             self.emit('rpm-mode',rpm_new)
-        # radius mode g8
+        # radius mode G8
         radius_old = old.get('radius', None)
         radius_new = self.old['radius']
         if radius_new != radius_old:
@@ -446,21 +470,25 @@ class _GStat(gobject.GObject):
         diam_new = self.old['diameter']
         if diam_new != diam_old:
             self.emit('diameter-mode',diam_new)
+        ####################################
+        # Mcodes
+        ####################################
         # M codes
         m_code_old = old.get('m-code', None)
         m_code_new = self.old['m-code']
         if m_code_new != m_code_old:
             self.emit('m-code-changed',m_code_new)
-        # G codes
-        g_code_old = old.get('g-code', None)
-        g_code_new = self.old['g-code']
-        if g_code_new != g_code_old:
-            self.emit('g-code-changed',g_code_new)
-        # metric mode g21
-        metric_old = old.get('metric', None)
-        metric_new = self.old['metric']
-        if metric_new != metric_old:
-            self.emit('metric-mode-changed',metric_new)
+        # mist mode M7
+        mist_old = old.get('mist', None)
+        mist_new = self.old['mist']
+        if mist_new != mist_old:
+            self.emit('mist-changed',mist_new)
+        # flood M8
+        flood_old = old.get('flood', None)
+        flood_new = self.old['flood']
+        if flood_new != flood_old:
+            self.emit('flood-changed',flood_new)
+
         # AND DONE... Return true to continue timeout
         self.emit('periodic')
         return True
@@ -528,9 +556,15 @@ class _GStat(gobject.GObject):
         # diameter mode g7
         diam_new = self.old['diameter']
         self.emit('diameter-mode',diam_new)
+
         # M codes
         m_code_new = self.old['m-code']
         self.emit('m-code-changed',m_code_new)
+        flood_new = self.old['flood']
+        self.emit('flood-changed',flood_new)
+        mist_new = self.old['mist']
+        self.emit('mist-changed',mist_new)
+
         # G codes
         g_code_new = self.old['g-code']
         self.emit('g-code-changed',g_code_new)
