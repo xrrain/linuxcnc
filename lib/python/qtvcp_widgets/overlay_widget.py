@@ -6,18 +6,30 @@ from PyQt4.QtCore import *
 
 class OverlayWidget(QWidget):
     def __init__(self, parent=None):
-        super(OverlayWidget, self).__init__()
+        self.last = None
+        self.top_level = parent
+        super(OverlayWidget, self).__init__(parent)
         self.parent = parent
         self.setAttribute(Qt.WA_NoSystemBackground)
         self.setAttribute(Qt.WA_TransparentForMouseEvents)
-        self.setWindowFlags( self.windowFlags() |Qt.Tool | Qt.FramelessWindowHint | Qt.Dialog | Qt.WindowStaysOnTopHint |Qt.WindowSystemMenuHint)
+        self.setWindowFlags( self.windowFlags() |Qt.Tool |
+                        Qt.FramelessWindowHint | Qt.Dialog |
+                             Qt.WindowStaysOnTopHint |Qt.WindowSystemMenuHint)
 
+    # Seems the only way to consistantly get the top level widget
+    def qtvcp_special_init(self,window):
+        self.top_level = window
         self.newParent()
 
+    # Find the top level widget and add an event filter
     def newParent(self):
-        #print 'NEW PARENT',self.parent,self.window().window().parent
         if not self.parent: return
+        self.parent = self.top_level
+        if not self.last == None:
+            #print 'last removed:',self.last
+            self.last.removeEventFilter(self)
         self.parent.installEventFilter(self)
+        self.last = self.parent
         self.raise_()
 
     def eventFilter(self, obj, event):
@@ -31,7 +43,7 @@ class OverlayWidget(QWidget):
                 self.move(QMoveEvent.pos(event))
                 self.raise_()
             elif(event.type() == QEvent.ChildAdded):
-                print 'CHILD',QChildEvent.child(event).objectName() 
+                print 'CHILD',QChildEvent.child(event)
                 if not QChildEvent.child(event) is QDialog:
                     self.raise_()
             if event.type() == QEvent.Close:
@@ -66,9 +78,10 @@ class LoadingOverlay(OverlayWidget):
         self.font = QFont("arial,helvetica", 40)
         self.text = "Loading..."
         self.box()
+        self._state = False
 
     def box(self):
-            
+
         okButton = QPushButton("OK")
         okButton.pressed.connect(self.changecheck)
         cancelButton = QPushButton("Cancel")
@@ -84,10 +97,10 @@ class LoadingOverlay(OverlayWidget):
         vbox.addStretch(1)
         vbox.addWidget(self.mb)
         vbox.addLayout(hbox)
-        
-        self.setLayout(vbox)    
-        
-        self.setGeometry(300, 300, 300, 150)   
+
+        self.setLayout(vbox)
+
+        self.setGeometry(300, 300, 300, 150)
         #self.show()
 
     def changecheck(self):
@@ -97,24 +110,49 @@ class LoadingOverlay(OverlayWidget):
     def paintEvent(self, event):
         qp = QPainter()
         qp.begin(self)
+        self.colorBackground(qp)
         self.drawText(event, qp)
         qp.end()
         self.mb.setText('<html><head/><body><p><span style=" font-size:30pt; font-weight:600;">%s</span></p></body></html>'%self.text)
-        
+
+    def colorBackground(self, qp):
+        qp.fillRect(self.rect(),self.bg_color)
+
     def drawText(self, event, qp):
+        return
         size = self.size()
         w = size.width()
         h = size.height()
-        qp.fillRect(self.rect(),self.bg_color)
         #qp.fillRect(100,100,w/2,h/2,self.dialog_color)
-
-
         qp.setPen(self.text_color)
         qp.setFont(self.font)
         qp.drawText(self.rect(), Qt.AlignCenter, self.text)
 
+    @pyqtSlot(bool)
+    def setState(self, value):
+        self._state = value
+        if value:
+            self.show()
+        else:
+            self.hide()
 
+    def getState(self):
+        return self._state
 
+    def resetState(self):
+        self._state = False
+
+    def getOverayColor(self):
+        return self.bg_color
+
+    @pyqtSlot(QColor)
+    def setOverayColor(self, value):
+        self.bg_color = value
+    def resetOverayColor(self, value):
+        self.bg_color = value
+
+    overlay_color = pyqtProperty(QColor, getOverayColor, setOverayColor,resetOverayColor)
+    state = pyqtProperty(bool, getState, setState, resetState)
 
 
 def main():
@@ -123,13 +161,15 @@ def main():
 
     w = QWidget()
     #w.setWindowFlags( Qt.FramelessWindowHint | Qt.Dialog | Qt.WindowStaysOnTopHint )
+    w.setGeometry(300, 300, 250, 150)
+    w.setWindowTitle('Test')
 
     l = QLabel('Hello, world!',w)
     l.show()
+    print l
 
-    w.setGeometry(300, 300, 250, 150)
-    w.setWindowTitle('Test')      
-    o = LoadingOverlay(w)
+    o = LoadingOverlay(l)
+    o.setObjectName("overlay")
     w.show()
     #o.show()
 
@@ -142,6 +182,6 @@ def main():
 
 
 if __name__ == '__main__':
-    main()    
+    main()
 
 

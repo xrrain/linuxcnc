@@ -31,4 +31,4 @@ from qtvcp_widget_plugins.gstat_label_plugin import GstatLabelPlugin
 from qtvcp_widget_plugins.gstat_bool_label_plugin import GstatBoolLabelPlugin
 from qtvcp_widget_plugins.actionbutton_plugin import ActionButtonPlugin
 from qtvcp_widget_plugins.dialog_plugin import *
-
+from qtvcp_widget_plugins.overlayplugin import LoadingOverlayPlugin

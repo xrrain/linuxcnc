@@ -9,6 +9,7 @@ from qtscreen.aux_program_loader import Aux_program_loader
 from qtscreen.notify import Notify
 from qtscreen.message import Message
 from qtscreen.preferences import Access
+#from qtvcp_widgets.overlay_widget import LoadingOverlay
 
 from qtvcp.qt_glib import GStat, Lcnc_Action
 import linuxcnc
@@ -67,7 +68,7 @@ class HandlerClass:
     # the widgets are instantiated.
     # the HAL pins are built but HAL is not set ready
     def initialized__(self):
-        # Give notify library a reference to the statusbar 
+        # Give notify library a reference to the statusbar
         NOTE.statusbar = self.w.statusBar
         if self.desktop_notify:
             NOTE.notify('Welcome','This is a test screen for Qtscreen',None,4)
@@ -84,6 +85,8 @@ class HandlerClass:
         self.w.frame.setStyleSheet("#frame { border-image: url(%s) 0 0 0 0 stretch stretch; }"%bgpath)
         bgpath = self.IMAGE_PATH+'/frame_bg_grey.png'
         self.w.frame_2.setStyleSheet("QFrame { border-image: url(%s) 0 0 0 0 stretch stretch; }"%bgpath)
+        # add overlay to topWidget
+        #self.w.overlay = LoadingOverlay(self.w)
 
     def processed_key_event__(self,receiver,event,is_pressed,key,code,shift,cntrl):
         # when typing in MDI, we don't want keybinding to call functions
@@ -194,7 +197,7 @@ class HandlerClass:
 
     def loadfile_clicked(self):
         print 'load'
-        fname = QtGui.QFileDialog.getOpenFileName(self.w, 'Open file', 
+        fname = QtGui.QFileDialog.getOpenFileName(self.w, 'Open file',
                 os.path.join(os.path.expanduser('~'), 'linuxcnc/nc_files/examples'))
         print fname
         if fname:
@@ -204,7 +207,7 @@ class HandlerClass:
             self.cmnd.mode(linuxcnc.MODE_AUTO)
             self.cmnd.program_open(str(fname))
             GSTAT.emit('file-loaded', fname)
-        self.w.gcodeeditor.setFocus() 
+        self.w.gcodeeditor.setFocus()
 
     def runfile_clicked(self):
         print 'run file'
@@ -292,14 +295,21 @@ class HandlerClass:
     # **** closing event **** #
     ###########################
     def closeEvent(self, event):
+        self.w.loadingoverlay.text='     SHUTDOWN?'
+        self.w.loadingoverlay.bg_color = QtGui.QColor(0, 0, 100,150)
+        self.w.loadingoverlay.show()
+
         if self.shutdown_check:
-            answer = MSG.showdialog('Do you want to shutdown now?',
-                details='You can set a preference to not see this message', 
+            answer = self.w.lcnc_dialog.showdialog('Do you want to shutdown now?',
+                None, details='You can set a preference to not see this message',
                 icon=MSG.CRITICAL, display_type=MSG.YN_TYPE)
+            #self.w.lcnc_dialog.hide()
             if not answer:
                 event.ignore()
+                self.w.loadingoverlay.hide()
                 return
         event.accept()
+        #self.w.overlay.hide()
 
     ##############################
     # required class boiler code #

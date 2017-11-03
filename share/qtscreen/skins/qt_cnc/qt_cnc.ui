@@ -173,9 +173,9 @@ border-image: url(/home/chris/emc-dev/configs/sim/qtscreen/backgound_blue.png) 0
     <widget class="Lcnc_DROLabel" name="lcnc_drolabel">
      <property name="geometry">
       <rect>
-       <x>110</x>
+       <x>80</x>
        <y>10</y>
-       <width>261</width>
+       <width>291</width>
        <height>61</height>
       </rect>
      </property>
@@ -196,9 +196,9 @@ font: 75 48pt &quot;Noto Sans&quot;;</string>
     <widget class="Lcnc_DROLabel" name="lcnc_drolabel_2">
      <property name="geometry">
       <rect>
-       <x>110</x>
+       <x>80</x>
        <y>70</y>
-       <width>261</width>
+       <width>291</width>
        <height>61</height>
       </rect>
      </property>
@@ -216,9 +216,9 @@ color: rgb(255, 255, 255);</string>
     <widget class="Lcnc_DROLabel" name="lcnc_drolabel_3">
      <property name="geometry">
       <rect>
-       <x>110</x>
+       <x>80</x>
        <y>130</y>
-       <width>261</width>
+       <width>291</width>
        <height>61</height>
       </rect>
      </property>
@@ -306,11 +306,17 @@ font: 75 48pt &quot;Noto Sans&quot;;</string>
        <height>31</height>
       </rect>
      </property>
+     <property name="text">
+      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;  &lt;span style=&quot; font-weight:600; font-size:18pt; color:#ffff00;&quot;&gt;%3.1f&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+     </property>
      <property name="textFormat">
       <enum>Qt::RichText</enum>
      </property>
+     <property name="alignment">
+      <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+     </property>
      <property name="textTemplate" stdset="0">
-      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Velocity:&lt;/span&gt;  &lt;span style=&quot; font-weight:600; font-size:18pt; color:#ffff00;&quot;&gt;%3.1f&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;  &lt;span style=&quot; font-weight:600; font-size:18pt; color:#ffff00;&quot;&gt;%3.1f&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
      </property>
      <property name="feed_override_status" stdset="0">
       <bool>false</bool>
@@ -320,6 +326,23 @@ font: 75 48pt &quot;Noto Sans&quot;;</string>
      </property>
      <property name="current_feedrate_status" stdset="0">
       <bool>true</bool>
+     </property>
+    </widget>
+    <widget class="QLabel" name="label_21">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>191</y>
+       <width>101</width>
+       <height>31</height>
+      </rect>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">color: rgb(255, 255, 255);
+font: 75 18pt &quot;Noto Sans&quot;;</string>
+     </property>
+     <property name="text">
+      <string>Velocity</string>
      </property>
     </widget>
    </widget>
@@ -1403,6 +1426,32 @@ border-image: url(/home/chris/emc-dev/configs/sim/qtscreen/backgound_grey.png) 0
      <bool>false</bool>
     </property>
    </widget>
+   <widget class="LoadingOverlay" name="loadingoverlay">
+    <property name="geometry">
+     <rect>
+      <x>0</x>
+      <y>0</y>
+      <width>1027</width>
+      <height>847</height>
+     </rect>
+    </property>
+    <property name="state">
+     <bool>false</bool>
+    </property>
+   </widget>
+   <widget class="Lcnc_Dialog" name="lcnc_dialog">
+    <property name="geometry">
+     <rect>
+      <x>340</x>
+      <y>770</y>
+      <width>336</width>
+      <height>104</height>
+     </rect>
+    </property>
+    <property name="state">
+     <bool>false</bool>
+    </property>
+   </widget>
   </widget>
   <widget class="QStatusBar" name="statusBar">
    <property name="sizeGripEnabled">
@@ -1458,6 +1507,12 @@ border-image: url(/home/chris/emc-dev/configs/sim/qtscreen/backgound_grey.png) 0
    <class>Graphics</class>
    <extends>QWidget</extends>
    <header>qtvcp_widgets.graphics</header>
+  </customwidget>
+  <customwidget>
+   <class>LoadingOverlay</class>
+   <extends>QWidget</extends>
+   <header>qtvcp_widgets.overlay_widget</header>
+   <container>1</container>
   </customwidget>
   <customwidget>
    <class>Lcnc_ToolDialog</class>

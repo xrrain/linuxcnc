@@ -20,6 +20,7 @@
 
 import gobject
 from qtvcp_widgets.simple_widgets import _HalWidgetBase
+from qtvcp_widgets.overlay_widget import LoadingOverlay
 from qtvcp.qt_glib import QComponent
 from PyQt4.QtCore import QObject
 class QTPanel():
@@ -38,10 +39,12 @@ class QTPanel():
                     print 'HAL-ified instance found:    %s'%(idname)
                 widget.hal_init(self.hal, str(idname), widget)
                 self.widgets[idname] = widget
-
+            if isinstance(widget, LoadingOverlay):
+                print 'FOUND OVERLAY'
+                widget.qtvcp_special_init(window)
         # at the moment GComponent had a gobject timer to update HAL input pins.
         # output pins use qt signals to initiate updates
-        #self.timer = gobject.timeout_add(100, self.update)                  
+        #self.timer = gobject.timeout_add(100, self.update)
 
     def update(self):
         for obj in self.widgets.values():
@@ -52,7 +55,7 @@ class QTPanel():
         return self.widgets[item]
     def __setitem__(self, item, value):
         self.widgets[item] = value
-    
+
 if __name__ == "__main__":
     print "qtvcp_make_pins cannot be run on its own"
     print "It must be called by qtscreen or a python program"
