@@ -77,13 +77,13 @@ class ToolDialogPlugin(QPyDesignerCustomWidgetPlugin):
         return "Lcnc_ToolDialog"
 
     def group(self):
-        return "Linuxcnc - Controller"
+        return "Linuxcnc - HAL"
 
     def icon(self):
         return QIcon(QPixmap(ICON.get_path('lcnc_tooldialog')))
 
     def toolTip(self):
-        return ""
+        return "Manual Tool Change Prompt Widgets"
 
     def whatsThis(self):
         return ""

@@ -1390,6 +1390,19 @@ border-image: url(/home/chris/emc-dev/configs/sim/qtscreen/backgound_grey.png) 0
      <bool>true</bool>
     </property>
    </widget>
+   <widget class="Lcnc_ToolDialog" name="lcnc_tooldialog">
+    <property name="geometry">
+     <rect>
+      <x>480</x>
+      <y>760</y>
+      <width>316</width>
+      <height>121</height>
+     </rect>
+    </property>
+    <property name="state">
+     <bool>false</bool>
+    </property>
+   </widget>
   </widget>
   <widget class="QStatusBar" name="statusBar">
    <property name="sizeGripEnabled">
@@ -1426,6 +1439,11 @@ border-image: url(/home/chris/emc-dev/configs/sim/qtscreen/backgound_grey.png) 0
    <header>qtvcp_widgets.ledwidget</header>
   </customwidget>
   <customwidget>
+   <class>Lcnc_Dialog</class>
+   <extends>QDialog</extends>
+   <header>qtvcp_widgets.dialog_widget</header>
+  </customwidget>
+  <customwidget>
    <class>Lcnc_PushButton</class>
    <extends>QPushButton</extends>
    <header>qtvcp_widgets.simple_widgets</header>
@@ -1440,6 +1458,11 @@ border-image: url(/home/chris/emc-dev/configs/sim/qtscreen/backgound_grey.png) 0
    <class>Graphics</class>
    <extends>QWidget</extends>
    <header>qtvcp_widgets.graphics</header>
+  </customwidget>
+  <customwidget>
+   <class>Lcnc_ToolDialog</class>
+   <extends>Lcnc_Dialog</extends>
+   <header>qtvcp_widgets.dialog_widget</header>
   </customwidget>
   <customwidget>
    <class>State_Enable_GridLayout</class>
