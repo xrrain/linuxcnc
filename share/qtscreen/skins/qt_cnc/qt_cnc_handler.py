@@ -196,7 +196,7 @@ class HandlerClass:
             self.continous_jog(2, 0)
 
     def loadfile_clicked(self):
-        fname = self.w.lcnc_filedialog.LOAD()
+        fname = self.w.lcnc_filedialog.load_dialog()
         self.w.gcodeeditor.setFocus()
 
     def runfile_clicked(self):

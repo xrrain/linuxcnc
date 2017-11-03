@@ -76,9 +76,9 @@ class Lcnc_Dialog(QMessageBox):
         return
         print "Button pressed is:",i.text()
 
-    ###########################################
+    #**********************
     # Designer properties
-    ###########################################
+    #**********************
     @pyqtSlot(bool)
     def setState(self, value):
         self._state = value
@@ -101,6 +101,8 @@ class Lcnc_ToolDialog(Lcnc_Dialog, _HalWidgetBase):
         self.setText('<b>Manual Tool Change Request</b>')
         self.setInformativeText('Please Insert Tool 0')
         self.setStandardButtons(QMessageBox.Ok)
+        self._color = QColor(0, 0, 0, 150)
+
     # We want the tool change HAL pins the same as whats used in AXIS so it is
     # easier for users to connect to.
     # So we need to trick the HAL component into doing this for these pins,
@@ -161,21 +163,38 @@ class Lcnc_ToolDialog(Lcnc_Dialog, _HalWidgetBase):
             MORE = 'Please Insert Tool %d'% self.tool_number.get()
             MESS = 'Manual Tool Change Request'
             DETAILS = ' Tool Info:'
-            GSTAT.emit('focus-overlay-changed',True,MESS,None)
+            GSTAT.emit('focus-overlay-changed',True,MESS, self._color)
             result = self.showtooldialog(MESS,MORE,DETAILS)
             GSTAT.emit('focus-overlay-changed',False,None,None)
             return result
 
+    #**********************
+    # Designer properties
+    #**********************
+
+    def getColor(self):
+        return self._color
+    def setColor(self, value):
+        self._color = value
+    def resetState(self):
+        self._color = QColor(0, 0, 0,150)
+
+    color = pyqtProperty(QColor, getColor, setColor)
+
 ################################################################################
 # File Open Dialog
 ################################################################################
-class Lcnc_FileDialog(QFileDialog):
+class Lcnc_FileDialog(QFileDialog, _HalWidgetBase):
     def __init__(self, parent=None):
         super(Lcnc_FileDialog, self).__init__(parent)
         self._state = False
+        self._color = QColor(0, 0, 0, 150)
 
-    def LOAD(self):
-        GSTAT.emit('focus-overlay-changed',True,'Open Gcode',QColor(0, 0, 100,150))
+    def _hal_init(self):
+            GSTAT.connect('load-file-request', lambda w: self.load_dialog())
+
+    def load_dialog(self):
+        GSTAT.emit('focus-overlay-changed',True,'Open Gcode',self._color)
         fname = QFileDialog.getOpenFileName(None, 'Open file',
                 os.path.join(os.path.expanduser('~'), 'linuxcnc/nc_files/examples'))
         GSTAT.emit('focus-overlay-changed',False,None,None)
@@ -186,9 +205,10 @@ class Lcnc_FileDialog(QFileDialog):
             GSTAT.emit('file-loaded', fname)
         return fname
 
-    ###########################################
+    #**********************
     # Designer properties
-    ###########################################
+    #**********************
+
     @pyqtSlot(bool)
     def setState(self, value):
         self._state = value
@@ -202,6 +222,15 @@ class Lcnc_FileDialog(QFileDialog):
         self._state = False
     state = pyqtProperty(bool, getState, setState, resetState)
 
+    def getColor(self):
+        return self._color
+    def setColor(self, value):
+        self._color = value
+    def resetState(self):
+        self._color = QColor(0, 0, 0,150)
+
+
+    color = pyqtProperty(QColor, getColor, setColor)
 ################################
 # for testing without editor:
 ################################

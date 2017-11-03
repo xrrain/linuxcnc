@@ -141,6 +141,7 @@ class _GStat(gobject.GObject):
 
         'mdi-line-selected': (gobject.SIGNAL_RUN_FIRST, gobject.TYPE_NONE, (gobject.TYPE_STRING,)),
         'reload-mdi-history': (gobject.SIGNAL_RUN_FIRST, gobject.TYPE_NONE, ()),
+        'load-file-request': (gobject.SIGNAL_RUN_FIRST, gobject.TYPE_NONE, ()),
         'focus-overlay-changed': (gobject.SIGNAL_RUN_FIRST, gobject.TYPE_NONE, (gobject.TYPE_BOOLEAN, gobject.TYPE_STRING,
                             gobject.TYPE_PYOBJECT)),
         }

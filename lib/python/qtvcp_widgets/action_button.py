@@ -20,7 +20,7 @@
 
 from PyQt4 import QtCore, QtGui
 from qtvcp_widgets.simple_widgets import _HalWidgetBase
-from qtvcp.qt_glib import GStat, Lcnc_Action 
+from qtvcp.qt_glib import GStat, Lcnc_Action
 
 # Instiniate the libraries with global reference
 # GSTAT gives us status messages from linuxcnc
@@ -37,13 +37,15 @@ class Lcnc_ActionButton(QtGui.QPushButton, _HalWidgetBase):
         self.machine_on = False
         self.home = False
         self.home_joint = -1 # all
+        self.load_dialog = False
+
 
     # This gets called by qtvcp_makepins
     # It infers HAL involvement but there is none
     # GSTAT is used to synch the buttons in case
     # other entities change linuxcnc's state
     # also some buttons are disabled/enabled based on
-    # linuxcnc state / possible actions 
+    # linuxcnc state / possible actions
     #
     # _safecheck blocks the outgoing signal so
     # the buttons can be synced with linuxcnc
@@ -55,7 +57,7 @@ class Lcnc_ActionButton(QtGui.QPushButton, _HalWidgetBase):
             self._block_signal = False
 
         if self.estop:
-            # Estop starts with button down - in estop which 
+            # Estop starts with button down - in estop which
             # backwards logic for the button...
             if self.isCheckable():_safecheck(True)
             GSTAT.connect('state-estop', lambda w: _safecheck(True))
@@ -76,6 +78,13 @@ class Lcnc_ActionButton(QtGui.QPushButton, _HalWidgetBase):
             GSTAT.connect('interp-run', lambda w: self.setEnabled(False))
             GSTAT.connect('all-homed', lambda w: _safecheck(True))
             GSTAT.connect('not-all-homed', lambda w, axis: _safecheck(False, axis))
+
+        elif self.load_dialog:
+            GSTAT.connect('state-off', lambda w: self.setEnabled(False))
+            GSTAT.connect('state-estop', lambda w: self.setEnabled(False))
+            GSTAT.connect('interp-idle', lambda w: self.setEnabled(GSTAT.machine_is_on()))
+            GSTAT.connect('interp-run', lambda w: self.setEnabled(False))
+            GSTAT.connect('all-homed', lambda w: _safecheck(True))
 
         # connect a signal and callback function to the button
         self.clicked[bool].connect(self.action)
@@ -109,6 +118,8 @@ class Lcnc_ActionButton(QtGui.QPushButton, _HalWidgetBase):
                 else:
                     ACTION.SET_MACHINE_HOMING(self.home_joint)
 
+        elif self.load_dialog:
+            GSTAT.emit('load-file-request')
         # defult error case
         else:
             print 'QTVCP: action button: * No action recognised *'
@@ -119,7 +130,7 @@ class Lcnc_ActionButton(QtGui.QPushButton, _HalWidgetBase):
     # designer will show the pyqtProperty properties in the editor
     # it will use the get set and reset calls to do those actions
 
-    # estop_action 
+    # estop_action
     def set_estop(self, data):
         self.estop = data
     def get_estop(self):
@@ -154,6 +165,15 @@ class Lcnc_ActionButton(QtGui.QPushButton, _HalWidgetBase):
     def reset_home_joint(self):
         self.home_joint = -1
     home_joint_number = QtCore.pyqtProperty(int, get_home_joint, set_home_joint, reset_home_joint)
+
+   # load_dialogaction
+    def set_load_dialog(self, data):
+        self.load_dialog = data
+    def get_load_dialog(self):
+        return self.load_dialog
+    def reset_load_dialog(self):
+        self.load_dialog = False
+    load_dialog_action = QtCore.pyqtProperty(bool, get_load_dialog, set_load_dialog, reset_load_dialog)
 
 if __name__ == "__main__":
 
