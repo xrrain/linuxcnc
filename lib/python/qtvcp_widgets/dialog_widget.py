@@ -14,9 +14,17 @@
 # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 # GNU General Public License for more details.
 
-from PyQt4.QtGui import QMessageBox, QPushButton, QMessageBox
+import os
+from PyQt4.QtGui import QMessageBox, QFileDialog
 from PyQt4.QtCore import Qt, pyqtSlot, pyqtProperty
 from qtvcp_widgets.simple_widgets import _HalWidgetBase, hal
+from qtvcp.qt_glib import GStat, Lcnc_Action
+
+# Instiniate the libraries with global reference
+# GSTAT gives us status messages from linuxcnc
+# ACTION gives commands to linuxcnc
+GSTAT = GStat()
+ACTION = Lcnc_Action()
 
 class Lcnc_Dialog(QMessageBox):
     def __init__(self, parent = None):
@@ -154,6 +162,40 @@ class Lcnc_ToolDialog(Lcnc_Dialog, _HalWidgetBase):
             MESS = 'Manual Tool Change Request'
             DETAILS = ' Tool Info:'
             return self.showtooldialog(MESS,MORE,DETAILS)
+
+################################################################################
+# File Open Dialog
+################################################################################
+class Lcnc_FileDialog(QFileDialog):
+    def __init__(self, parent=None):
+        super(Lcnc_FileDialog, self).__init__(parent)
+        self._state = False
+
+    def LOAD(self):
+        fname = QFileDialog.getOpenFileName(None, 'Open file',
+                os.path.join(os.path.expanduser('~'), 'linuxcnc/nc_files/examples'))
+        if fname:
+            #NOTE.notify('Error',str(fname),QtGui.QMessageBox.Information,10)
+            f = open(fname, 'r')
+            ACTION.OPEN_PROGRAM(fname)
+            GSTAT.emit('file-loaded', fname)
+        return fname
+
+    ###########################################
+    # Designer properties
+    ###########################################
+    @pyqtSlot(bool)
+    def setState(self, value):
+        self._state = value
+        if value:
+            self.show()
+        else:
+            self.hide()
+    def getState(self):
+        return self._state
+    def resetState(self):
+        self._state = False
+    state = pyqtProperty(bool, getState, setState, resetState)
 
 ################################
 # for testing without editor:

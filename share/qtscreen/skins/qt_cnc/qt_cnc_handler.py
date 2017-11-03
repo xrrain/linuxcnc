@@ -197,16 +197,13 @@ class HandlerClass:
 
     def loadfile_clicked(self):
         print 'load'
-        fname = QtGui.QFileDialog.getOpenFileName(self.w, 'Open file',
-                os.path.join(os.path.expanduser('~'), 'linuxcnc/nc_files/examples'))
-        print fname
+        self.w.loadingoverlay.text='     File Open'
+        self.w.loadingoverlay.bg_color = QtGui.QColor(0, 0, 0,150)
+        self.w.loadingoverlay.show()
+        fname = self.w.lcnc_filedialog.LOAD()
+        self.w.loadingoverlay.hide()
         if fname:
-            NOTE.notify('Error',str(fname),QtGui.QMessageBox.Information,10)
-            f = open(fname, 'r')
-
-            self.cmnd.mode(linuxcnc.MODE_AUTO)
-            self.cmnd.program_open(str(fname))
-            GSTAT.emit('file-loaded', fname)
+            print 'loaded'.fname
         self.w.gcodeeditor.setFocus()
 
     def runfile_clicked(self):

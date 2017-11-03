@@ -1452,6 +1452,19 @@ border-image: url(/home/chris/emc-dev/configs/sim/qtscreen/backgound_grey.png) 0
      <bool>false</bool>
     </property>
    </widget>
+   <widget class="Lcnc_FileDialog" name="lcnc_filedialog">
+    <property name="geometry">
+     <rect>
+      <x>390</x>
+      <y>240</y>
+      <width>635</width>
+      <height>448</height>
+     </rect>
+    </property>
+    <property name="state">
+     <bool>false</bool>
+    </property>
+   </widget>
   </widget>
   <widget class="QStatusBar" name="statusBar">
    <property name="sizeGripEnabled">
@@ -1489,6 +1502,11 @@ border-image: url(/home/chris/emc-dev/configs/sim/qtscreen/backgound_grey.png) 0
   </customwidget>
   <customwidget>
    <class>Lcnc_Dialog</class>
+   <extends>QDialog</extends>
+   <header>qtvcp_widgets.dialog_widget</header>
+  </customwidget>
+  <customwidget>
+   <class>Lcnc_FileDialog</class>
    <extends>QDialog</extends>
    <header>qtvcp_widgets.dialog_widget</header>
   </customwidget>
