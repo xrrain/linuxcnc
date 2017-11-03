@@ -141,6 +141,8 @@ class _GStat(gobject.GObject):
 
         'mdi-line-selected': (gobject.SIGNAL_RUN_FIRST, gobject.TYPE_NONE, (gobject.TYPE_STRING,)),
         'reload-mdi-history': (gobject.SIGNAL_RUN_FIRST, gobject.TYPE_NONE, ()),
+        'focus-overlay-changed': (gobject.SIGNAL_RUN_FIRST, gobject.TYPE_NONE, (gobject.TYPE_BOOLEAN, gobject.TYPE_STRING,
+                            gobject.TYPE_PYOBJECT)),
         }
 
     STATES = { linuxcnc.STATE_ESTOP:       'state-estop'
@@ -181,7 +183,7 @@ class _GStat(gobject.GObject):
         self.old['interp']= self.stat.interp_state
         # Only update file if call level is 0, which
         # means we are not executing a subroutine/remap
-        # This avoids emiting signals for bogus file names below 
+        # This avoids emiting signals for bogus file names below
         if self.stat.call_level == 0:
             self.old['file']  = self.stat.file
         self.old['paused']= self.stat.paused
@@ -307,12 +309,12 @@ class _GStat(gobject.GObject):
         if file_new != file_old:
             # if interpreter is reading or waiting, the new file
             # is a remap procedure, with the following test we
-            # do avoid that a signal is emited in that case, causing 
+            # do avoid that a signal is emited in that case, causing
             # a reload of the preview and sourceview widgets
             if self.stat.interp_state == linuxcnc.INTERP_IDLE:
                 self.emit('file-loaded', file_new)
 
-        #ToDo : Find a way to avoid signal when the line changed due to 
+        #ToDo : Find a way to avoid signal when the line changed due to
         #       a remap procedure, because the signal do highlight a wrong
         #       line in the code
         # current line
@@ -565,15 +567,15 @@ class _GStat(gobject.GObject):
             x = xr
             y = yr
 
-        x -= self.stat.g92_offset[0] 
-        y -= self.stat.g92_offset[1] 
-        z -= self.stat.g92_offset[2] 
-        a -= self.stat.g92_offset[3] 
-        b -= self.stat.g92_offset[4] 
-        c -= self.stat.g92_offset[5] 
-        u -= self.stat.g92_offset[6] 
-        v -= self.stat.g92_offset[7] 
-        w -= self.stat.g92_offset[8] 
+        x -= self.stat.g92_offset[0]
+        y -= self.stat.g92_offset[1]
+        z -= self.stat.g92_offset[2]
+        a -= self.stat.g92_offset[3]
+        b -= self.stat.g92_offset[4]
+        c -= self.stat.g92_offset[5]
+        u -= self.stat.g92_offset[6]
+        v -= self.stat.g92_offset[7]
+        w -= self.stat.g92_offset[8]
 
         relp = [x, y, z, a, b, c, u, v, w]
         return p,relp,dtg

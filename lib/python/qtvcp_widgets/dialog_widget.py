@@ -15,7 +15,7 @@
 # GNU General Public License for more details.
 
 import os
-from PyQt4.QtGui import QMessageBox, QFileDialog
+from PyQt4.QtGui import QMessageBox, QFileDialog, QColor
 from PyQt4.QtCore import Qt, pyqtSlot, pyqtProperty
 from qtvcp_widgets.simple_widgets import _HalWidgetBase, hal
 from qtvcp.qt_glib import GStat, Lcnc_Action
@@ -161,7 +161,10 @@ class Lcnc_ToolDialog(Lcnc_Dialog, _HalWidgetBase):
             MORE = 'Please Insert Tool %d'% self.tool_number.get()
             MESS = 'Manual Tool Change Request'
             DETAILS = ' Tool Info:'
-            return self.showtooldialog(MESS,MORE,DETAILS)
+            GSTAT.emit('focus-overlay-changed',True,MESS,None)
+            result = self.showtooldialog(MESS,MORE,DETAILS)
+            GSTAT.emit('focus-overlay-changed',False,None,None)
+            return result
 
 ################################################################################
 # File Open Dialog
@@ -172,8 +175,10 @@ class Lcnc_FileDialog(QFileDialog):
         self._state = False
 
     def LOAD(self):
+        GSTAT.emit('focus-overlay-changed',True,'Open Gcode',QColor(0, 0, 100,150))
         fname = QFileDialog.getOpenFileName(None, 'Open file',
                 os.path.join(os.path.expanduser('~'), 'linuxcnc/nc_files/examples'))
+        GSTAT.emit('focus-overlay-changed',False,None,None)
         if fname:
             #NOTE.notify('Error',str(fname),QtGui.QMessageBox.Information,10)
             f = open(fname, 'r')

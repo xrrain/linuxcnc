@@ -196,14 +196,7 @@ class HandlerClass:
             self.continous_jog(2, 0)
 
     def loadfile_clicked(self):
-        print 'load'
-        self.w.loadingoverlay.text='     File Open'
-        self.w.loadingoverlay.bg_color = QtGui.QColor(0, 0, 0,150)
-        self.w.loadingoverlay.show()
         fname = self.w.lcnc_filedialog.LOAD()
-        self.w.loadingoverlay.hide()
-        if fname:
-            print 'loaded'.fname
         self.w.gcodeeditor.setFocus()
 
     def runfile_clicked(self):
@@ -292,21 +285,17 @@ class HandlerClass:
     # **** closing event **** #
     ###########################
     def closeEvent(self, event):
-        self.w.loadingoverlay.text='     SHUTDOWN?'
-        self.w.loadingoverlay.bg_color = QtGui.QColor(0, 0, 100,150)
-        self.w.loadingoverlay.show()
-
         if self.shutdown_check:
+            GSTAT.emit('focus-overlay-changed',True,'ARE YOU SURE!',QtGui.QColor(100, 0, 0,150))
             answer = self.w.lcnc_dialog.showdialog('Do you want to shutdown now?',
                 None, details='You can set a preference to not see this message',
                 icon=MSG.CRITICAL, display_type=MSG.YN_TYPE)
             #self.w.lcnc_dialog.hide()
             if not answer:
                 event.ignore()
-                self.w.loadingoverlay.hide()
+                GSTAT.emit('focus-overlay-changed',False,None,None)
                 return
         event.accept()
-        #self.w.overlay.hide()
 
     ##############################
     # required class boiler code #

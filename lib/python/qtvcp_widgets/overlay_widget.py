@@ -2,9 +2,11 @@
 
 from PyQt4.QtGui import *
 from PyQt4.QtCore import *
+from qtvcp_widgets.simple_widgets import _HalWidgetBase
+from qtvcp.qt_glib import GStat
+GSTAT = GStat()
 
-
-class OverlayWidget(QWidget):
+class OverlayWidget(QWidget, _HalWidgetBase):
     def __init__(self, parent=None):
         self.last = None
         self.top_level = parent
@@ -15,11 +17,6 @@ class OverlayWidget(QWidget):
         self.setWindowFlags( self.windowFlags() |Qt.Tool |
                         Qt.FramelessWindowHint | Qt.Dialog |
                              Qt.WindowStaysOnTopHint |Qt.WindowSystemMenuHint)
-
-    # Seems the only way to consistantly get the top level widget
-    def qtvcp_special_init(self,window):
-        self.top_level = window
-        self.newParent()
 
     # Find the top level widget and add an event filter
     def newParent(self):
@@ -80,18 +77,38 @@ class LoadingOverlay(OverlayWidget):
         self.box()
         self._state = False
 
+    def _hal_init(self):
+        def _f(data,text,color):
+            if data:
+                if color:
+                    self.bg_color = color
+                else:
+                    self.bg_color = QColor(0, 0, 0,150)
+                if text:
+                    self.text = text
+                self.show()
+
+            else:
+                self.hide()
+        GSTAT.connect('focus-overlay-changed', lambda w,data,text,color: _f(data,text,color))
+
+    # Seems the only way to consistantly get the top level widget
+    def qtvcp_special_init(self,window):
+        self.top_level = window
+        self.newParent()
+
     def box(self):
 
-        okButton = QPushButton("OK")
-        okButton.pressed.connect(self.changecheck)
-        cancelButton = QPushButton("Cancel")
+        #okButton = QPushButton("OK")
+        #okButton.pressed.connect(self.changecheck)
+        #cancelButton = QPushButton("Cancel")
         self.mb=QLabel('<html><head/><body><p><span style=" font-size:30pt; font-weight:600;">%s</span></p></body></html>'%self.text,self)
         self.mb.setStyleSheet("background-color: black; color: white")
         self.mb.setAlignment(Qt.AlignVCenter | Qt.AlignCenter)
         hbox = QHBoxLayout()
         hbox.addStretch(1)
-        hbox.addWidget(okButton)
-        hbox.addWidget(cancelButton)
+        #hbox.addWidget(okButton)
+        #hbox.addWidget(cancelButton)
 
         vbox = QVBoxLayout()
         vbox.addStretch(1)
