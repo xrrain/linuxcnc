@@ -51,19 +51,21 @@ class Lcnc_State_Led(Lcnc_Led,):
         elif self.is_optional_stop:
             GSTAT.connect('optional-stop-changed', lambda w,data:self._flip_state(data))
         elif self.is_joint_homed:
-            GSTAT.connect('homed', lambda w,data: self.joint(data))
-            #GSTAT.connect('not-all-homed', lambda w,data: self.joint(data))
+            GSTAT.connect('homed', lambda w,data: self.joint_homed(data))
+            GSTAT.connect('not-all-homed', lambda w,data: self.joints_unhomed(data))
 
     def _flip_state(self, data):
-            print data, self.flash
             if self.invert_state:
                 data = not data
             self.change_state(data)
 
-    def joint(self, joint):
+    def joint_homed(self, joint):
         if int(joint) == self.joint_number:
-            print 'joint homed',joint
             self._flip_state(True)
+
+    def joints_unhomed(self,jlist):
+        if str(self.joint_number) in jlist:
+            self._flip_state(False)
 
 # property getter/setters
 

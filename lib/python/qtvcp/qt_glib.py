@@ -92,23 +92,25 @@ class Lcnc_Action():
     def __init__(self):
         self.cmd = linuxcnc.command()
         self.gstat = GStat()
+
     def SET_ESTOP_STATE(self, state):
         if state:
             self.cmd.state(linuxcnc.STATE_ESTOP)
         else:
             self.cmd.state(linuxcnc.STATE_ESTOP_RESET)
+
     def SET_MACHINE_STATE(self, state):
         if state:
             self.cmd.state(linuxcnc.STATE_ON)
         else:
             self.cmd.state(linuxcnc.STATE_OFF)
 
-    # TODO send an are you sure message
     def SET_MACHINE_HOMING(self, joint):
         print 'Homing Joint:',joint
         self.ensure_mode(linuxcnc.MODE_MANUAL)
         self.cmd.teleop_enable(False)
         self.cmd.home(joint)
+
     def SET_MACHINE_UNHOMED(self, joint):
         self.ensure_mode(linuxcnc.MODE_MANUAL)
         self.cmd.teleop_enable(False)
@@ -116,13 +118,36 @@ class Lcnc_Action():
         self.cmd.unhome(joint)
 
     def CALL_MDI(self, code):
-        m=self.ensure_mode(linuxcnc.MODE_MDI)
-        print m
+        self.ensure_mode(linuxcnc.MODE_MDI)
         self.cmd.mdi('%s'%code)
 
     def OPEN_PROGRAM(self, fname):
         self.ensure_mode(linuxcnc.MODE_AUTO)
         self.cmd.program_open(str(fname))
+        self.gstat.emit('reload-display')
+
+    def SET_AXIS_ORIGIN(self,axis,value):
+        m = "G10 L20 P0 %s%f"%(axis,value)
+        fail, premode = self.ensure_mode(linuxcnc.MODE_MDI)
+        self.cmd.mdi(m)
+        self.cmd.wait_complete()
+        self.ensure_mode(premode)
+        self.gstat.emit('reload-display')
+
+    def RUN(self):
+        self.ensure_mode(linuxcnc.MODE_AUTO)
+        self.cmd.auto(linuxcnc.AUTO_RUN,0)
+
+    def ABORT(self):
+        self.ensure_mode(linuxcnc.MODE_AUTO)
+        self.cmd.abort()
+
+    def PAUSE(self):
+        if not self.gstat.stat.paused:
+            self.cmd.auto(linuxcnc.AUTO_PAUSE)
+        else:
+            print 'resume'
+            self.cmd.auto(linuxcnc.AUTO_RESUME)
 
     ###############################################################################
     # Helper functions
@@ -130,15 +155,12 @@ class Lcnc_Action():
 
 
     def ensure_mode(self, *modes):
-        truth = self.gstat.check_for_modes(modes)
-        print '1',truth
+        truth, premode = self.gstat.check_for_modes(modes)
         if truth is False:
-            print 'none'
             self.cmd.mode(modes[0])
             self.cmd.wait_complete()
-            print 'now'
-            return True
+            return (True, premode)
         else:
-            return truth
+            return (truth, premode)
 
 

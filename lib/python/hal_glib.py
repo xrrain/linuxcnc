@@ -624,10 +624,11 @@ class _GStat(gobject.GObject):
         def running(s):
             return s.task_mode == linuxcnc.MODE_AUTO and s.interp_state != linuxcnc.INTERP_IDLE
         self.stat.poll()
-        if not modes: return None
-        if  self.stat.task_mode in modes: return True
-        if running( self.stat): return None
-        return False
+        premode = self.stat.task_mode
+        if not modes: return (None, premode)
+        if  self.stat.task_mode in modes: return (True, premode)
+        if running( self.stat): return (None, premode)
+        return (False, premode)
 
     def set_jog_rate(self,upm):
         self.current_jog_rate = upm
@@ -647,6 +648,13 @@ class _GStat(gobject.GObject):
         self.stat.poll()
         #print 'is auto mode?',self.old['mode']  == linuxcnc.MODE_AUTO
         return self.old['mode']  == linuxcnc.MODE_AUTO
+
+    def is_file_loaded(self):
+        self.stat.poll()
+        if self.stat.file:
+            return True
+        else:
+            return False
 
     def set_tool_touchoff(self,tool,axis,value):
         premode = None

@@ -5,13 +5,11 @@
 from PyQt4 import QtCore
 from PyQt4 import QtGui
 from qtscreen.keybindings import Keylookup
-from qtscreen.aux_program_loader import Aux_program_loader
 from qtscreen.notify import Notify
 from qtscreen.message import Message
 from qtscreen.preferences import Access
-#from qtvcp_widgets.overlay_widget import LoadingOverlay
+from qtvcp.qt_glib import GStat
 
-from qtvcp.qt_glib import GStat, Lcnc_Action
 import linuxcnc
 import sys
 import os
@@ -22,8 +20,6 @@ import os
 
 KEYBIND = Keylookup()
 GSTAT = GStat()
-ACTION = Lcnc_Action()
-AUX_PRGM = Aux_program_loader()
 NOTE = Notify()
 MSG = Message()
 PREFS = Access()
@@ -50,9 +46,6 @@ class HandlerClass:
         self.IMAGE_PATH = paths.IMAGEDIR
         #print paths.CONFIGPATH
         # connect to GStat to catch linuxcnc events
-        GSTAT.connect('state-estop', self.say_estop)
-        GSTAT.connect('state-on', self.on_state_on)
-        GSTAT.connect('state-off', self.on_state_off)
         GSTAT.connect('jograte-changed', self.on_jograte_changed)
         GSTAT.connect('periodic', self.on_periodic)
 
@@ -85,8 +78,6 @@ class HandlerClass:
         self.w.frame.setStyleSheet("#frame { border-image: url(%s) 0 0 0 0 stretch stretch; }"%bgpath)
         bgpath = self.IMAGE_PATH+'/frame_bg_grey.png'
         self.w.frame_2.setStyleSheet("QFrame { border-image: url(%s) 0 0 0 0 stretch stretch; }"%bgpath)
-        # add overlay to topWidget
-        #self.w.overlay = LoadingOverlay(self.w)
 
     def processed_key_event__(self,receiver,event,is_pressed,key,code,shift,cntrl):
         # when typing in MDI, we don't want keybinding to call functions
@@ -108,21 +99,9 @@ class HandlerClass:
     ########################
     # callbacks from GSTAT #
     ########################
-    def say_estop(self,w):
-        print 'saying estop'
-
-    def on_state_on(self,w):
-        print 'on'
-
-    def on_state_off(self,w):
-        print 'off'
-
 
     def on_jograte_changed(self, w, rate):
         self.jog_velocity = rate
-
-    def on_error_message(self, w, message):
-        NOTE.notify('Error',message,QtGui.QMessageBox.Information,10)
 
     def on_periodic(self,w):
         try:
@@ -145,22 +124,6 @@ class HandlerClass:
     # callbacks from form #
     #######################
 
-    def zero_axis(self):
-        name = self.w.sender().text()
-        print name
-        if 'X' in name:
-            GSTAT.set_axis_origin('x',0)
-        elif 'Y' in name:
-            GSTAT.set_axis_origin('y',0)
-        elif 'Z' in name:
-            GSTAT.set_axis_origin('z',0)
-
-    def launch_status(self):
-        AUX_PRGM.load_status()
-
-    def launch_halmeter(self):
-        AUX_PRGM.load_halmeter()
-
     def change_jograte(self, rate):
         GSTAT.set_jog_rate(float(rate))
 
@@ -170,59 +133,10 @@ class HandlerClass:
     def change_rapidrate(self, rate):
         self.cmnd.rapidrate(rate/100.0)
 
-    def jog_pressed(self):
-        d = 1
-        source = self.w.sender()
-        #print source.objectName(), 'pressed'
-        ACTION.ensure_mode(linuxcnc.MODE_MANUAL)
-        if '-' in source.text():
-            d = -1
-        if 'X' in source.text():
-            self.continous_jog(0, d)
-        elif 'Y' in source.text():
-            self.continous_jog(1, d)
-        elif 'Z' in source.text():
-            self.continous_jog(2, d)
-
-    def jog_released(self):
-        source = self.w.sender()
-        #print source.objectName(), 'released'
-        ACTION.ensure_mode(linuxcnc.MODE_MANUAL)
-        if 'X' in source.text():
-            self.continous_jog(0, 0)
-        elif 'Y' in source.text():
-            self.continous_jog(1, 0)
-        elif 'Z' in source.text():
-            self.continous_jog(2, 0)
-
-    def loadfile_clicked(self):
-        fname = self.w.lcnc_filedialog.load_dialog()
-        self.w.gcodeeditor.setFocus()
-
-    def runfile_clicked(self):
-        print 'run file'
-        self.cmnd.mode(linuxcnc.MODE_AUTO)
-        self.cmnd.auto(linuxcnc.AUTO_RUN,0)
-
-    def stopfile_clicked(self):
-        print 'stop file'
-        self.cmnd.mode(linuxcnc.MODE_AUTO)
-        self.cmnd.abort()
-
-    def pausefile_clicked(self):
-        print 'pause file',GSTAT.stat.paused
-        if not GSTAT.stat.paused:
-            self.cmnd.auto(linuxcnc.AUTO_PAUSE)
-        else:
-            print 'resume'
-            self.cmnd.auto(linuxcnc.AUTO_RESUME)
-
     #####################
     # general functions #
     #####################
 
-    def continous_jog(self, axis, direction):
-        GSTAT.continuous_jog(axis, direction)
 
     #####################
     # KEY BINDING CALLS #
@@ -290,7 +204,6 @@ class HandlerClass:
             answer = self.w.lcnc_dialog.showdialog('Do you want to shutdown now?',
                 None, details='You can set a preference to not see this message',
                 icon=MSG.CRITICAL, display_type=MSG.YN_TYPE)
-            #self.w.lcnc_dialog.hide()
             if not answer:
                 event.ignore()
                 GSTAT.emit('focus-overlay-changed',False,None,None)
