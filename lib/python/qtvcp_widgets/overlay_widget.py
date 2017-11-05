@@ -40,7 +40,7 @@ class OverlayWidget(QWidget, _HalWidgetBase):
                 self.move(QMoveEvent.pos(event))
                 self.raise_()
             elif(event.type() == QEvent.ChildAdded):
-                print 'CHILD',QChildEvent.child(event)
+                #print 'CHILD',QChildEvent.child(event)
                 if not QChildEvent.child(event) is QDialog:
                     self.raise_()
             if event.type() == QEvent.Close:
@@ -53,11 +53,11 @@ class OverlayWidget(QWidget, _HalWidgetBase):
     def event(self, event):
         #print 'overlay:',event
         if event.type() == QEvent.ParentAboutToChange:
-            print 'REMOVE FILTER'
+            #print 'REMOVE FILTER'
             self.parent.removeEventFilter()
             return True
         if event.type() == QEvent.ParentChange:
-            print 'parentEVENT:', self.parentWidget()
+            #print 'parentEVENT:', self.parentWidget()
             self.newParent()
             return True
         if event.type() == QEvent.Paint:
@@ -74,8 +74,13 @@ class LoadingOverlay(OverlayWidget):
         self.dialog_color = QColor(255,255,255)
         self.font = QFont("arial,helvetica", 40)
         self.text = "Loading..."
-        self.box()
         self._state = False
+        self._image_path = '/home/chris/emc-dev/linuxcnc2.gif'
+        self._image = QImage(self._image_path)
+        self._show_buttons = False
+        self._show_image = False
+        self._image_transp = 0.3
+        self.box()
 
     def _hal_init(self):
         def _f(data,text,color):
@@ -90,50 +95,58 @@ class LoadingOverlay(OverlayWidget):
 
             else:
                 self.hide()
-        GSTAT.connect('focus-overlay-changed', lambda w,data,text,color: _f(data,text,color))
+        GSTAT.connect('focus-overlay-changed', lambda w, data, text, color: _f(data, text, color))
 
     # Seems the only way to consistantly get the top level widget
     def qtvcp_special_init(self,window):
         self.top_level = window
         self.newParent()
 
-    def box(self):
-
-        #okButton = QPushButton("OK")
-        #okButton.pressed.connect(self.changecheck)
-        #cancelButton = QPushButton("Cancel")
-        self.mb=QLabel('<html><head/><body><p><span style=" font-size:30pt; font-weight:600;">%s</span></p></body></html>'%self.text,self)
-        self.mb.setStyleSheet("background-color: black; color: white")
-        self.mb.setAlignment(Qt.AlignVCenter | Qt.AlignCenter)
-        hbox = QHBoxLayout()
-        hbox.addStretch(1)
-        #hbox.addWidget(okButton)
-        #hbox.addWidget(cancelButton)
-
-        vbox = QVBoxLayout()
-        vbox.addStretch(1)
-        vbox.addWidget(self.mb)
-        vbox.addLayout(hbox)
-
-        self.setLayout(vbox)
-
-        self.setGeometry(300, 300, 300, 150)
-        #self.show()
-
-    def changecheck(self):
-        print 'hide'
-        self.hide()
 
     def paintEvent(self, event):
         qp = QPainter()
         qp.begin(self)
         self.colorBackground(qp)
+        if self._show_image:
+            qp.setOpacity(self._image_transp)
+            qp.drawImage(self.rect(), self._image)
+        qp.setOpacity(1.0)
         self.drawText(event, qp)
         qp.end()
         self.mb.setText('<html><head/><body><p><span style=" font-size:30pt; font-weight:600;">%s</span></p></body></html>'%self.text)
 
+
+    #################################################
+    # Helper functions
+    #################################################
+
     def colorBackground(self, qp):
         qp.fillRect(self.rect(),self.bg_color)
+
+    def box(self):
+        self.mb=QLabel('<html><head/><body><p><span style=" font-size:30pt; font-weight:600;">%s</span></p></body></html>'%self.text,self)
+        self.mb.setStyleSheet("background-color: black; color: white")
+        self.mb.setAlignment(Qt.AlignVCenter | Qt.AlignCenter)
+        hbox = QHBoxLayout()
+        hbox.addStretch(1)
+        if self._show_buttons:
+            okButton = QPushButton("OK")
+            okButton.pressed.connect(self.okChecked)
+            cancelButton = QPushButton("Cancel")
+            cancelButton.pressed.connect(self.cancelChecked)
+            hbox.addWidget(okButton)
+            hbox.addWidget(cancelButton)
+        vbox = QVBoxLayout()
+        vbox.addStretch(1)
+        vbox.addWidget(self.mb)
+        vbox.addLayout(hbox)
+        self.setLayout(vbox)
+        self.setGeometry(300, 300, 300, 150)
+
+    def okChecked(self):
+        self.hide()
+    def cancelChecked(self):
+        pass
 
     def drawText(self, event, qp):
         return
@@ -145,6 +158,12 @@ class LoadingOverlay(OverlayWidget):
         qp.setFont(self.font)
         qp.drawText(self.rect(), Qt.AlignCenter, self.text)
 
+    #########################################################################
+    # This is how designer can interact with our widget properties.
+    # designer will show the pyqtProperty properties in the editor
+    # it will use the get set and reset calls to do those actions
+    ########################################################################
+
     @pyqtSlot(bool)
     def setState(self, value):
         self._state = value
@@ -152,26 +171,67 @@ class LoadingOverlay(OverlayWidget):
             self.show()
         else:
             self.hide()
-
     def getState(self):
         return self._state
-
     def resetState(self):
         self._state = False
 
     def getOverayColor(self):
         return self.bg_color
-
     @pyqtSlot(QColor)
     def setOverayColor(self, value):
         self.bg_color = value
     def resetOverayColor(self, value):
         self.bg_color = value
 
+    def setshow_image(self, data):
+        self._show_image = data
+        self.hide()
+        self.show()
+    def getshow_image(self):
+        return self._show_image
+    def resetshow_image(self):
+        self._show_image = False
+
+    def set_image_transp(self, data):
+        self._image_transp = data
+        self.hide()
+        self.show()
+    def get_image_transp(self):
+        return self._image_transp
+    def reset_image_transp(self):
+        self._image_transp = 0.3
+
+    def setshow_buttons(self, data):
+        self._show_buttons = data
+        self.hide()
+        self.show()
+    def getshow_buttons(self):
+        return self._show_buttons
+    def resetshow_buttons(self):
+        self._show_buttons = False
+
+    def setimage_path(self, data):
+        self._image_path = data
+        try:
+            self._image = QImage(self._image_path)
+        except:
+            pass
+    def getimage_path(self):
+        return self._image_path
+    def resetimage_path(self):
+        self._image_path = False
+
     overlay_color = pyqtProperty(QColor, getOverayColor, setOverayColor,resetOverayColor)
     state = pyqtProperty(bool, getState, setState, resetState)
+    show_image_option = pyqtProperty(bool, getshow_image, setshow_image, resetshow_image)
+    image_transparency = pyqtProperty(float, get_image_transp, set_image_transp, reset_image_transp)
+    show_buttons_option = pyqtProperty(bool, getshow_buttons, setshow_buttons, resetshow_buttons)
+    image_path = pyqtProperty(str, getimage_path, setimage_path, resetimage_path)
 
-
+#################
+# Testing
+#################
 def main():
     import sys
     app = QApplication(sys.argv)
