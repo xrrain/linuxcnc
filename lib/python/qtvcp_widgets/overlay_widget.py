@@ -1,5 +1,6 @@
 #!/usr/bin/python2.7
 
+import os
 from PyQt4.QtGui import *
 from PyQt4.QtCore import *
 from qtvcp_widgets.simple_widgets import _HalWidgetBase
@@ -65,9 +66,9 @@ class OverlayWidget(QWidget, _HalWidgetBase):
             return True
         return False
 
-class LoadingOverlay(OverlayWidget):
+class FocusOverlay(OverlayWidget):
     def __init__(self, parent=None):
-        super(LoadingOverlay, self).__init__(parent)
+        super(FocusOverlay, self).__init__(parent)
         self.setAttribute(Qt.WA_TranslucentBackground)
         self.bg_color = QColor(0, 0, 0,150)
         self.text_color = QColor(0,0,0)
@@ -76,7 +77,7 @@ class LoadingOverlay(OverlayWidget):
         self.text = "Loading..."
         self._state = False
         self._image_path = '/home/chris/emc-dev/linuxcnc2.gif'
-        self._image = QImage(self._image_path)
+        self._image = QImage(os.path.join(os.path.expanduser('~'), self._image_path))
         self._show_buttons = False
         self._show_image = False
         self._image_transp = 0.3
@@ -186,8 +187,8 @@ class LoadingOverlay(OverlayWidget):
 
     def setshow_image(self, data):
         self._show_image = data
-        self.hide()
-        self.show()
+        #self.hide()
+        #self.show()
     def getshow_image(self):
         return self._show_image
     def resetshow_image(self):
@@ -195,8 +196,8 @@ class LoadingOverlay(OverlayWidget):
 
     def set_image_transp(self, data):
         self._image_transp = data
-        self.hide()
-        self.show()
+        #self.hide()
+        #self.show()
     def get_image_transp(self):
         return self._image_transp
     def reset_image_transp(self):
@@ -204,8 +205,8 @@ class LoadingOverlay(OverlayWidget):
 
     def setshow_buttons(self, data):
         self._show_buttons = data
-        self.hide()
-        self.show()
+        #self.hide()
+        #self.show()
     def getshow_buttons(self):
         return self._show_buttons
     def resetshow_buttons(self):
@@ -214,7 +215,7 @@ class LoadingOverlay(OverlayWidget):
     def setimage_path(self, data):
         self._image_path = data
         try:
-            self._image = QImage(self._image_path)
+            self._image = QImage(os.path.join(os.path.expanduser('~'), self._image_path))
         except:
             pass
     def getimage_path(self):

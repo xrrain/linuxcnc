@@ -9,7 +9,7 @@ from qtscreen.aux_program_loader import Aux_program_loader
 from qtscreen.notify import Notify
 from qtscreen.message import Message
 from qtscreen.preferences import Access
-from qtvcp_widgets.overlay_widget import LoadingOverlay
+from qtvcp_widgets.overlay_widget import FocusOverlay
 
 from qtvcp.qt_glib import GStat
 import linuxcnc
@@ -67,7 +67,7 @@ class HandlerClass:
     # the widgets are instantiated.
     # the HAL pins are built but HAL is not set ready
     def initialized__(self):
-        # Give notify library a reference to the statusbar 
+        # Give notify library a reference to the statusbar
         NOTE.statusbar = self.w.statusbar
         if self.desktop_notify:
             NOTE.notify('Welcome','This is a test screen for Qtscreen',None,4)
@@ -87,7 +87,7 @@ class HandlerClass:
         self.w.frame_2.setStyleSheet("QFrame { border-image: url(%s) 0 0 0 0 stretch stretch; }"%bgpath)
 
         # add overlay to topWidget
-        self.w.overlay = LoadingOverlay(self.w)
+        self.w.overlay = FocusOverlay(self.w)
 
 
     def processed_key_event__(self,receiver,event,is_pressed,key,code,shift,cntrl):
@@ -228,7 +228,7 @@ class HandlerClass:
         self.w.overlay.bg_color = QtGui.QColor(0, 0, 0,200)
         self.w.overlay.show()
         #self.w.centralwidget.setEnabled(False)
-        fname = QtGui.QFileDialog.getOpenFileName(None, 'Open file', 
+        fname = QtGui.QFileDialog.getOpenFileName(None, 'Open file',
                 os.path.join(os.path.expanduser('~'), 'linuxcnc/nc_files/examples'))
         print fname
         if fname:
@@ -324,7 +324,7 @@ class HandlerClass:
 
         if self.shutdown_check:
             answer = MSG.showdialog('Do you want to shutdown now?',
-                details='You can set a preference to not see this message', 
+                details='You can set a preference to not see this message',
                 icon=MSG.CRITICAL, display_type=MSG.YN_TYPE)
             if not answer:
                 self.w.overlay.hide()

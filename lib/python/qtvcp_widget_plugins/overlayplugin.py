@@ -2,14 +2,14 @@
 
 from PyQt4.QtGui import QIcon, QPixmap
 from PyQt4.QtDesigner import QPyDesignerCustomWidgetPlugin
-from qtvcp_widgets.overlay_widget import LoadingOverlay
+from qtvcp_widgets.overlay_widget import FocusOverlay
 from qtvcp_widgets.qtvcp_icons import Icon
 ICON = Icon()
 
-class LoadingOverlayPlugin(QPyDesignerCustomWidgetPlugin):
+class FocusOverlayPlugin(QPyDesignerCustomWidgetPlugin):
 
     def __init__(self, parent=None):
-        super(LoadingOverlayPlugin, self).__init__(parent)
+        super(FocusOverlayPlugin, self).__init__(parent)
 
         self.initialized = False
 
@@ -23,16 +23,16 @@ class LoadingOverlayPlugin(QPyDesignerCustomWidgetPlugin):
         return self.initialized
 
     def createWidget(self, parent):
-        return LoadingOverlay(parent)
+        return FocusOverlay(parent)
 
     def name(self):
-        return "LoadingOverlay"
+        return "FocusOverlay"
 
     def group(self):
         return "Linuxcnc - HAL"
 
     def icon(self):
-        return QIcon(QPixmap(ICON.get_path('loadingoverlay')))
+        return QIcon(QPixmap(ICON.get_path('focusoverlay')))
 
     def toolTip(self):
         return ""
@@ -47,7 +47,7 @@ class LoadingOverlayPlugin(QPyDesignerCustomWidgetPlugin):
     # default values for its properties. Each custom widget created by this
     # plugin will be configured using this description.
     def domXml(self):
-        return '<widget class="LoadingOverlay" name="loadingoverlay" />\n'
+        return '<widget class="FocusOverlay" name="focusoverlay" />\n'
 
     def includeFile(self):
         return "qtvcp_widgets.overlay_widget"

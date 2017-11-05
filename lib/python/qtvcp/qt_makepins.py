@@ -20,7 +20,7 @@
 
 import gobject
 from qtvcp_widgets.simple_widgets import _HalWidgetBase
-from qtvcp_widgets.overlay_widget import LoadingOverlay
+from qtvcp_widgets.overlay_widget import FocusOverlay
 from qtvcp.qt_glib import QComponent
 from PyQt4.QtCore import QObject
 class QTPanel():
@@ -31,7 +31,7 @@ class QTPanel():
 
         # parse for HAL objects:
         if debug:
-            print 'QTVCP: Parcing for hal pins'
+            print 'QTVCP: Parcing for hal widgets'
         for widget in window.findChildren(QObject):
             idname = widget.objectName()
             if isinstance(widget, _HalWidgetBase):
@@ -39,17 +39,9 @@ class QTPanel():
                     print 'HAL-ified instance found:    %s'%(idname)
                 widget.hal_init(self.hal, str(idname), widget)
                 self.widgets[idname] = widget
-            if isinstance(widget, LoadingOverlay):
-                print 'FOUND OVERLAY'
+            # Workaround to give focus overlay the root window
+            if isinstance(widget, FocusOverlay):
                 widget.qtvcp_special_init(window)
-        # at the moment GComponent had a gobject timer to update HAL input pins.
-        # output pins use qt signals to initiate updates
-        #self.timer = gobject.timeout_add(100, self.update)
-
-    def update(self):
-        for obj in self.widgets.values():
-            obj.hal_update()
-        return True
 
     def __getitem__(self, item):
         return self.widgets[item]

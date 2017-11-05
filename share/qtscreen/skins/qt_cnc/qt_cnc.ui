@@ -1396,7 +1396,7 @@ border-image: url(/home/chris/emc-dev/configs/sim/qtscreen/backgound_grey.png) 0
      <bool>false</bool>
     </property>
    </widget>
-   <widget class="LoadingOverlay" name="loadingoverlay">
+   <widget class="FocusOverlay" name="focusoverlay">
     <property name="geometry">
      <rect>
       <x>0</x>
@@ -1406,6 +1406,9 @@ border-image: url(/home/chris/emc-dev/configs/sim/qtscreen/backgound_grey.png) 0
      </rect>
     </property>
     <property name="state">
+     <bool>false</bool>
+    </property>
+    <property name="show_image_option" stdset="0">
      <bool>false</bool>
     </property>
    </widget>
@@ -1711,7 +1714,7 @@ border-image: url(/home/chris/emc-dev/configs/sim/qtscreen/backgound_grey.png) 0
      </rect>
     </property>
     <property name="text">
-     <string>load 
+     <string>load
 file</string>
     </property>
     <property name="estop_action" stdset="0">
@@ -1767,6 +1770,12 @@ file</string>
    <header>qtvcp_widgets.dialog_widget</header>
   </customwidget>
   <customwidget>
+   <class>FocusOverlay</class>
+   <extends>QWidget</extends>
+   <header>qtvcp_widgets.overlay_widget</header>
+   <container>1</container>
+  </customwidget>
+  <customwidget>
    <class>Gstat_Slider</class>
    <extends>QSlider</extends>
    <header>qtvcp_widgets.gstat_slider</header>
@@ -1781,12 +1790,6 @@ file</string>
    <class>Graphics</class>
    <extends>QWidget</extends>
    <header>qtvcp_widgets.graphics</header>
-  </customwidget>
-  <customwidget>
-   <class>LoadingOverlay</class>
-   <extends>QWidget</extends>
-   <header>qtvcp_widgets.overlay_widget</header>
-   <container>1</container>
   </customwidget>
   <customwidget>
    <class>Lcnc_ToolDialog</class>
