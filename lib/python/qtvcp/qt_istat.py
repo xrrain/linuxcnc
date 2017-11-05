@@ -9,6 +9,7 @@ class IStat():
         INIPATH = os.environ.get('INI_FILE_NAME', '/dev/null')
         self.inifile = linuxcnc.ini(INIPATH)
         self.MDI_HISTORY_PATH = '~/.axis_mdi_history'
+        self.PREFERENCE_PATH = '~/.Preferences'
         self.MACHINE_IS_LATHE = False
         self.MACHINE_IS_METRIC = False
         self.MACHINE_UNIT_CONVERSION = 1
@@ -16,10 +17,20 @@ class IStat():
         self.NO_HOME_REQUIRED = False
         self.JOG_INCREMENTS = None
         self.ANGULAR_INCREMENTS = None
+
+        self.MAX_LINEAR_VELOCITY = 60
+        self.DEFAULT_LINEAR_VELOCITY = 15.0
+
+        self.DEFAULT_SPINDLE_SPEED = 200
+        self.MAX_FEED_OVERRIDE = 1.5
+        self.MAX_SPINDLE_OVERRIDE = 1.5
+        self.MIN_SPINDLE_OVERRIDE = 0.5
+
         self.update()
 
     def update(self):
         self.MDI_HISTORY_PATH = self.inifile.find('DISPLAY', 'MDI_HISTORY_FILE') or '~/.axis_mdi_history'
+        self.PREFERENCE_PATH = self.inifile.find("DISPLAY","PREFERENCE_FILE_PATH") or None
         self.MACHINE_IS_LATHE = bool(self.inifile.find("DISPLAY", "LATHE"))
 
         try:
@@ -69,6 +80,12 @@ class IStat():
                 self.data.angular_jog_increments = increments.split()
         else:
             self.ANGULAR_INCREMENTS = ["1","45","180","360","continuous"]
+        self.DEFAULT_LINEAR_JOG_VEL = float(self.inifile.find("DISPLAY","DEFAULT_LINEAR_VELOCITY") or 1) * 60
+        self.MAX_LINEAR_JOG_VEL = float(self.inifile.find("DISPLAY","MAX_LINEAR_VELOCITY") or 5) * 60
+        self.DEFAULT_SPINDLE_SPEED = int(self.inifile.find("DISPLAY","MAX_SPINDLE_SPEED") or 200)
+        self.MAX_SPINDLE_OVERRIDE = float(self.inifile.find("DISPLAY","MAX_SPINDLE_OVERRIDE") or 1) * 100
+        self.MIN_SPINDLE_OVERRIDE = float(self.inifile.find("DISPLAY","MIN_SPINDLE_OVERRIDE") or 0.5) * 100
+        self.MAX_FEED_OVERRIDE = float(self.inifile.find("DISPLAY","MAX_FEED_OVERRIDE") or 1.5) * 100
 
     def convert_units(self, data):
         return data * self.MACHINE_UNIT_CONVERSION

@@ -578,6 +578,7 @@ class _GStat(gobject.GObject):
         # Spindle requested speed
         spindle_spd_new = self.old['spindle-speed']
         self.emit('requested-spindle-speed-changed', spindle_spd_new)
+        self.emit('jograte-changed', self.current_jog_rate)
 
     # ********** Helper function ********************
     def get_position(self):

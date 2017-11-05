@@ -1,12 +1,15 @@
 #!/usr/bin/env python
 # vim: sts=4 sw=4 et
 
-import _hal, hal
-from PyQt4.QtCore import QObject, QTimer, pyqtSignal
-from hal_glib import _GStat as GladeVcpStat
 import linuxcnc
 import math
 import gobject
+
+import _hal, hal
+from PyQt4.QtCore import QObject, QTimer, pyqtSignal
+from hal_glib import _GStat as GladeVcpStat
+from qtvcp.qt_istat import IStat
+INI = IStat()
 
 class QPin(QObject, hal.Pin):
     value_changed = pyqtSignal([int], [float], [bool] )
@@ -76,6 +79,7 @@ class QComponent:
 class _GStat(GladeVcpStat):
     def __init__(self):
         GladeVcpStat.__init__(self)
+        self.current_jog_rate = INI.DEFAULT_LINEAR_JOG_VEL
 
 # used so all qtvcp widgets use the same instance of _gstat
 # this keeps them all in synch
@@ -148,6 +152,17 @@ class Lcnc_Action():
         else:
             print 'resume'
             self.cmd.auto(linuxcnc.AUTO_RESUME)
+
+    def SET_RAPID_RATE(self, rate):
+        self.cmd.rapidrate(rate/100.0)
+    def SET_FEED_RATE(self, rate):
+        self.cmd.feedrate(rate/100.0)
+    def SET_SPINDLE_RATE(self, rate):
+        self.cmd.spindleoverride(rate/100.0)
+    def SET_JOG_RATE(self, rate):
+        self.gstat.set_jog_rate(float(rate))
+    def SET_JOG_INCR(self, incr):
+        pass
 
     ###############################################################################
     # Helper functions

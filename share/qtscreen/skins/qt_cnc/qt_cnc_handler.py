@@ -65,9 +65,6 @@ class HandlerClass:
         NOTE.statusbar = self.w.statusBar
         if self.desktop_notify:
             NOTE.notify('Welcome','This is a test screen for Qtscreen',None,4)
-        self.w.jog_slider.setValue(self.jog_velocity)
-        self.w.feed_slider.setValue(100)
-        self.w.rapid_slider.setValue(100)
         GSTAT.forced_update()
 
         # add a backgrund image
@@ -124,19 +121,9 @@ class HandlerClass:
     # callbacks from form #
     #######################
 
-    def change_jograte(self, rate):
-        GSTAT.set_jog_rate(float(rate))
-
-    def change_feedrate(self, rate):
-        self.cmnd.feedrate(rate/100.0)
-
-    def change_rapidrate(self, rate):
-        self.cmnd.rapidrate(rate/100.0)
-
     #####################
     # general functions #
     #####################
-
 
     #####################
     # KEY BINDING CALLS #
