@@ -198,7 +198,8 @@ class Lcnc_ActionButton(QtGui.QPushButton, _HalWidgetBase):
             print 'QTVCP: action button: * No action recognised *'
 
     def jog_action(self,direction):
-        ACTION.ensure_mode(linuxcnc.MODE_MANUAL)
+        if direction:
+            ACTION.ensure_mode(linuxcnc.MODE_MANUAL)
         GSTAT.continuous_jog(self.joint_number, direction)
 
     #########################################################################
