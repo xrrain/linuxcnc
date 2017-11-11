@@ -46,7 +46,6 @@ class HandlerClass:
         self.IMAGE_PATH = paths.IMAGEDIR
         #print paths.CONFIGPATH
         # connect to GStat to catch linuxcnc events
-        GSTAT.connect('jograte-changed', self.on_jograte_changed)
         GSTAT.connect('periodic', self.on_periodic)
 
         # Read user preferences
@@ -96,9 +95,6 @@ class HandlerClass:
     ########################
     # callbacks from GSTAT #
     ########################
-
-    def on_jograte_changed(self, w, rate):
-        self.jog_velocity = rate
 
     def on_periodic(self,w):
         try:

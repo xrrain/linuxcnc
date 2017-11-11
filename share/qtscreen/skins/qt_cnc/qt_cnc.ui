@@ -1724,6 +1724,78 @@ file</string>
      <bool>true</bool>
     </property>
    </widget>
+   <widget class="Lcnc_ActionButton" name="lcnc_actionbutton_9">
+    <property name="geometry">
+     <rect>
+      <x>360</x>
+      <y>690</y>
+      <width>56</width>
+      <height>32</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>MAN</string>
+    </property>
+    <property name="checkable">
+     <bool>true</bool>
+    </property>
+    <property name="autoExclusive">
+     <bool>true</bool>
+    </property>
+    <property name="manual_action" stdset="0">
+     <bool>true</bool>
+    </property>
+   </widget>
+   <widget class="Lcnc_ActionButton" name="lcnc_actionbutton_10">
+    <property name="geometry">
+     <rect>
+      <x>490</x>
+      <y>690</y>
+      <width>56</width>
+      <height>32</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>MDI</string>
+    </property>
+    <property name="checkable">
+     <bool>true</bool>
+    </property>
+    <property name="autoExclusive">
+     <bool>true</bool>
+    </property>
+    <property name="mdi_action" stdset="0">
+     <bool>true</bool>
+    </property>
+    <property name="manual_action" stdset="0">
+     <bool>false</bool>
+    </property>
+   </widget>
+   <widget class="Lcnc_ActionButton" name="lcnc_actionbutton_11">
+    <property name="geometry">
+     <rect>
+      <x>610</x>
+      <y>690</y>
+      <width>56</width>
+      <height>32</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>AUTO</string>
+    </property>
+    <property name="checkable">
+     <bool>true</bool>
+    </property>
+    <property name="autoExclusive">
+     <bool>true</bool>
+    </property>
+    <property name="auto_action" stdset="0">
+     <bool>true</bool>
+    </property>
+    <property name="manual_action" stdset="0">
+     <bool>false</bool>
+    </property>
+   </widget>
   </widget>
   <widget class="QStatusBar" name="statusBar">
    <property name="sizeGripEnabled">
@@ -1737,11 +1809,6 @@ file</string>
    <extends>QFrame</extends>
    <header>qtvcp_widgets.gcode_widget</header>
    <container>1</container>
-  </customwidget>
-  <customwidget>
-   <class>Lcnc_ActionButton</class>
-   <extends>QPushButton</extends>
-   <header>qtvcp_widgets.action_button</header>
   </customwidget>
   <customwidget>
    <class>Lcnc_DROLabel</class>
@@ -1790,6 +1857,11 @@ file</string>
    <class>Graphics</class>
    <extends>QWidget</extends>
    <header>qtvcp_widgets.graphics</header>
+  </customwidget>
+  <customwidget>
+   <class>Lcnc_ActionButton</class>
+   <extends>QPushButton</extends>
+   <header>qtvcp_widgets.action_button</header>
   </customwidget>
   <customwidget>
    <class>Lcnc_ToolDialog</class>

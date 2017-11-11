@@ -121,6 +121,15 @@ class Lcnc_Action():
         #self.cmd.traj_mode(linuxcnc.TRAJ_MODE_FREE)
         self.cmd.unhome(joint)
 
+    def SET_AUTO_MODE(self):
+        self.ensure_mode(linuxcnc.MODE_AUTO)
+
+    def SET_MDI_MODE(self):
+        self.ensure_mode(linuxcnc.MODE_MDI)
+
+    def SET_MANUAL_MODE(self):
+        self.ensure_mode(linuxcnc.MODE_MANUAL)
+
     def CALL_MDI(self, code):
         self.ensure_mode(linuxcnc.MODE_MDI)
         self.cmd.mdi('%s'%code)

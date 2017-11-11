@@ -52,6 +52,9 @@ class Lcnc_ActionButton(QtGui.QPushButton, _HalWidgetBase):
         self.launch_halmeter = False
         self.launch_status = False
         self.launch_halshow = False
+        self.mdi = False
+        self.auto = False
+        self.manual = False
 
     ##################################################
     # This gets called by qtvcp_makepins
@@ -140,6 +143,12 @@ class Lcnc_ActionButton(QtGui.QPushButton, _HalWidgetBase):
             pass
         elif self.launch_halshow:
             pass
+        elif self.auto:
+            GSTAT.connect('mode-auto', lambda w: _safecheck(True))
+        elif self.mdi:
+            GSTAT.connect('mode-mdi', lambda w: _safecheck(True))
+        elif self.manual:
+            GSTAT.connect('mode-manual', lambda w: _safecheck(True))
         # connect a signal and callback function to the button
         self.clicked[bool].connect(self.action)
 
@@ -192,7 +201,12 @@ class Lcnc_ActionButton(QtGui.QPushButton, _HalWidgetBase):
             AUX_PRGM.load_status()
         elif self.launch_halshow:
             AUX_PRGM.load_halshow()
-
+        elif self.auto:
+            ACTION.SET_AUTO_MODE()
+        elif self.mdi:
+            ACTION.SET_MDI_MODE()
+        elif self.manual:
+            ACTION.SET_MANUAL_MODE()
         # defult error case
         else:
             print 'QTVCP: action button: * No action recognised *'
@@ -213,7 +227,8 @@ class Lcnc_ActionButton(QtGui.QPushButton, _HalWidgetBase):
     def _toggle_properties(self, picked):
         data = ('estop','machine_on','home','run','abort','pause',
                     'load_dialog','jog_joint_pos', 'jog_joint_neg','zero_axis',
-                    'launch_halmeter','launch_status', 'launch_halshow')
+                    'launch_halmeter','launch_status', 'launch_halshow',
+                    'auto','mdi','manual')
 
         for i in data:
             if not i == picked:
@@ -336,6 +351,33 @@ class Lcnc_ActionButton(QtGui.QPushButton, _HalWidgetBase):
     def reset_launch_halshow(self):
         self.launch_halshow = False
 
+    def set_auto(self, data):
+        self.auto = data
+        if data:
+            self._toggle_properties('auto')
+    def get_auto(self):
+        return self.auto
+    def reset_auto(self):
+        self.auto = False
+
+    def set_mdi(self, data):
+        self.mdi = data
+        if data:
+            self._toggle_properties('mdi')
+    def get_mdi(self):
+        return self.mdi
+    def reset_mdi(self):
+        self.mdi = False
+
+    def set_manual(self, data):
+        self.manual = data
+        if data:
+            self._toggle_properties('manual')
+    def get_manual(self):
+        return self.manual
+    def reset_manual(self):
+        self.manual = False
+
     def set_joint(self, data):
         self.joint = data
     def get_joint(self):
@@ -346,6 +388,9 @@ class Lcnc_ActionButton(QtGui.QPushButton, _HalWidgetBase):
     # designer will show these properties in this order:
     estop_action = QtCore.pyqtProperty(bool, get_estop, set_estop, reset_estop)
     machine_on_action = QtCore.pyqtProperty(bool, get_machine_on, set_machine_on, reset_machine_on)
+    auto_action = QtCore.pyqtProperty(bool, get_auto, set_auto, reset_auto)
+    mdi_action = QtCore.pyqtProperty(bool, get_mdi, set_mdi, reset_mdi)
+    manual_action = QtCore.pyqtProperty(bool, get_manual, set_manual, reset_manual)
     run_action = QtCore.pyqtProperty(bool, get_run, set_run, reset_run)
     abort_action = QtCore.pyqtProperty(bool, get_abort, set_abort, reset_abort)
     pause_action = QtCore.pyqtProperty(bool, get_pause, set_pause, reset_pause)
