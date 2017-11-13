@@ -20,7 +20,6 @@
 
 import gobject
 from qtvcp_widgets.simple_widgets import _HalWidgetBase
-from qtvcp_widgets.overlay_widget import FocusOverlay
 from qtvcp.qt_glib import QComponent
 from PyQt4.QtCore import QObject
 class QTPanel():
@@ -37,11 +36,8 @@ class QTPanel():
             if isinstance(widget, _HalWidgetBase):
                 if debug:
                     print 'HAL-ified instance found:    %s'%(idname)
-                widget.hal_init(self.hal, str(idname), widget)
+                widget.hal_init(self.hal, str(idname), widget, window)
                 self.widgets[idname] = widget
-            # Workaround to give focus overlay the root window
-            if isinstance(widget, FocusOverlay):
-                widget.qtvcp_special_init(window)
 
     def __getitem__(self, item):
         return self.widgets[item]

@@ -7,7 +7,7 @@ from qtvcp_widgets.simple_widgets import _HalWidgetBase
 from qtvcp.qt_glib import GStat
 GSTAT = GStat()
 
-class OverlayWidget(QWidget, _HalWidgetBase):
+class OverlayWidget(QWidget):
     def __init__(self, parent=None):
         self.last = None
         self.top_level = parent
@@ -66,7 +66,7 @@ class OverlayWidget(QWidget, _HalWidgetBase):
             return True
         return False
 
-class FocusOverlay(OverlayWidget):
+class FocusOverlay(OverlayWidget, _HalWidgetBase):
     def __init__(self, parent=None):
         super(FocusOverlay, self).__init__(parent)
         self.setAttribute(Qt.WA_TranslucentBackground)
@@ -84,6 +84,9 @@ class FocusOverlay(OverlayWidget):
         self.box()
 
     def _hal_init(self):
+        self.top_level = self.QTVCP_INSTANCE_
+        self.newParent()
+
         def _f(data,text,color):
             if data:
                 if color:
@@ -98,12 +101,6 @@ class FocusOverlay(OverlayWidget):
                 self.hide()
         GSTAT.connect('focus-overlay-changed', lambda w, data, text, color: _f(data, text, color))
 
-    # Seems the only way to consistantly get the top level widget
-    def qtvcp_special_init(self,window):
-        self.top_level = window
-        self.newParent()
-
-
     def paintEvent(self, event):
         qp = QPainter()
         qp.begin(self)
@@ -115,8 +112,6 @@ class FocusOverlay(OverlayWidget):
         self.drawText(event, qp)
         qp.end()
         self.mb.setText('<html><head/><body><p><span style=" font-size:30pt; font-weight:600;">%s</span></p></body></html>'%self.text)
-
-
     #################################################
     # Helper functions
     #################################################

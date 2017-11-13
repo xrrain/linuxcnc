@@ -11,9 +11,10 @@ hal_pin_changed_signal = ('hal-pin-changed', (gobject.SIGNAL_RUN_FIRST, gobject.
 ###########################
 
 class _HalWidgetBase:
-    def hal_init(self, comp, name, object):
+    def hal_init(self, comp, name, object, toplevel):
         self.hal, self.hal_name = comp, name
-        self.qt_object = object
+        self.qt_object_ = object
+        self.QTVCP_INSTANCE_ = toplevel
         self._hal_init()
 
     def _hal_init(self):
