@@ -13,7 +13,7 @@ hal_pin_changed_signal = ('hal-pin-changed', (gobject.SIGNAL_RUN_FIRST, gobject.
 class _HalWidgetBase:
     def hal_init(self, comp, name, object, toplevel):
         self.hal, self.hal_name = comp, name
-        self.qt_object_ = object
+        self.QT_OBJECT_ = object
         self.QTVCP_INSTANCE_ = toplevel
         self._hal_init()
 
@@ -29,7 +29,7 @@ class _HalToggleBase(_HalWidgetBase):
     def _hal_init(self):
         self.hal_pin = self.hal.newpin(self.hal_name, hal.HAL_BIT, hal.HAL_OUT)
         self.hal_pin_not = self.hal.newpin(self.hal_name + "-not", hal.HAL_BIT, hal.HAL_OUT)
-        QtCore.QObject.connect(self.qt_object, QtCore.SIGNAL("stateChanged(int)"), partial(self.t_update))
+        QtCore.QObject.connect(self.QT_OBJECT_, QtCore.SIGNAL("stateChanged(int)"), partial(self.t_update))
 
     def t_update(self,state):
         sender = self.sender()
@@ -81,8 +81,8 @@ class Lcnc_PushButton(QtGui.QPushButton, _HalWidgetBase):
         self.hal_pin = self.hal.newpin(str(self.hal_name), hal.HAL_BIT, hal.HAL_OUT)
         def _f(data):
                 self.hal_pin.set(data)
-        QtCore.QObject.connect(self.qt_object, QtCore.SIGNAL("pressed()"), partial(_f,True))
-        QtCore.QObject.connect(self.qt_object, QtCore.SIGNAL("released()"), partial(_f,False))
+        QtCore.QObject.connect(self.QT_OBJECT_, QtCore.SIGNAL("pressed()"), partial(_f,True))
+        QtCore.QObject.connect(self.QT_OBJECT_, QtCore.SIGNAL("released()"), partial(_f,False))
 
 class Lcnc_QSlider(QtGui.QSlider, _HalWidgetBase):
     def __init__(self, parent = None):
@@ -96,7 +96,7 @@ class Lcnc_QSlider(QtGui.QSlider, _HalWidgetBase):
             scale = self.hal_pin_scale.get()
             self.hal_pin_s.set(data)
             self.hal_pin_f.set(data*scale)
-        QtCore.QObject.connect(self.qt_object, QtCore.SIGNAL("valueChanged(int)"), partial(_f))
+        QtCore.QObject.connect(self.QT_OBJECT_, QtCore.SIGNAL("valueChanged(int)"), partial(_f))
 
 class Lcnc_GridLayout(QtGui.QWidget, _HalSensitiveBase):
     def __init__(self, parent = None):
