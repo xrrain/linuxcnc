@@ -1796,6 +1796,16 @@ file</string>
      <bool>false</bool>
     </property>
    </widget>
+   <widget class="Lcnc_ScreenOptions" name="lcnc_ScreenOptions">
+    <property name="geometry">
+     <rect>
+      <x>240</x>
+      <y>820</y>
+      <width>16</width>
+      <height>16</height>
+     </rect>
+    </property>
+   </widget>
   </widget>
   <widget class="QStatusBar" name="statusBar">
    <property name="sizeGripEnabled">
@@ -1811,9 +1821,20 @@ file</string>
    <container>1</container>
   </customwidget>
   <customwidget>
+   <class>Lcnc_ActionButton</class>
+   <extends>QPushButton</extends>
+   <header>qtvcp_widgets.action_button</header>
+  </customwidget>
+  <customwidget>
    <class>Lcnc_DROLabel</class>
    <extends>QLabel</extends>
    <header>qtvcp_widgets.drowidget</header>
+   <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>Lcnc_ScreenOptions</class>
+   <extends>QWidget</extends>
+   <header>qtvcp_widgets.screenoptions</header>
    <container>1</container>
   </customwidget>
   <customwidget>
@@ -1857,11 +1878,6 @@ file</string>
    <class>Graphics</class>
    <extends>QWidget</extends>
    <header>qtvcp_widgets.graphics</header>
-  </customwidget>
-  <customwidget>
-   <class>Lcnc_ActionButton</class>
-   <extends>QPushButton</extends>
-   <header>qtvcp_widgets.action_button</header>
   </customwidget>
   <customwidget>
    <class>Lcnc_ToolDialog</class>

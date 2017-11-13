@@ -33,3 +33,4 @@ from qtvcp_widget_plugins.actionbutton_plugin import ActionButtonPlugin
 from qtvcp_widget_plugins.dialog_plugin import *
 from qtvcp_widget_plugins.overlayplugin import FocusOverlayPlugin
 from qtvcp_widget_plugins.gstat_slider_plugin import GstatSliderPlugin
+from qtvcp_widget_plugins.screenoptionsplugin import LcncScreenOptionsPlugin
