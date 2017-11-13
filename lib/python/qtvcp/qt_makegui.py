@@ -72,9 +72,11 @@ class MyWindow(QtGui.QMainWindow):
 
     def instance(self):
         instance = uic.loadUi(self.filename, self)
-        for widget in instance.findChildren(QtCore.QObject):
-            print 'Widgets',widget
-        print'top',self
+        if qtvcp_debug:
+            print'QTVCP top instance:',self
+            for widget in instance.findChildren(QtCore.QObject):
+                print 'QTVCP Widget:',widget
+
 
     def load_extension(self,handlerpath,paths=None):
         methods,self.handler_module,self.handler_instance = self._load_handlers([handlerpath],self.halcomp,self,paths)
