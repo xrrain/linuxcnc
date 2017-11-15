@@ -57,29 +57,29 @@ class IStat():
         # jogging increments
         increments = self.inifile.find("DISPLAY", "INCREMENTS")
         if increments:
-            if not "continuous" in increments:
-                increments +=",continuous"
             if "," in increments:
                 self.JOG_INCREMENTS = [i.strip() for i in increments.split(",")]
             else:
                 self.JOG_INCREMENTS = increments.split()
+            if not "continuous" in increments:
+                self.JOG_INCREMENTS.insert(0, "Continuous")
         else:
             if self.MACHINE_IS_METRIC:
-                self.JOG_INCREMENTS = [".001 mm",".01 mm",".1 mm","1 mm","continuous"]
+                self.JOG_INCREMENTS = ["Continuous",".001 mm",".01 mm",".1 mm","1 mm"]
             else:
-                self.JOG_INCREMENTS = [".0001 in",".001 in",".01 in",".1 in","continuous"]
+                self.JOG_INCREMENTS = ["Continuous",".0001 in",".001 in",".01 in",".1 in"]
 
         # angular jogging increments
         increments = self.inifile.find("DISPLAY", "ANGULAR_INCREMENTS")
         if increments:
-            if not "continuous" in increments:
-                increments +=",continuous"
             if "," in increments:
                 self.ANGULAR_INCREMENTS = [i.strip() for i in increments.split(",")]
             else:
-                self.data.angular_jog_increments = increments.split()
+                self.ANGULAR_INCREMENTS = increments.split()
+            if not "continuous" in increments:
+                self.ANGULAR_INCREMENTS.insert(0, "Continuous")
         else:
-            self.ANGULAR_INCREMENTS = ["1","45","180","360","continuous"]
+            self.ANGULAR_INCREMENTS = ["Continuous","1","45","180","360"]
         self.DEFAULT_LINEAR_JOG_VEL = float(self.inifile.find("DISPLAY","DEFAULT_LINEAR_VELOCITY") or 1) * 60
         self.MAX_LINEAR_JOG_VEL = float(self.inifile.find("DISPLAY","MAX_LINEAR_VELOCITY") or 5) * 60
         self.DEFAULT_SPINDLE_SPEED = int(self.inifile.find("DISPLAY","MAX_SPINDLE_SPEED") or 200)

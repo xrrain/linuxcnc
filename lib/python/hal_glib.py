@@ -101,6 +101,7 @@ class _GStat(gobject.GObject):
         'interp-waiting': (gobject.SIGNAL_RUN_FIRST, gobject.TYPE_NONE, ()),
 
         'jograte-changed': (gobject.SIGNAL_RUN_FIRST, gobject.TYPE_NONE, (gobject.TYPE_FLOAT,)),
+        'jogincrement-changed': (gobject.SIGNAL_RUN_FIRST, gobject.TYPE_NONE, (gobject.TYPE_FLOAT, gobject.TYPE_STRING)),
 
         'program-pause-changed': (gobject.SIGNAL_RUN_FIRST, gobject.TYPE_NONE, (gobject.TYPE_BOOLEAN,)),
         'optional-stop-changed': (gobject.SIGNAL_RUN_FIRST, gobject.TYPE_NONE, (gobject.TYPE_BOOLEAN,)),
@@ -178,6 +179,9 @@ class _GStat(gobject.GObject):
 
         gobject.timeout_add(100, self.update)
         self.current_jog_rate = 15
+        self.current_jog_distance = 0
+        self.current_jog_distance_text =''
+
         self._is_all_homed = False
 
     def merge(self):
@@ -579,6 +583,7 @@ class _GStat(gobject.GObject):
         spindle_spd_new = self.old['spindle-speed']
         self.emit('requested-spindle-speed-changed', spindle_spd_new)
         self.emit('jograte-changed', self.current_jog_rate)
+        self.emit('jogincrement-changed', self.current_jog_distance, self.current_jog_distance_text)
 
     # ********** Helper function ********************
     def get_position(self):
@@ -635,6 +640,10 @@ class _GStat(gobject.GObject):
         self.current_jog_rate = upm
         self.emit('jograte-changed', upm)
 
+    def set_jog_increments(self, distance, text):
+        self.current_jog_distance = distance
+        self.current_jog_distance_text = text
+        self.emit('jogincrement-changed', distance, text)
 
     def is_all_homed(self):
         return self._is_all_homed

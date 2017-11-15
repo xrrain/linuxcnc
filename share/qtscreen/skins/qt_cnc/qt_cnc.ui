@@ -252,17 +252,17 @@ font: 75 48pt &quot;Noto Sans&quot;;</string>
       <string>Z</string>
      </property>
     </widget>
-    <widget class="Lcnc_State_Label" name="lcnc_state_label_7">
+    <widget class="Lcnc_Gstat_Label" name="lcnc_state_label_7">
      <property name="geometry">
       <rect>
        <x>200</x>
        <y>190</y>
-       <width>171</width>
+       <width>131</width>
        <height>31</height>
       </rect>
      </property>
      <property name="text">
-      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;  &lt;span style=&quot; font-weight:600; font-size:18pt; color:#ffff00;&quot;&gt;%3.1f&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;  &lt;span style=&quot; font-weight:600; font-size:18pt; color:#ffff00;&quot;&gt;100.0&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
      </property>
      <property name="textFormat">
       <enum>Qt::RichText</enum>
@@ -654,6 +654,16 @@ border-image: url(/home/chris/emc-dev/configs/sim/qtscreen/backgound_grey.png) 0
         <number>1</number>
        </property>
       </widget>
+      <widget class="Lcnc_JogIncrements" name="lcnc_jogincrements">
+       <property name="geometry">
+        <rect>
+         <x>80</x>
+         <y>150</y>
+         <width>111</width>
+         <height>21</height>
+        </rect>
+       </property>
+      </widget>
      </widget>
     </widget>
     <widget class="QLabel" name="label">
@@ -783,7 +793,7 @@ border-image: url(/home/chris/emc-dev/configs/sim/qtscreen/backgound_grey.png) 0
       <enum>Qt::Horizontal</enum>
      </property>
      <property name="tickPosition">
-      <enum>QSlider::TicksBothSides</enum>
+      <enum>QSlider::NoTicks</enum>
      </property>
      <property name="tickInterval">
       <number>10</number>
@@ -805,7 +815,7 @@ border-image: url(/home/chris/emc-dev/configs/sim/qtscreen/backgound_grey.png) 0
       <enum>Qt::Horizontal</enum>
      </property>
      <property name="tickPosition">
-      <enum>QSlider::TicksBothSides</enum>
+      <enum>QSlider::NoTicks</enum>
      </property>
      <property name="tickInterval">
       <number>10</number>
@@ -833,7 +843,7 @@ border-image: url(/home/chris/emc-dev/configs/sim/qtscreen/backgound_grey.png) 0
       <enum>Qt::Horizontal</enum>
      </property>
      <property name="tickPosition">
-      <enum>QSlider::TicksBothSides</enum>
+      <enum>QSlider::NoTicks</enum>
      </property>
      <property name="tickInterval">
       <number>10</number>
@@ -864,7 +874,7 @@ border-image: url(/home/chris/emc-dev/configs/sim/qtscreen/backgound_grey.png) 0
       <enum>Qt::Horizontal</enum>
      </property>
      <property name="tickPosition">
-      <enum>QSlider::TicksBothSides</enum>
+      <enum>QSlider::NoTicks</enum>
      </property>
      <property name="tickInterval">
       <number>10</number>
@@ -1054,9 +1064,9 @@ border-image: url(/home/chris/emc-dev/configs/sim/qtscreen/backgound_grey.png) 0
    <widget class="QLabel" name="label_14">
     <property name="geometry">
      <rect>
-      <x>160</x>
+      <x>150</x>
       <y>650</y>
-      <width>72</width>
+      <width>61</width>
       <height>22</height>
      </rect>
     </property>
@@ -1205,7 +1215,7 @@ border-image: url(/home/chris/emc-dev/configs/sim/qtscreen/backgound_grey.png) 0
      <bool>true</bool>
     </property>
    </widget>
-   <widget class="Lcnc_State_Label" name="lcnc_state_label">
+   <widget class="Lcnc_Gstat_Label" name="lcnc_state_label">
     <property name="geometry">
      <rect>
       <x>130</x>
@@ -1227,7 +1237,7 @@ border-image: url(/home/chris/emc-dev/configs/sim/qtscreen/backgound_grey.png) 0
      <bool>true</bool>
     </property>
    </widget>
-   <widget class="Lcnc_State_Label" name="lcnc_state_label_2">
+   <widget class="Lcnc_Gstat_Label" name="lcnc_state_label_2">
     <property name="geometry">
      <rect>
       <x>20</x>
@@ -1243,7 +1253,7 @@ border-image: url(/home/chris/emc-dev/configs/sim/qtscreen/backgound_grey.png) 0
      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;FO:&lt;/span&gt;  &lt;span style=&quot; font-weight:600; font-size:18pt; color:#ffff00;&quot;&gt;%3.f%%&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
     </property>
    </widget>
-   <widget class="Lcnc_State_Label" name="lcnc_state_label_3">
+   <widget class="Lcnc_Gstat_Label" name="lcnc_state_label_3">
     <property name="geometry">
      <rect>
       <x>240</x>
@@ -1265,7 +1275,7 @@ border-image: url(/home/chris/emc-dev/configs/sim/qtscreen/backgound_grey.png) 0
      <bool>true</bool>
     </property>
    </widget>
-   <widget class="Lcnc_State_Label" name="lcnc_state_label_4">
+   <widget class="Lcnc_Gstat_Label" name="lcnc_state_label_4">
     <property name="geometry">
      <rect>
       <x>780</x>
@@ -1293,7 +1303,7 @@ border-image: url(/home/chris/emc-dev/configs/sim/qtscreen/backgound_grey.png) 0
      <bool>true</bool>
     </property>
    </widget>
-   <widget class="Lcnc_State_Label" name="lcnc_state_label_5">
+   <widget class="Lcnc_Gstat_Label" name="lcnc_state_label_5">
     <property name="geometry">
      <rect>
       <x>90</x>
@@ -1303,13 +1313,13 @@ border-image: url(/home/chris/emc-dev/configs/sim/qtscreen/backgound_grey.png) 0
      </rect>
     </property>
     <property name="text">
-     <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:18pt; color:#ffff00;&quot;&gt;100.0&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+     <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:18pt; color:#ffff00;&quot;&gt;100&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
     </property>
     <property name="textFormat">
      <enum>Qt::RichText</enum>
     </property>
     <property name="textTemplate" stdset="0">
-     <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:18pt; color:#ffff00;&quot;&gt;%2.1f&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+     <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:18pt; color:#ffff00;&quot;&gt;%2.f&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
     </property>
     <property name="feed_override_status" stdset="0">
      <bool>false</bool>
@@ -1324,7 +1334,7 @@ border-image: url(/home/chris/emc-dev/configs/sim/qtscreen/backgound_grey.png) 0
      <bool>false</bool>
     </property>
    </widget>
-   <widget class="Lcnc_State_Label" name="lcnc_state_label_6">
+   <widget class="Lcnc_Gstat_Label" name="lcnc_state_label_6">
     <property name="geometry">
      <rect>
       <x>410</x>
@@ -1355,7 +1365,7 @@ border-image: url(/home/chris/emc-dev/configs/sim/qtscreen/backgound_grey.png) 0
      <bool>true</bool>
     </property>
    </widget>
-   <widget class="Lcnc_State_Label" name="lcnc_state_label_8">
+   <widget class="Lcnc_Gstat_Label" name="lcnc_state_label_8">
     <property name="geometry">
      <rect>
       <x>360</x>
@@ -1730,7 +1740,7 @@ file</string>
       <x>360</x>
       <y>690</y>
       <width>56</width>
-      <height>32</height>
+      <height>31</height>
      </rect>
     </property>
     <property name="text">
@@ -1752,7 +1762,7 @@ file</string>
       <x>490</x>
       <y>690</y>
       <width>56</width>
-      <height>32</height>
+      <height>31</height>
      </rect>
     </property>
     <property name="text">
@@ -1777,7 +1787,7 @@ file</string>
       <x>610</x>
       <y>690</y>
       <width>56</width>
-      <height>32</height>
+      <height>31</height>
      </rect>
     </property>
     <property name="text">
@@ -1806,6 +1816,41 @@ file</string>
      </rect>
     </property>
    </widget>
+   <widget class="Lcnc_Gstat_Label" name="lcnc_gstat_label_2">
+    <property name="geometry">
+     <rect>
+      <x>210</x>
+      <y>640</y>
+      <width>131</width>
+      <height>41</height>
+     </rect>
+    </property>
+    <property name="textTemplate" stdset="0">
+     <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:18pt; color:#ffff00;&quot;&gt;%s&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+    </property>
+    <property name="jogincr_status" stdset="0">
+     <bool>true</bool>
+    </property>
+   </widget>
+   <widget class="Lcnc_Gstat_Bool_Label" name="lcnc_gstat_bool_label">
+    <property name="geometry">
+     <rect>
+      <x>360</x>
+      <y>540</y>
+      <width>51</width>
+      <height>22</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600; color:#0000;&quot;&gt;Inch&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+    </property>
+    <property name="true_textTemplate" stdset="0">
+     <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600; color:#ffff00;&quot;&gt;MM&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+    </property>
+    <property name="false_textTemplate" stdset="0">
+     <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600; color:#0000;&quot;&gt;Inch&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+    </property>
+   </widget>
   </widget>
   <widget class="QStatusBar" name="statusBar">
    <property name="sizeGripEnabled">
@@ -1832,12 +1877,6 @@ file</string>
    <container>1</container>
   </customwidget>
   <customwidget>
-   <class>Lcnc_ScreenOptions</class>
-   <extends>QWidget</extends>
-   <header>qtvcp_widgets.screenoptions</header>
-   <container>1</container>
-  </customwidget>
-  <customwidget>
    <class>Lcnc_State_Led</class>
    <extends>Lcnc_Led</extends>
    <header>qtvcp_widgets.led_state_widget</header>
@@ -1851,6 +1890,16 @@ file</string>
    <class>Lcnc_Dialog</class>
    <extends>QDialog</extends>
    <header>qtvcp_widgets.dialog_widget</header>
+  </customwidget>
+  <customwidget>
+   <class>Lcnc_Gstat_Label</class>
+   <extends>QLabel</extends>
+   <header>qtvcp_widgets.gstat_label</header>
+  </customwidget>
+  <customwidget>
+   <class>Lcnc_JogIncrements</class>
+   <extends>QComboBox</extends>
+   <header>qtvcp_widgets.jog_increments</header>
   </customwidget>
   <customwidget>
    <class>Lcnc_FileDialog</class>
@@ -1869,6 +1918,12 @@ file</string>
    <header>qtvcp_widgets.gstat_slider</header>
   </customwidget>
   <customwidget>
+   <class>Lcnc_ScreenOptions</class>
+   <extends>QWidget</extends>
+   <header>qtvcp_widgets.screenoptions</header>
+   <container>1</container>
+  </customwidget>
+  <customwidget>
    <class>Lcnc_MDILine</class>
    <extends>QLineEdit</extends>
    <header>qtvcp_widgets.mdi_line</header>
@@ -1880,6 +1935,11 @@ file</string>
    <header>qtvcp_widgets.graphics</header>
   </customwidget>
   <customwidget>
+   <class>Lcnc_Gstat_Bool_Label</class>
+   <extends>QLabel</extends>
+   <header>qtvcp_widgets.gstat_bool_label</header>
+  </customwidget>
+  <customwidget>
    <class>Lcnc_ToolDialog</class>
    <extends>Lcnc_Dialog</extends>
    <header>qtvcp_widgets.dialog_widget</header>
@@ -1889,11 +1949,6 @@ file</string>
    <extends>QWidget</extends>
    <header>qtvcp_widgets.container_widgets</header>
    <container>1</container>
-  </customwidget>
-  <customwidget>
-   <class>Lcnc_State_Label</class>
-   <extends>QLabel</extends>
-   <header>qtvcp_widgets.state_label</header>
   </customwidget>
  </customwidgets>
  <resources/>

@@ -20,6 +20,7 @@ class Lcnc_Gstat_Label(QtGui.QLabel, _HalWidgetBase):
         self.rapid_override = False
         self.spindle_override = False
         self.jograte = False
+        self.jogincr = False
         self.tool_number = False
         self.current_feedrate = False
         self.requested_spindle_speed = False
@@ -36,6 +37,8 @@ class Lcnc_Gstat_Label(QtGui.QLabel, _HalWidgetBase):
             GSTAT.connect('spindle-override-changed', lambda w,data: _f(data))
         elif self.jograte:
             GSTAT.connect('jograte-changed', lambda w,data: _f(data))
+        elif self.jogincr:
+            GSTAT.connect('jogincrement-changed', lambda w,data,text: _f(text))
         elif self.tool_number:
             GSTAT.connect('tool-in-spindle-changed', lambda w,data: _f(data))
         elif self.current_feedrate:
@@ -65,7 +68,22 @@ class Lcnc_Gstat_Label(QtGui.QLabel, _HalWidgetBase):
     def _switch_units(self, widget, data):
         self.display_units_mm = data
 
-# property getter/setters
+    #########################################################################
+    # This is how designer can interact with our widget properties.
+    # designer will show the pyqtProperty properties in the editor
+    # it will use the get set and reset calls to do those actions
+    #
+    # _toggle_properties makes it so we can only select one option
+    ########################################################################
+
+    def _toggle_properties(self, picked):
+        data = ('feed_override','rapid_override','spindle_override','jograte',
+                'jogincr','tool_number','current_feedrate',
+                'requested_spindle_speed','user_system')
+
+        for i in data:
+            if not i == picked:
+                self[i+'_status'] = False
 
     def set_textTemplate(self, data):
         self._textTemplate = data
@@ -78,7 +96,6 @@ class Lcnc_Gstat_Label(QtGui.QLabel, _HalWidgetBase):
         return self._textTemplate
     def reset_textTemplate(self):
         self._textTemplate = '%s'
-    textTemplate = QtCore.pyqtProperty(str, get_textTemplate, set_textTemplate, reset_textTemplate)
 
     def set_alt_textTemplate(self, data):
         self._alt_textTemplate = data
@@ -90,80 +107,111 @@ class Lcnc_Gstat_Label(QtGui.QLabel, _HalWidgetBase):
         return self._alt_textTemplate
     def reset_alt_textTemplate(self):
         self._alt_textTemplate = '%s'
-    alt_textTemplate = QtCore.pyqtProperty(str, get_alt_textTemplate, set_alt_textTemplate, reset_alt_textTemplate)
 
-    # feed override status 
+    # feed override status
     def set_feed_override(self, data):
         self.feed_override = data
+        if data:
+            self._toggle_properties('feed_override')
     def get_feed_override(self):
         return self.feed_override
     def reset_feed_override(self):
         self.feed_override = False
-    feed_override_status = QtCore.pyqtProperty(bool, get_feed_override, set_feed_override, reset_feed_override)
 
-    # rapid override status 
+    # rapid override status
     def set_rapid_override(self, data):
         self.rapid_override = data
+        if data:
+            self._toggle_properties('rapid_override')
     def get_rapid_override(self):
         return self.rapid_override
     def reset_rapid_override(self):
         self.rapid_override = False
-    rapid_override_status = QtCore.pyqtProperty(bool, get_rapid_override, set_rapid_override, reset_rapid_override)
 
-    # spindle override status 
+    # spindle override status
     def set_spindle_override(self, data):
         self.spindle_override = data
+        if data:
+            self._toggle_properties('spindle_override')
     def get_spindle_override(self):
         return self.spindle_override
     def reset_spindle_override(self):
         self.spindle_override = False
-    spindle_override_status = QtCore.pyqtProperty(bool, get_spindle_override, set_spindle_override, reset_spindle_override)
 
-    # jograte status 
+    # jograte status
     def set_jograte(self, data):
         self.jograte = data
+        if data:
+            self._toggle_properties('jograte')
     def get_jograte(self):
         return self.jograte
     def reset_jograte(self):
         self.jograte = False
-    jograte_status = QtCore.pyqtProperty(bool, get_jograte, set_jograte, reset_jograte)
 
-    # tool number status 
+    # jogincr status
+    def set_jogincr(self, data):
+        self.jogincr = data
+        if data:
+            self._toggle_properties('jogincr')
+    def get_jogincr(self):
+        return self.jogincr
+    def reset_jogincr(self):
+        self.jogincr = False
+
+    # tool number status
     def set_tool_number(self, data):
         self.tool_number = data
+        if data:
+            self._toggle_properties('tool_number')
     def get_tool_number(self):
         return self.tool_number
     def reset_tool_number(self):
         self.tool_number = False
-    tool_number_status = QtCore.pyqtProperty(bool, get_tool_number, set_tool_number, reset_tool_number)
 
-    # current feedrate status 
+    # current feedrate status
     def set_current_feedrate(self, data):
         self.current_feedrate = data
+        if data:
+            self._toggle_properties('current_feedrate')
     def get_current_feedrate(self):
         return self.current_feedrate
     def reset_current_feedrate(self):
         self.current_feedrate = False
-    current_feedrate_status = QtCore.pyqtProperty(bool, get_current_feedrate, set_current_feedrate, reset_current_feedrate)
 
-    # spindle speed status 
+    # spindle speed status
     def set_requested_spindle_speed(self, data):
         self.requested_spindle_speed = data
+        if data:
+            self._toggle_properties('requested_spindle_speed')
     def get_requested_spindle_speed(self):
         return self.requested_spindle_speed
     def reset_requested_spindle_speed(self):
         self.requested_spindle_speed = False
-    requested_spindle_speed_status = QtCore.pyqtProperty(bool, get_requested_spindle_speed, set_requested_spindle_speed, reset_requested_spindle_speed)
 
-    # user_system status 
+    # user_system status
     def set_user_system(self, data):
         self.user_system = data
+        if data:
+            self._toggle_properties('user_system')
     def get_user_system(self):
         return self.user_system
     def reset_user_system(self):
         self.user_system = False
+
+    textTemplate = QtCore.pyqtProperty(str, get_textTemplate, set_textTemplate, reset_textTemplate)
+    alt_textTemplate = QtCore.pyqtProperty(str, get_alt_textTemplate, set_alt_textTemplate, reset_alt_textTemplate)
+    feed_override_status = QtCore.pyqtProperty(bool, get_feed_override, set_feed_override, reset_feed_override)
+    rapid_override_status = QtCore.pyqtProperty(bool, get_rapid_override, set_rapid_override, reset_rapid_override)
+    spindle_override_status = QtCore.pyqtProperty(bool, get_spindle_override, set_spindle_override, reset_spindle_override)
+    jograte_status = QtCore.pyqtProperty(bool, get_jograte, set_jograte, reset_jograte)
+    jogincr_status = QtCore.pyqtProperty(bool, get_jogincr, set_jogincr, reset_jogincr)
+    tool_number_status = QtCore.pyqtProperty(bool, get_tool_number, set_tool_number, reset_tool_number)
+    current_feedrate_status = QtCore.pyqtProperty(bool, get_current_feedrate, set_current_feedrate, reset_current_feedrate)
+    requested_spindle_speed_status = QtCore.pyqtProperty(bool, get_requested_spindle_speed, set_requested_spindle_speed, reset_requested_spindle_speed)
     user_system_status = QtCore.pyqtProperty(bool, get_user_system, set_user_system, reset_user_system)
 
+
+    # boilder code
     def __getitem__(self, item):
         return getattr(self, item)
     def __setitem__(self, item, value):

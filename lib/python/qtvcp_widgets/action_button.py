@@ -212,9 +212,10 @@ class Lcnc_ActionButton(QtGui.QPushButton, _HalWidgetBase):
             print 'QTVCP: action button: * No action recognised *'
 
     def jog_action(self,direction):
+        if direction == 0 and GSTAT.current_jog_distance != 0: return
         if direction:
             ACTION.ensure_mode(linuxcnc.MODE_MANUAL)
-        GSTAT.continuous_jog(self.joint_number, direction)
+        GSTAT.continuous_jog(self.joint_number, direction, GSTAT.current_jog_distance)
 
     #########################################################################
     # This is how designer can interact with our widget properties.
