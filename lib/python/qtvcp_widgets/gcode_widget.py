@@ -17,7 +17,7 @@
 #    along with this program; if not, write to the Free Software
 #    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
-# This was based on 
+# This was based on
 # QScintilla sample with PyQt
 # Eli Bendersky (eliben@gmail.com)
 # Which is code in the public domain
@@ -188,13 +188,15 @@ class EditorBase(QsciScintilla):
         self.setMarginsBackgroundColor(QColor("#cccccc"))
 
         # Clickable margin 1 for showing markers
-        self.setMarginSensitivity(1, True)
-        self.connect(self,
-            SIGNAL('marginClicked(int, int, Qt::KeyboardModifiers)'),
-            self.on_margin_clicked)
+        self.setMarginSensitivity(1, False)
+        # setting marker margin width to zero make the marker highlight line
+        self.setMarginWidth(1, 0)
+        #self.connect(self,
+        #    SIGNAL('marginClicked(int, int, Qt::KeyboardModifiers)'),
+        #    self.on_margin_clicked)
         self.markerDefine(QsciScintilla.RightArrow,
             self.ARROW_MARKER_NUM)
-        self.setMarkerBackgroundColor(QColor("#ee1111"),
+        self.setMarkerBackgroundColor(QColor("#ffe4e4"),
             self.ARROW_MARKER_NUM)
 
         # Brace matching: enable for a brace immediately before or after
@@ -312,7 +314,7 @@ class GcodeEditor(EditorBase, _HalWidgetBase):
             GSTAT.emit('mdi-line-selected',self.line_text)
 
     # designer recognized getter/setters
-    # auto_show_mdi status 
+    # auto_show_mdi status
     def set_auto_show_mdi(self, data):
         self.auto_show_mdi = data
     def get_auto_show_mdi(self):
