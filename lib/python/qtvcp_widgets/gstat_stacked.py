@@ -19,11 +19,8 @@ class GstatStacked(QtGui.QStackedWidget, _HalWidgetBase):
             self.setCurrentIndex(index)
         if self.auto:
             GSTAT.connect('mode-auto', lambda w: _switch(2))
-            self.addWidget()
         if self.mdi:
             GSTAT.connect('mode-mdi', lambda w: _switch(1))
-            self.addWidget()
         if self.manual:
             GSTAT.connect('mode-manual', lambda w: _switch(0))
-            self.addWidget()
 
