@@ -56,13 +56,14 @@ class IStat():
 
         axes = (str(self.inifile.find("TRAJ", "COORDINATES"))).replace(" ", "")
         print axes
-        conversion = {"X":0, "Y":1, "Z":2, "A":3, "B":4, "C":5, "U":6, "V":7, "W":8}
-        self.AVAILABLE_AXES = []
-        self.AVAILABLE_AXES_INT = []
-        for letter in axes:
-            self.AVAILABLE_AXES.append(letter.upper())
-            self.AVAILABLE_AXES_INT.append(conversion[letter.upper()])
-        print self.AVAILABLE_AXES
+        if not axes == 'None':
+            conversion = {"X":0, "Y":1, "Z":2, "A":3, "B":4, "C":5, "U":6, "V":7, "W":8}
+            self.AVAILABLE_AXES = []
+            self.AVAILABLE_AXES_INT = []
+            for letter in axes:
+                self.AVAILABLE_AXES.append(letter.upper())
+                self.AVAILABLE_AXES_INT.append(conversion[letter.upper()])
+
         self.NO_HOME_REQUIRED = int(self.inifile.find("TRAJ", "NO_FORCE_HOMING") or 0)
 
         # jogging increments
