@@ -14,6 +14,8 @@ class IStat():
         self.MACHINE_IS_METRIC = False
         self.MACHINE_UNIT_CONVERSION = 1
         self.MACHINE_UNIT_CONVERSION_9 = [1]*9
+        self.AVAILABLE_AXES = ('X','Y','Z')
+        self.AVAILABLE_AXES_INT = (0,1,2)
         self.NO_HOME_REQUIRED = False
         self.JOG_INCREMENTS = None
         self.ANGULAR_INCREMENTS = None
@@ -46,12 +48,21 @@ class IStat():
         if units=="mm" or units=="metric" or units == "1.0":
             self.MACHINE_IS_METRIC = True
             self.MACHINE_UNIT_CONVERSION = 1.0/25.4
-            self.MACHINE_UNIT_CONVERSIO_9 = [1.0/25.4]*3+[1]*3+[1.0/25.4]*3
+            self.MACHINE_UNIT_CONVERSION_9 = [1.0/25.4]*3+[1]*3+[1.0/25.4]*3
         else:
             self.MACHINE_IS_METRIC = False
             self.MACHINE_UNIT_CONVERSION = 25.4
-            self.MACHINE_UNIT_CONVERSIO_9 = [25.4]*3+[1]*3+[25.4]*3
+            self.MACHINE_UNIT_CONVERSION_9 = [25.4]*3+[1]*3+[25.4]*3
 
+        axes = (str(self.inifile.find("TRAJ", "COORDINATES"))).replace(" ", "")
+        print axes
+        conversion = {"X":0, "Y":1, "Z":2, "A":3, "B":4, "C":5, "U":6, "V":7, "W":8}
+        self.AVAILABLE_AXES = []
+        self.AVAILABLE_AXES_INT = []
+        for letter in axes:
+            self.AVAILABLE_AXES.append(letter.upper())
+            self.AVAILABLE_AXES_INT.append(conversion[letter.upper()])
+        print self.AVAILABLE_AXES
         self.NO_HOME_REQUIRED = int(self.inifile.find("TRAJ", "NO_FORCE_HOMING") or 0)
 
         # jogging increments
