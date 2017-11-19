@@ -4,6 +4,7 @@
 import _hal, hal, gobject
 import linuxcnc
 import os
+import math
 
 # constants
 JOGJOINT  = 1
@@ -635,6 +636,9 @@ class _GStat(gobject.GObject):
         if  self.stat.task_mode in modes: return (True, premode)
         if running( self.stat): return (None, premode)
         return (False, premode)
+
+    def get_current_mode(self):
+        return self.old['mode']
 
     def set_jog_rate(self,upm):
         self.current_jog_rate = upm
