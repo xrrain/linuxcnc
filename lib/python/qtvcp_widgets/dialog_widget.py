@@ -15,9 +15,11 @@
 # GNU General Public License for more details.
 
 import os
-from PyQt4.QtGui import QMessageBox, QFileDialog, QColor, QDesktopWidget
+from PyQt4.QtGui import QMessageBox, QFileDialog, QColor, QDesktopWidget, \
+        QDialog, QDialogButtonBox, QVBoxLayout
 from PyQt4.QtCore import Qt, pyqtSlot, pyqtProperty
 from qtvcp_widgets.simple_widgets import _HalWidgetBase, hal
+from qtvcp_widgets.origin_offsetview import Lcnc_OriginOffsetView as OFFVIEW_WIDGET
 from qtvcp.qt_glib import GStat, Lcnc_Action
 
 # Instiniate the libraries with global reference
@@ -116,7 +118,7 @@ class Lcnc_ToolDialog(Lcnc_Dialog, _HalWidgetBase):
     # So we record the original base name of the component, make our pins, then
     # switch it back
     def _hal_init(self):
-        _HalWidgetBase._hal_init(self)
+        #_HalWidgetBase._hal_init(self)
         oldname = self.hal.comp.getprefix()
         self.hal.comp.setprefix('hal_manualtoolchange')
         self.hal_pin = self.hal.newpin('change', hal.HAL_BIT, hal.HAL_IN)
@@ -226,7 +228,6 @@ class Lcnc_FileDialog(QFileDialog, _HalWidgetBase):
         return self._state
     def resetState(self):
         self._state = False
-    state = pyqtProperty(bool, getState, setState, resetState)
 
     def getColor(self):
         return self._color
@@ -235,8 +236,45 @@ class Lcnc_FileDialog(QFileDialog, _HalWidgetBase):
     def resetState(self):
         self._color = QColor(0, 0, 0,150)
 
-
+    state = pyqtProperty(bool, getState, setState, resetState)
     color = pyqtProperty(QColor, getColor, setColor)
+
+################################################################################
+# origin Offset Dialog
+################################################################################
+class Lcnc_OriginOffsetDialog(QDialog, _HalWidgetBase):
+    def __init__(self, parent=None):
+        super(Lcnc_OriginOffsetDialog, self).__init__(parent)
+        self._color = QColor(0, 0, 0, 150)
+
+        self.setWindowModality(Qt.ApplicationModal)
+        self.setWindowFlags( self.windowFlags() |Qt.Tool |
+                  Qt.Dialog |
+                 Qt.WindowStaysOnTopHint |Qt.WindowSystemMenuHint)
+        self.setMinimumSize(800,500)
+        buttonBox = QDialogButtonBox(QDialogButtonBox.Ok)
+        b = buttonBox.button(QDialogButtonBox.Ok)
+        b.clicked.connect(lambda:self.close())
+        l = QVBoxLayout()
+        o = OFFVIEW_WIDGET()
+        o._hal_init()
+        self.setLayout(l)
+        l.addWidget(o)
+        l.addWidget(buttonBox)
+
+    def _hal_init(self):
+        pass
+
+    def load_dialog(self):
+        GSTAT.emit('focus-overlay-changed',True,'Set Origin Offsets',self._color)
+        self.show()
+        self.exec_()
+        GSTAT.emit('focus-overlay-changed',False,None,None)
+
+    def _hal_init(self):
+            GSTAT.connect('load-file-request', lambda w: self.load_dialog())
+
+
 ################################
 # for testing without editor:
 ################################

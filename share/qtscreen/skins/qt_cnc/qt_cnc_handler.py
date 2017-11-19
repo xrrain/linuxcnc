@@ -5,6 +5,7 @@
 from PyQt4 import QtCore
 from PyQt4 import QtGui
 from qtvcp_widgets.origin_offsetview import Lcnc_OriginOffsetView as OFFVIEW_WIDGET
+from qtvcp_widgets.dialog_widget import Lcnc_OriginOffsetDialog as OFFVIEW_DIALOG
 from qtvcp_widgets.mdi_line import Lcnc_MDILine as MDI_WIDGET
 from qtscreen.keybindings import Keylookup
 from qtscreen.notify import Notify
@@ -73,6 +74,9 @@ class HandlerClass:
         bgpath = self.IMAGE_PATH+'/frame_bg_grey.png'
         self.w.frame_2.setStyleSheet("QFrame { border-image: url(%s) 0 0 0 0 stretch stretch; }"%bgpath)
 
+        self.d = OFFVIEW_DIALOG()
+        KEYBIND.add_call('Key_F3','on_keycall_F3')
+
     def processed_key_event__(self,receiver,event,is_pressed,key,code,shift,cntrl):
         # when typing in MDI, we don't want keybinding to call functions
         # so we catch and process the events directly.
@@ -110,7 +114,6 @@ class HandlerClass:
         if state:
             print 'abort'
             if GSTAT.stat.interp_state == linuxcnc.INTERP_IDLE:
-                print 'close'
                 self.w.close()
             else:
                 print 'abort'
@@ -125,6 +128,9 @@ class HandlerClass:
     def on_keycall_HOME(self,event,state,shift,cntrl):
         if state:
             self.w.button_home.click()
+    def on_keycall_F3(self,event,state,shift,cntrl):
+        if state:
+            self.d.load_dialog()
 
     def on_keycall_XPOS(self,event,state,shift,cntrl):
         if state:
