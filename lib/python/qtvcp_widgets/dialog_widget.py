@@ -15,7 +15,7 @@
 # GNU General Public License for more details.
 
 import os
-from PyQt4.QtGui import QMessageBox, QFileDialog, QColor
+from PyQt4.QtGui import QMessageBox, QFileDialog, QColor, QDesktopWidget
 from PyQt4.QtCore import Qt, pyqtSlot, pyqtProperty
 from qtvcp_widgets.simple_widgets import _HalWidgetBase, hal
 from qtvcp.qt_glib import GStat, Lcnc_Action
@@ -71,6 +71,12 @@ class Lcnc_Dialog(QMessageBox):
             return False
         else:
             return True
+
+    def showEvent(self, event):
+        geom = self.frameGeometry()
+        geom.moveCenter(QDesktopWidget().availableGeometry().center())
+        self.setGeometry(geom)
+        super(Lcnc_Dialog, self).showEvent(event)
 
     def msgbtn(self, i):
         return
