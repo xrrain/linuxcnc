@@ -134,6 +134,10 @@ class Lcnc_Action():
         self.ensure_mode(linuxcnc.MODE_MDI)
         self.cmd.mdi('%s'%code)
 
+    def UPDATE_VAR_FILE(self):
+        self.ensure_mode(linuxcnc.MODE_MANUAL)
+        self.ensure_mode(linuxcnc.MODE_MDI)
+
     def OPEN_PROGRAM(self, fname):
         self.ensure_mode(linuxcnc.MODE_AUTO)
         self.cmd.program_open(str(fname))
@@ -173,10 +177,24 @@ class Lcnc_Action():
     def SET_JOG_INCR(self, incr):
         pass
 
+    def ZERO_G92_OFFSET (self, widget):
+        self.CALL_MDI("G92.1")
+        self.gstat.emit('reload-display')
+    def ZERO_ROTATIONAL_OFFSET(self, widget):
+        self.CALL_MDI("G10 L2 P0 R 0")
+        self.gstat.emit('reload-display')
+
     ###############################################################################
     # Helper functions
     ###############################################################################
 
+    def RECORD_CURRENT_MODE(self):
+        mode = self.gstat.get_current_mode()
+        self.last_mode = mode
+        return mode
+
+    def RESTORE_RECORDED_MODE(self):
+        self.ensure_mode(self.last_mode)
 
     def ensure_mode(self, *modes):
         truth, premode = self.gstat.check_for_modes(modes)
