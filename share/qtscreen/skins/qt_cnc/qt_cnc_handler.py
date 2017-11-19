@@ -4,6 +4,8 @@
 
 from PyQt4 import QtCore
 from PyQt4 import QtGui
+from qtvcp_widgets.origin_offsetview import Lcnc_OriginOffsetView as OFFVIEW_WIDGET
+from qtvcp_widgets.mdi_line import Lcnc_MDILine as MDI_WIDGET
 from qtscreen.keybindings import Keylookup
 from qtscreen.notify import Notify
 from qtscreen.message import Message
@@ -75,11 +77,12 @@ class HandlerClass:
         # when typing in MDI, we don't want keybinding to call functions
         # so we catch and process the events directly.
         # We do want ESC, F1 and F2 to call keybinding functions though
-        if self.w.mdi_line == receiver and code not in(16777216,16777264,16777216):
-            if is_pressed:
-                self.w.mdi_line.keyPressEvent(event)
-                event.accept()
-            return True
+        if code not in(QtCore.Qt.Key_Escape,QtCore.Qt.Key_F1 ,QtCore.Qt.Key_F2):
+            if isinstance(receiver, OFFVIEW_WIDGET) or isinstance(receiver, MDI_WIDGET):
+                if is_pressed:
+                    receiver.keyPressEvent(event)
+                    event.accept()
+                return True
         try:
             KEYBIND.call(self,event,is_pressed,shift,cntrl)
             return True
