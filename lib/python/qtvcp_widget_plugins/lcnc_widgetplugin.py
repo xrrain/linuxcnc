@@ -6,6 +6,7 @@ from qtvcp_widgets.drowidget import Lcnc_DROLabel
 from qtvcp_widgets.mdi_line import Lcnc_MDILine
 from qtvcp_widgets.gcode_widget import GcodeEditor
 from qtvcp_widgets.gstat_stacked import GstatStacked
+from qtvcp_widgets.origin_offsetview import Lcnc_OriginOffsetView
 
 from qtvcp_widgets.qtvcp_icons import Icon
 ICON = Icon()
@@ -137,3 +138,36 @@ class GstatStackedPlugin(QPyDesignerCustomWidgetPlugin):
         return '<widget class="GstatStacked" name="gstatstacked" />\n'
     def includeFile(self):
         return "qtvcp_widgets.gstat_stacked"
+
+####################################
+# OriginOffsetView Widget
+####################################
+class Lcnc_OriginOffsetViewPlugin(QPyDesignerCustomWidgetPlugin):
+    def __init__(self, parent = None):
+        QPyDesignerCustomWidgetPlugin.__init__(self)
+        self.initialized = False
+    def initialize(self, formEditor):
+        if self.initialized:
+            return
+        self.initialized = True
+    def isInitialized(self):
+        return self.initialized
+    def createWidget(self, parent):
+        return Lcnc_OriginOffsetView(parent)
+    def name(self):
+        return "Lcnc_OriginOffsetView"
+    def group(self):
+        return "Linuxcnc - Controller"
+    def icon(self):
+        return QtGui.QIcon(QtGui.QPixmap(ICON.get_path('lcnc_originoffsetview')))
+    def toolTip(self):
+        return "Gcode display / editor Widget"
+    def whatsThis(self):
+        return ""
+    def isContainer(self):
+        return True
+    def domXml(self):
+        return '<widget class="Lcnc_OriginOffsetView" name="lcnc_originoffsetview" />\n'
+    def includeFile(self):
+        return "qtvcp_widgets.origin_offsetview"
+
