@@ -16,7 +16,7 @@
 import os
 from PyQt4.QtGui import QLineEdit
 from qtvcp.qt_glib import GStat, Lcnc_Action
-from qtscreen.aux_program_loader import Aux_program_loader
+from qtvcp.lib.aux_program_loader import Aux_program_loader
 from qtvcp.qt_istat import IStat
 
 # Instiniate the libraries with global reference
@@ -80,7 +80,7 @@ def main():
     widget = Lcnc_MDILine()
     widget.show()
     sys.exit(app.exec_())
-if __name__ == "__main__":	
+if __name__ == "__main__":
     main()
 
 

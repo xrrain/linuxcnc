@@ -22,7 +22,7 @@ from PyQt4 import QtCore, QtGui
 from qtvcp_widgets.simple_widgets import _HalWidgetBase
 from qtvcp.qt_glib import GStat, Lcnc_Action
 from qtvcp.qt_istat import IStat
-from qtscreen.aux_program_loader import Aux_program_loader
+from qtvcp.lib.aux_program_loader import Aux_program_loader
 import linuxcnc
 
 # Instiniate the libraries with global reference

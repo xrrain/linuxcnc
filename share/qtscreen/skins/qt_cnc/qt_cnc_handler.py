@@ -7,10 +7,10 @@ from PyQt4 import QtGui
 from qtvcp_widgets.origin_offsetview import Lcnc_OriginOffsetView as OFFVIEW_WIDGET
 from qtvcp_widgets.dialog_widget import Lcnc_OriginOffsetDialog as OFFVIEW_DIALOG
 from qtvcp_widgets.mdi_line import Lcnc_MDILine as MDI_WIDGET
-from qtscreen.keybindings import Keylookup
-from qtscreen.notify import Notify
-from qtscreen.message import Message
-from qtscreen.preferences import Access
+from qtvcp.lib.keybindings import Keylookup
+from qtvcp.lib.notify import Notify
+from qtvcp.lib.message import Message
+from qtvcp.lib.preferences import Access
 from qtvcp.qt_glib import GStat
 
 import linuxcnc

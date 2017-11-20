@@ -4,11 +4,11 @@
 
 from PyQt4 import QtCore
 from PyQt4 import QtGui
-from qtscreen.keybindings import Keylookup
-from qtscreen.aux_program_loader import Aux_program_loader
-from qtscreen.notify import Notify
-from qtscreen.message import Message
-from qtscreen.preferences import Access
+from qtvcp.lib.keybindings import Keylookup
+from qtvcp.lib.aux_program_loader import Aux_program_loader
+from qtvcp.lib.notify import Notify
+from qtvcp.lib.message import Message
+from qtvcp.lib.preferences import Access
 from qtvcp_widgets.overlay_widget import FocusOverlay
 
 from qtvcp.qt_glib import GStat
