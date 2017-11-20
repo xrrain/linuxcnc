@@ -270,7 +270,7 @@ When linuxcnc is in machine off state the function self.on_state_off will be cal
 IStat is a library to collect and filter data from the INI file. +
 
 The available data and defaults: +
-
+----
 inifile = linuxcnc.ini(INIPATH) +
 MDI_HISTORY_PATH = '~/.axis_mdi_history' +
 PREFERENCE_PATH = '~/.Preferences' +
@@ -291,7 +291,7 @@ DEFAULT_SPINDLE_SPEED = 200 +
 MAX_FEED_OVERRIDE = 1.5 +
 MAX_SPINDLE_OVERRIDE = 1.5 +
 MIN_SPINDLE_OVERRIDE = 0.5 +
-
+----
 To import this modules add this python code to your import section: +
 [source,python]
 ----
