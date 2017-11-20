@@ -2,8 +2,8 @@
 
 from PyQt4 import QtCore, QtGui
 from PyQt4.QtDesigner import QPyDesignerCustomWidgetPlugin
-from qtvcp_widgets.container_widgets import State_Enable_GridLayout
-from qtvcp_widgets.qtvcp_icons import Icon
+from qtvcp.widgets.container_widgets import State_Enable_GridLayout
+from qtvcp.widgets.qtvcp_icons import Icon
 ICON = Icon()
 
 ####################################
@@ -36,4 +36,4 @@ class StateEnableGridLayoutPlugin(QPyDesignerCustomWidgetPlugin):
     def domXml(self):
         return '<widget class="State_Enable_GridLayout" name="state_enable_gridLayout" />\n'
     def includeFile(self):
-        return "qtvcp_widgets.container_widgets"
+        return "qtvcp.widgets.container_widgets"

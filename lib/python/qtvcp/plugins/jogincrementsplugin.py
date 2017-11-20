@@ -2,8 +2,8 @@
 
 from PyQt4.QtGui import QIcon, QPixmap
 from PyQt4.QtDesigner import QPyDesignerCustomWidgetPlugin
-from qtvcp_widgets.jog_increments import Lcnc_JogIncrements
-from qtvcp_widgets.qtvcp_icons import Icon
+from qtvcp.widgets.jog_increments import Lcnc_JogIncrements
+from qtvcp.widgets.qtvcp_icons import Icon
 ICON = Icon()
 
 class JogIncrementsPlugin(QPyDesignerCustomWidgetPlugin):
@@ -50,4 +50,4 @@ class JogIncrementsPlugin(QPyDesignerCustomWidgetPlugin):
         return '<widget class="Lcnc_JogIncrements" name="lcnc_jogincrements" />\n'
 
     def includeFile(self):
-        return "qtvcp_widgets.jog_increments"
+        return "qtvcp.widgets.jog_increments"

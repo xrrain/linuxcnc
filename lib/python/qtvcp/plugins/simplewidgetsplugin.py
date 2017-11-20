@@ -2,13 +2,13 @@
 
 from PyQt4 import QtCore, QtGui
 from PyQt4.QtDesigner import QPyDesignerCustomWidgetPlugin
-from qtvcp_widgets.simple_widgets import Lcnc_PushButton
-from qtvcp_widgets.simple_widgets import Lcnc_CheckBox
-from qtvcp_widgets.simple_widgets import Lcnc_RadioButton
-from qtvcp_widgets.simple_widgets import Lcnc_LCDNumber
-from qtvcp_widgets.simple_widgets import Lcnc_QSlider
-from qtvcp_widgets.simple_widgets import Lcnc_GridLayout
-from qtvcp_widgets.qtvcp_icons import Icon
+from qtvcp.widgets.simple_widgets import Lcnc_PushButton
+from qtvcp.widgets.simple_widgets import Lcnc_CheckBox
+from qtvcp.widgets.simple_widgets import Lcnc_RadioButton
+from qtvcp.widgets.simple_widgets import Lcnc_LCDNumber
+from qtvcp.widgets.simple_widgets import Lcnc_QSlider
+from qtvcp.widgets.simple_widgets import Lcnc_GridLayout
+from qtvcp.widgets.qtvcp_icons import Icon
 ICON = Icon()
 
 ####################################
@@ -19,7 +19,7 @@ class PushButtonPlugin(QPyDesignerCustomWidgetPlugin):
     # The __init__() method is only used to set up the plugin and define its
     # initialized variable.
     def __init__(self, parent = None):
-    
+
         QPyDesignerCustomWidgetPlugin.__init__(self)
         self.initialized = False
 
@@ -30,7 +30,7 @@ class PushButtonPlugin(QPyDesignerCustomWidgetPlugin):
 
         if self.initialized:
             return
-        
+
         self.initialized = True
 
     def isInitialized(self):
@@ -66,14 +66,14 @@ class PushButtonPlugin(QPyDesignerCustomWidgetPlugin):
         return False
 
     # Returns an XML description of a custom widget instance that describes
-    # default values for its properties. 
+    # default values for its properties.
     def domXml(self):
         return '<widget class="Lcnc_PushButton" name="lcnc_pushbutton" />\n'
 
     # Returns the module containing the custom widget class. It may include
     # a module path.
     def includeFile(self):
-        return "qtvcp_widgets.simple_widgets"
+        return "qtvcp.widgets.simple_widgets"
 
 ####################################
 # CHECKBUTTON
@@ -105,7 +105,7 @@ class CheckBoxPlugin(QPyDesignerCustomWidgetPlugin):
     def domXml(self):
         return '<widget class="Lcnc_CheckBox" name="lcnc_checkbox" />\n'
     def includeFile(self):
-        return "qtvcp_widgets.simple_widgets"
+        return "qtvcp.widgets.simple_widgets"
 
 ####################################
 # RADIOBUTTON
@@ -137,7 +137,7 @@ class RadioButtonPlugin(QPyDesignerCustomWidgetPlugin):
     def domXml(self):
         return '<widget class="Lcnc_RadioButton" name="lcnc_radiobutton" />\n'
     def includeFile(self):
-        return "qtvcp_widgets.simple_widgets"
+        return "qtvcp.widgets.simple_widgets"
 ####################################
 # LCD Display
 ####################################
@@ -168,7 +168,7 @@ class LCDNumberPlugin(QPyDesignerCustomWidgetPlugin):
     def domXml(self):
         return '<widget class="Lcnc_LCDNumber" name="lcnc_lcdnumber" />\n'
     def includeFile(self):
-        return "qtvcp_widgets.simple_widgets"
+        return "qtvcp.widgets.simple_widgets"
 
 ####################################
 # Slider
@@ -209,7 +209,7 @@ class QSliderPlugin(QPyDesignerCustomWidgetPlugin):
                 </widget>
                 """)
     def includeFile(self):
-        return "qtvcp_widgets.simple_widgets"
+        return "qtvcp.widgets.simple_widgets"
 
 ####################################
 # GridLayout
@@ -241,4 +241,4 @@ class LcncGridLayoutPlugin(QPyDesignerCustomWidgetPlugin):
     def domXml(self):
         return '<widget class="Lcnc_GridLayout" name="lcnc_gridlayout" />\n'
     def includeFile(self):
-        return "qtvcp_widgets.simple_widgets"
+        return "qtvcp.widgets.simple_widgets"

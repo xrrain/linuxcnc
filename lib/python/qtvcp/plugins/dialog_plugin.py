@@ -2,8 +2,8 @@
 
 from PyQt4.QtGui import QIcon, QPixmap
 from PyQt4.QtDesigner import QPyDesignerCustomWidgetPlugin
-from qtvcp_widgets.dialog_widget import Lcnc_Dialog, Lcnc_ToolDialog, Lcnc_FileDialog
-from qtvcp_widgets.qtvcp_icons import Icon
+from qtvcp.widgets.dialog_widget import Lcnc_Dialog, Lcnc_ToolDialog, Lcnc_FileDialog
+from qtvcp.widgets.qtvcp_icons import Icon
 ICON = Icon()
 class DialogPlugin(QPyDesignerCustomWidgetPlugin):
 
@@ -49,7 +49,7 @@ class DialogPlugin(QPyDesignerCustomWidgetPlugin):
         return '<widget class="Lcnc_Dialog" name="lcnc_dialog" />\n'
 
     def includeFile(self):
-        return "qtvcp_widgets.dialog_widget"
+        return "qtvcp.widgets.dialog_widget"
 
 ###############################################################################
 # manual Tool Change Dialog
@@ -98,7 +98,7 @@ class ToolDialogPlugin(QPyDesignerCustomWidgetPlugin):
         return '<widget class="Lcnc_ToolDialog" name="lcnc_tooldialog" />\n'
 
     def includeFile(self):
-        return "qtvcp_widgets.dialog_widget"
+        return "qtvcp.widgets.dialog_widget"
 
 ###############################################################################
 # File Dialog
@@ -147,4 +147,4 @@ class FileDialogPlugin(QPyDesignerCustomWidgetPlugin):
         return '<widget class="Lcnc_FileDialog" name="lcnc_filedialog" />\n'
 
     def includeFile(self):
-        return "qtvcp_widgets.dialog_widget"
+        return "qtvcp.widgets.dialog_widget"

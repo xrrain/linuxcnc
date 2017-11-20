@@ -3,8 +3,8 @@
 from PyQt4.QtGui import QIcon, QPixmap, QAction, QDialog, QLabel,QTextFormat
 from PyQt4.QtCore import SIGNAL,pyqtProperty,QVariant
 from PyQt4.QtDesigner import QPyDesignerCustomWidgetPlugin, QExtensionFactory, QPyDesignerTaskMenuExtension, QPyDesignerPropertySheetExtension,QDesignerFormWindowInterface
-from qtvcp_widgets.gstat_label import Lcnc_Gstat_Label
-from qtvcp_widgets.qtvcp_icons import Icon
+from qtvcp.widgets.gstat_label import Lcnc_Gstat_Label
+from qtvcp.widgets.qtvcp_icons import Icon
 ICON = Icon()
 
 class GstatLabelPlugin(QPyDesignerCustomWidgetPlugin):
@@ -56,7 +56,7 @@ class GstatLabelPlugin(QPyDesignerCustomWidgetPlugin):
         return '<widget class="Lcnc_Gstat_Label" name="lcnc_gstat_label" />\n'
 
     def includeFile(self):
-        return "qtvcp_widgets.gstat_label"
+        return "qtvcp.widgets.gstat_label"
 
 #*************************************************************************
 class GstatLabelPropertySheetExtension(QExtensionFactory):
@@ -76,7 +76,7 @@ class GstatLabelPropertySheetExtension(QExtensionFactory):
       return None
 
 class GstatLabelPropertySheet(QPyDesignerPropertySheetExtension):
-    
+
     def __init__(self, widget, parent):
         QPyDesignerPropertySheetExtension.__init__(self, parent)
         self.widget = widget
@@ -116,7 +116,7 @@ class GstatLabelPropertySheet(QPyDesignerPropertySheetExtension):
         return num +1
 
     def setChanged(self, index, value):
-        return 
+        return
 
     def isChanged(self, index):
         return False

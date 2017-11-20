@@ -2,8 +2,8 @@
 
 from PyQt4.QtGui import QIcon, QPixmap
 from PyQt4.QtDesigner import QPyDesignerCustomWidgetPlugin
-from qtvcp_widgets.gstat_bool_label import Lcnc_Gstat_Bool_Label
-from qtvcp_widgets.qtvcp_icons import Icon
+from qtvcp.widgets.gstat_bool_label import Lcnc_Gstat_Bool_Label
+from qtvcp.widgets.qtvcp_icons import Icon
 ICON = Icon()
 
 class GstatBoolLabelPlugin(QPyDesignerCustomWidgetPlugin):
@@ -49,6 +49,6 @@ class GstatBoolLabelPlugin(QPyDesignerCustomWidgetPlugin):
         return '<widget class="Lcnc_Gstat_Bool_Label" name="lcnc_gstat_bool_label" />\n'
 
     def includeFile(self):
-        return "qtvcp_widgets.gstat_bool_label"
+        return "qtvcp.widgets.gstat_bool_label"
 
 

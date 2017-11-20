@@ -5,8 +5,8 @@ from PyQt4.QtDesigner import QPyDesignerCustomWidgetPlugin, \
                 QPyDesignerTaskMenuExtension, QExtensionFactory, \
                 QDesignerFormWindowInterface
 
-from qtvcp_widgets.screenoptions import Lcnc_ScreenOptions
-from qtvcp_widgets.qtvcp_icons import Icon
+from qtvcp.widgets.screenoptions import Lcnc_ScreenOptions
+from qtvcp.widgets.qtvcp_icons import Icon
 ICON = Icon()
 
 ####################################
@@ -47,7 +47,7 @@ class LcncScreenOptionsPlugin(QPyDesignerCustomWidgetPlugin):
     def domXml(self):
         return '<widget class="Lcnc_ScreenOptions" name="lcnc_screenoptions" />\n'
     def includeFile(self):
-        return "qtvcp_widgets.screenoptions"
+        return "qtvcp.widgets.screenoptions"
 
 class GeoLocationDialog(QtGui.QDialog):
 

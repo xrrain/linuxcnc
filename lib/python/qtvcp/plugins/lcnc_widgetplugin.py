@@ -2,13 +2,13 @@
 
 from PyQt4 import QtCore, QtGui
 from PyQt4.QtDesigner import QPyDesignerCustomWidgetPlugin
-from qtvcp_widgets.drowidget import Lcnc_DROLabel
-from qtvcp_widgets.mdi_line import Lcnc_MDILine
-from qtvcp_widgets.gcode_widget import GcodeEditor
-from qtvcp_widgets.gstat_stacked import GstatStacked
-from qtvcp_widgets.origin_offsetview import Lcnc_OriginOffsetView
+from qtvcp.widgets.drowidget import Lcnc_DROLabel
+from qtvcp.widgets.mdi_line import Lcnc_MDILine
+from qtvcp.widgets.gcode_widget import GcodeEditor
+from qtvcp.widgets.gstat_stacked import GstatStacked
+from qtvcp.widgets.origin_offsetview import Lcnc_OriginOffsetView
 
-from qtvcp_widgets.qtvcp_icons import Icon
+from qtvcp.widgets.qtvcp_icons import Icon
 ICON = Icon()
 
 ####################################
@@ -41,7 +41,7 @@ class LcncDROLabelPlugin(QPyDesignerCustomWidgetPlugin):
     def domXml(self):
         return '<widget class="Lcnc_DROLabel" name="lcnc_drolabel" />\n'
     def includeFile(self):
-        return "qtvcp_widgets.drowidget"
+        return "qtvcp.widgets.drowidget"
 
 ####################################
 # MDI edit line
@@ -73,7 +73,7 @@ class Lcnc_MDIlinePlugin(QPyDesignerCustomWidgetPlugin):
     def domXml(self):
         return '<widget class="Lcnc_MDILine" name="lcnc_mdiline" />\n'
     def includeFile(self):
-        return "qtvcp_widgets.mdi_line"
+        return "qtvcp.widgets.mdi_line"
 
 ####################################
 # Gcode editor
@@ -105,7 +105,7 @@ class GcodeEditorPlugin(QPyDesignerCustomWidgetPlugin):
     def domXml(self):
         return '<widget class="GcodeEditor" name="gcodeeditor" />\n'
     def includeFile(self):
-        return "qtvcp_widgets.gcode_widget"
+        return "qtvcp.widgets.gcode_widget"
 
 ####################################
 # GstatStacked
@@ -137,7 +137,7 @@ class GstatStackedPlugin(QPyDesignerCustomWidgetPlugin):
     def domXml(self):
         return '<widget class="GstatStacked" name="gstatstacked" />\n'
     def includeFile(self):
-        return "qtvcp_widgets.gstat_stacked"
+        return "qtvcp.widgets.gstat_stacked"
 
 ####################################
 # OriginOffsetView Widget
@@ -169,5 +169,5 @@ class Lcnc_OriginOffsetViewPlugin(QPyDesignerCustomWidgetPlugin):
     def domXml(self):
         return '<widget class="Lcnc_OriginOffsetView" name="lcnc_originoffsetview" />\n'
     def includeFile(self):
-        return "qtvcp_widgets.origin_offsetview"
+        return "qtvcp.widgets.origin_offsetview"
 

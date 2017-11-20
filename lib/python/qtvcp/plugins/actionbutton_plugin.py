@@ -2,16 +2,19 @@
 
 from PyQt4 import QtCore, QtGui
 from PyQt4.QtDesigner import QPyDesignerCustomWidgetPlugin
-from qtvcp_widgets.graphics import Graphics
-from qtvcp_widgets.qtvcp_icons import Icon
+from qtvcp.widgets.action_button import Lcnc_ActionButton
+from qtvcp.widgets.qtvcp_icons import Icon
 ICON = Icon()
 
-class GraphicsPlugin(QPyDesignerCustomWidgetPlugin):
+####################################
+# ActionBUTTON
+####################################
+class ActionButtonPlugin(QPyDesignerCustomWidgetPlugin):
 
     # The __init__() method is only used to set up the plugin and define its
     # initialized variable.
     def __init__(self, parent = None):
-    
+
         QPyDesignerCustomWidgetPlugin.__init__(self)
         self.initialized = False
 
@@ -22,35 +25,31 @@ class GraphicsPlugin(QPyDesignerCustomWidgetPlugin):
 
         if self.initialized:
             return
-        
+
         self.initialized = True
 
     def isInitialized(self):
         return self.initialized
 
-    # This factory method creates new instances of our custom widget with the
-    # appropriate parent.
+    # This factory method creates new instances of our custom widget
     def createWidget(self, parent):
-        return Graphics(parent)
+        return Lcnc_ActionButton(parent)
 
-    # This method returns the name of the custom widget class that is provided
-    # by this plugin.
+    # This method returns the name of the custom widget class
     def name(self):
-        return "Graphics"
+        return "Lcnc_ActionButton"
 
-    # Returns the name of the group in Qt Designer's widget box that this
-    # widget belongs to.
+    # Returns the name of the group in Qt Designer's widget box
     def group(self):
         return "Linuxcnc - Controller"
 
-    # Returns the icon used to represent the custom widget in Qt Designer's
-    # widget box.
+    # Returns the icon
     def icon(self):
-        return QtGui.QIcon(QtGui.QPixmap(ICON.get_path('graphics')))
+        return QtGui.QIcon(QtGui.QPixmap(ICON.get_path('lcnc_actionbutton')))
 
-    # Returns a short description of the custom widget for use in a tool tip.
+    # Returns a tool tip short description
     def toolTip(self):
-        return "3D grahics display widget"
+        return "Action button widget"
 
     # Returns a short description of the custom widget for use in a "What's
     # This?" help message for the widget.
@@ -58,20 +57,15 @@ class GraphicsPlugin(QPyDesignerCustomWidgetPlugin):
         return ""
 
     # Returns True if the custom widget acts as a container for other widgets;
-    # otherwise returns False. Note that plugins for custom containers also
-    # need to provide an implementation of the QDesignerContainerExtension
-    # interface if they need to add custom editing support to Qt Designer.
     def isContainer(self):
         return False
 
     # Returns an XML description of a custom widget instance that describes
-    # default values for its properties. Each custom widget created by this
-    # plugin will be configured using this description.
+    # default values for its properties.
     def domXml(self):
-        return '<widget class="Graphics" name="graphics" />\n'
+        return '<widget class="Lcnc_ActionButton" name="lcnc_actionbutton" />\n'
 
     # Returns the module containing the custom widget class. It may include
     # a module path.
     def includeFile(self):
-        return "qtvcp_widgets.graphics"
-
+        return "qtvcp.widgets.action_button"
