@@ -10,7 +10,7 @@ print sys.argv
 #locale.setlocale(locale.LC_ALL, '')
 
 import linuxcnc
-from qtvcp_widgets.simple_widgets import _HalWidgetBase
+from qtvcp.widgets.simple_widgets import _HalWidgetBase
 from qtvcp.qt_glib import GStat, Lcnc_Action
 from qtvcp.qt_istat import IStat
 GSTAT = GStat()

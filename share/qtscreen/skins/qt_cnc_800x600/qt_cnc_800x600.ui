@@ -1180,50 +1180,50 @@ font: 75 18pt &quot;Bitstream Vera Sans Mono&quot;;</string>
   <customwidget>
    <class>GcodeEditor</class>
    <extends>QFrame</extends>
-   <header>qtvcp_widgets.gcode_widget</header>
+   <header>qtvcp.widgets.gcode_widget</header>
    <container>1</container>
   </customwidget>
   <customwidget>
    <class>Lcnc_DROLabel</class>
    <extends>QLabel</extends>
-   <header>qtvcp_widgets.drowidget</header>
+   <header>qtvcp.widgets.drowidget</header>
    <container>1</container>
   </customwidget>
   <customwidget>
    <class>Lcnc_State_Led</class>
    <extends>Lcnc_Led</extends>
-   <header>qtvcp_widgets.led_state_widget</header>
+   <header>qtvcp.widgets.led_state_widget</header>
   </customwidget>
   <customwidget>
    <class>Lcnc_Led</class>
    <extends>QWidget</extends>
-   <header>qtvcp_widgets.ledwidget</header>
+   <header>qtvcp.widgets.ledwidget</header>
   </customwidget>
   <customwidget>
    <class>Lcnc_Gstat_Label</class>
    <extends>QLabel</extends>
-   <header>qtvcp_widgets.gstat_label</header>
+   <header>qtvcp.widgets.gstat_label</header>
   </customwidget>
   <customwidget>
    <class>Lcnc_MDILine</class>
    <extends>QLineEdit</extends>
-   <header>qtvcp_widgets.mdi_line</header>
+   <header>qtvcp.widgets.mdi_line</header>
    <container>1</container>
   </customwidget>
   <customwidget>
    <class>Graphics</class>
    <extends>QWidget</extends>
-   <header>qtvcp_widgets.graphics</header>
+   <header>qtvcp.widgets.graphics</header>
   </customwidget>
   <customwidget>
    <class>Lcnc_Gstat_Bool_Label</class>
    <extends>QLabel</extends>
-   <header>qtvcp_widgets.gstat_bool_label</header>
+   <header>qtvcp.widgets.gstat_bool_label</header>
   </customwidget>
   <customwidget>
    <class>State_Enable_GridLayout</class>
    <extends>QWidget</extends>
-   <header>qtvcp_widgets.container_widgets</header>
+   <header>qtvcp.widgets.container_widgets</header>
    <container>1</container>
   </customwidget>
  </customwidgets>

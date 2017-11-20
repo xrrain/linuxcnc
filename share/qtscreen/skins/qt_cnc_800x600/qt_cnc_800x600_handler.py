@@ -9,7 +9,7 @@ from qtvcp.lib.aux_program_loader import Aux_program_loader
 from qtvcp.lib.notify import Notify
 from qtvcp.lib.message import Message
 from qtvcp.lib.preferences import Access
-from qtvcp_widgets.overlay_widget import FocusOverlay
+from qtvcp.widgets.overlay_widget import FocusOverlay
 
 from qtvcp.qt_glib import GStat
 import linuxcnc

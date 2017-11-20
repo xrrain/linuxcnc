@@ -18,8 +18,8 @@ import os
 from PyQt4.QtGui import QMessageBox, QFileDialog, QColor, QDesktopWidget, \
         QDialog, QDialogButtonBox, QVBoxLayout
 from PyQt4.QtCore import Qt, pyqtSlot, pyqtProperty
-from qtvcp_widgets.simple_widgets import _HalWidgetBase, hal
-from qtvcp_widgets.origin_offsetview import Lcnc_OriginOffsetView as OFFVIEW_WIDGET
+from qtvcp.widgets.simple_widgets import _HalWidgetBase, hal
+from qtvcp.widgets.origin_offsetview import Lcnc_OriginOffsetView as OFFVIEW_WIDGET
 from qtvcp.qt_glib import GStat, Lcnc_Action
 
 # Instiniate the libraries with global reference

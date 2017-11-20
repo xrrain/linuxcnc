@@ -2,7 +2,7 @@
 
 from PyQt4 import QtCore, QtGui
 import os
-from qtvcp_widgets.simple_widgets import _HalWidgetBase
+from qtvcp.widgets.simple_widgets import _HalWidgetBase
 from qtvcp.qt_glib import GStat
 GSTAT = GStat()
 
@@ -62,7 +62,7 @@ class Lcnc_Gstat_Bool_Label(QtGui.QLabel, _HalWidgetBase):
         self._false_textTemplate = '%s'
     false_textTemplate = QtCore.pyqtProperty(str, get_false_textTemplate, set_false_textTemplate, reset_false_textTemplate)
 
-    # metric mode status 
+    # metric mode status
     def set_metric_mode(self, data):
         self.metric_mode = data
     def get_metric_mode(self):
@@ -71,7 +71,7 @@ class Lcnc_Gstat_Bool_Label(QtGui.QLabel, _HalWidgetBase):
         self.metric_mode = True
     metric_mode_status = QtCore.pyqtProperty(bool, get_metric_mode, set_metric_mode, reset_metric_mode)
 
-    # css mode status 
+    # css mode status
     def set_css_mode(self, data):
         self.css_mode = data
     def get_css_mode(self):
@@ -80,7 +80,7 @@ class Lcnc_Gstat_Bool_Label(QtGui.QLabel, _HalWidgetBase):
         self.css_mode = True
     css_mode_status = QtCore.pyqtProperty(bool, get_css_mode, set_css_mode, reset_css_mode)
 
-    # fpr mode status 
+    # fpr mode status
     def set_fpr_mode(self, data):
         self.fpr_mode = data
     def get_fpr_mode(self):
@@ -89,7 +89,7 @@ class Lcnc_Gstat_Bool_Label(QtGui.QLabel, _HalWidgetBase):
         self.fpr_mode = True
     fpr_mode_status = QtCore.pyqtProperty(bool, get_fpr_mode, set_fpr_mode, reset_fpr_mode)
 
-    # diameter mode status 
+    # diameter mode status
     def set_diameter_mode(self, data):
         self.diameter_mode = data
     def get_diameter_mode(self):

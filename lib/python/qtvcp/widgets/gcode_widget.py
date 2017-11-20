@@ -34,7 +34,7 @@ try:
 except:
     print '**** QTVCP ERROR: Gcode widget can not import QsciScintilla - is package python-qscintilla2 installed?'
     sys.exit(1)
-from qtvcp_widgets.simple_widgets import _HalWidgetBase
+from qtvcp.widgets.simple_widgets import _HalWidgetBase
 from qtvcp.qt_glib import GStat
 from qtvcp.qt_istat import IStat
 GSTAT = GStat()

@@ -2,7 +2,7 @@ import os
 import linuxcnc
 from PyQt4.QtGui import QWidget, QGridLayout
 from PyQt4.QtCore import pyqtProperty
-from qtvcp_widgets.simple_widgets import _HalWidgetBase
+from qtvcp.widgets.simple_widgets import _HalWidgetBase
 from qtvcp.qt_glib import GStat
 GSTAT = GStat()
 
@@ -46,10 +46,10 @@ class State_Enable_GridLayout(QWidget,_HalWidgetBase):
             self.setEnabled(False)
             return
         self.setEnabled(state)
-        
+
 # property getter/setters
 
-    # machine is on status 
+    # machine is on status
     def set_is_on(self, data):
         self.is_on = data
     def get_is_on(self):
@@ -58,7 +58,7 @@ class State_Enable_GridLayout(QWidget,_HalWidgetBase):
         self.is_on = False
     is_on_status = pyqtProperty(bool, get_is_on, set_is_on, reset_is_on)
 
-    # machine is idle status 
+    # machine is idle status
     def set_is_idle(self, data):
         self.is_idle = data
         if (data and self.is_not_idle):
@@ -69,7 +69,7 @@ class State_Enable_GridLayout(QWidget,_HalWidgetBase):
         self.is_idle = False
     is_idle_status = pyqtProperty(bool, get_is_idle, set_is_idle, reset_is_idle)
 
-    # machine is not idle status 
+    # machine is not idle status
     def set_is_not_idle(self, data):
         self.is_not_idle = data
         if (data and self.is_idle):
@@ -80,7 +80,7 @@ class State_Enable_GridLayout(QWidget,_HalWidgetBase):
         self.is_not_idle = False
     is_not_idle_status = pyqtProperty(bool, get_is_not_idle, set_is_not_idle, reset_is_not_idle)
 
-    # machine is homed status 
+    # machine is homed status
     def set_is_homed(self, data):
         self.is_homed = data
     def get_is_homed(self):
